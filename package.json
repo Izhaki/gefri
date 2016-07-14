@@ -1,0 +1,36 @@
+{
+  "name": "gefri",
+  "version": "0.0.1",
+  "description": "A JavaScript graphical editing framework",
+  "main": "index.js",
+  "scripts": {
+    "postinstall": "typings install dt~jasmine --save --global && mkdir -p dist",
+    "test": "ts-node jasmine",
+    "coverage": "ts-node node_modules/istanbul/lib/cli.js cover -e .ts  -x \"*.d.ts\" -x \"*.spec.ts\" ./jasmine.js",
+    "build-js-min": "browserify src/gefri.ts -p [tsify] | uglifyjs -c > dist/gefri.min.js",
+    "build-js": "browserify src/gefri.ts -p [tsify] -v --debug -o dist/gefri.js",
+    "watch-ts": "chokidar 'src/**/*.ts' -c 'npm run coverage'",
+    "watch": "npm run watch-ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Izhaki/gefri.git"
+  },
+  "author": "Izhaki",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Izhaki/gefri/issues"
+  },
+  "homepage": "https://github.com/Izhaki/gefri#readme",
+  "devDependencies": {
+    "browserify": "^13.0.1",
+    "chokidar-cli": "^1.2.0",
+    "istanbul": "^1.1.0-alpha.1",
+    "jasmine": "^2.4.1",
+    "ts-node": "^0.9.3",
+    "tsify": "^0.16.0",
+    "typescript": "^1.8.10",
+    "typings": "^1.3.1",
+    "uglify-js": "^2.7.0"
+  }
+}
