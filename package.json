@@ -27,6 +27,8 @@
     "chokidar-cli": "^1.2.0",
     "istanbul": "^1.1.0-alpha.1",
     "jasmine": "^2.4.1",
+    "jsdom": "^9.4.1",
+    "mock-browser": "^0.92.12",
     "ts-node": "^0.9.3",
     "tsify": "^0.16.0",
     "typescript": "^1.8.10",
