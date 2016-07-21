@@ -3,14 +3,21 @@
   "version": "0.0.1",
   "description": "A JavaScript graphical editing framework",
   "main": "index.js",
+  "config" : {
+    "loglevel" : "warn"
+  },
   "scripts": {
     "postinstall": "typings install dt~jasmine --save --global && mkdir -p dist",
     "test": "ts-node jasmine",
-    "coverage": "ts-node node_modules/istanbul/lib/cli.js cover -e .ts  -x \"*.d.ts\" -x \"*.spec.ts\" ./jasmine.js",
-    "build-js-min": "browserify src/gefri.ts -p [tsify] | uglifyjs -c > dist/gefri.min.js",
-    "build-js": "browserify src/gefri.ts -p [tsify] -v --debug -o dist/gefri.js",
-    "watch-ts": "chokidar 'src/**/*.ts' -c 'npm run coverage'",
-    "watch": "npm run watch-ts"
+    "coverage": "ts-node node_modules/istanbul/lib/cli.js cover -e .ts -x \"*.d.ts\" -x \"*.spec.ts\" ./jasmine.js",
+    "build-js-min": "browserify src/gefri.ts -p [tsify] --standalone gefri | uglifyjs -c > dist/gefri.min.js",
+    "build-js": "browserify src/gefri.ts -p [tsify] -v --debug -o --standalone gefri > dist/gefri.js && cat dist/gefri.js > demos/gefri.js",
+    "watch-ts": "chokidar 'src/**/!(*spec).ts' -c 'npm run coverage && npm run build-js && npm run build-js-min && echo \"Done.\"'",
+    "watch-specs": "chokidar 'src/**/*.spec.ts' -c 'npm run coverage'",
+    "watch": "npm run watch-ts & npm run watch-specs",
+    "serve": "npm run build-js && http-server demos/",
+    "serve-watch": "npm run serve & npm run watch",
+    "dev": "npm run serve-watch --silent"
   },
   "repository": {
     "type": "git",
@@ -25,6 +32,7 @@
   "devDependencies": {
     "browserify": "^13.0.1",
     "chokidar-cli": "^1.2.0",
+    "http-server": "^0.9.0",
     "istanbul": "^1.1.0-alpha.1",
     "jasmine": "^2.4.1",
     "jsdom": "^9.4.1",
