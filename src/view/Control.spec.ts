@@ -1,8 +1,11 @@
 import { Control } from './Control';
+import { Context2DMock } from './Context2D.mock';
 
 describe( 'Control', function() {
     var iContainer,
-        iChild,
+        iControl,
+        iCanvas,
+        iMockContext,
         iTonyBlair;
 
     function createContainer() {
@@ -18,23 +21,50 @@ describe( 'Control', function() {
     }
 
     beforeEach( function () {
+        iMockContext = new Context2DMock();
+
+        var createElement = document.createElement;
+        spyOn( document, 'createElement' ).and.callFake( function( tagName ) {
+
+            var element = createElement.call( document, tagName );
+            if ( tagName.toLowerCase() === 'canvas' ) {
+                element.getContext = function() {
+                    return iMockContext;
+                }
+            }
+            return element;
+        });
+    });
+
+    beforeEach( function () {
         createContainer();
-        var iControl = new Control( iContainer );
-        iChild = iContainer.firstElementChild;
+        iControl = new Control( iContainer );
+        iCanvas = iContainer.firstElementChild;
     });
 
     describe( 'constructor()', function() {
 
         it( 'should create a canvas and add it to the container', function() {
-            expect( iChild.tagName ).toBe( 'CANVAS' );
+            expect( iCanvas.tagName ).toBe( 'CANVAS' );
             expect( true ).toBe( true );
         });
 
         it( 'should size the canvas to the dimensions of its container', function() {
-            expect( iChild.width  ).toBe( 500 );
-            expect( iChild.height ).toBe( 400 );
+            expect( iCanvas.width  ).toBe( 500 );
+            expect( iCanvas.height ).toBe( 400 );
         });
 
     });
+
+    describe( 'paint()', function() {
+
+        it( 'should draw a rect ( 10, 10, 20, 20 )', function() {
+            spyOn( iMockContext, 'rect' );
+            iControl.paint();
+            expect( iMockContext.rect ).toHaveBeenCalledWith( 10, 10, 20, 20 );
+        });
+
+    });
+
 
 });
