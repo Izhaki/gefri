@@ -1,0 +1,9 @@
+verbose: false
+instrumentation:
+    root: src/
+    extensions: [ '.ts' ]
+    default-excludes: true
+    include-all-sources: true
+    excludes: [ '*.spec.ts', '*.mock.ts', '*.ns.ts' ]
+reporting:
+    dir: public/coverage

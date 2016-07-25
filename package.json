@@ -9,9 +9,9 @@
   "scripts": {
     "postinstall": "typings install dt~jasmine --save --global && mkdir -p dist",
     "test": "ts-node jasmine",
-    "coverage": "ts-node node_modules/istanbul/lib/cli.js cover -e .ts -x \"*.d.ts\" -x \"*.spec.ts\" -x \"*.mock.ts\" --preload-sources --dir ./public/coverage ./jasmine.js",
-    "build-js-min": "browserify src/gefri.ts -p [tsify] --standalone gefri | uglifyjs -c > dist/gefri.min.js",
-    "build-js": "browserify src/gefri.ts -p [tsify] -v --debug -o --standalone gefri > dist/gefri.js && cat dist/gefri.js > public/demo/gefri.js",
+    "coverage": "ts-node node_modules/istanbul/lib/cli.js cover ./jasmine.js",
+    "build-js-min": "browserify src/gefri.ns.ts -p [tsify] --standalone gefri | uglifyjs -c > dist/gefri.min.js",
+    "build-js": "browserify src/gefri.ns.ts -p [tsify] -v --debug -o --standalone gefri > dist/gefri.js && cat dist/gefri.js > public/demo/gefri.js",
     "watch-ts": "chokidar 'src/**/!(*spec).ts' -c 'npm run coverage && npm run build-js && npm run build-js-min && echo \"Done.\"'",
     "watch-specs": "chokidar 'src/**/*.spec.ts' -c 'npm run coverage'",
     "watch": "npm run watch-ts & npm run watch-specs",

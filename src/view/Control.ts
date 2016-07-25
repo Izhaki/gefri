@@ -1,3 +1,5 @@
+import { Viewee } from './viewees/Viewee';
+
 export
 class Control {
     private container: HTMLElement;
@@ -16,7 +18,7 @@ class Control {
         return iCanvas;
     }
 
-    public paint() {
+    public setContents( aViewee: Viewee ) {
         var iContext = this.canvas.getContext( '2d' );
 
         // Prevents antialiasing effect.
@@ -26,9 +28,6 @@ class Control {
         iContext.lineWidth = 1;
         iContext.strokeStyle = 'black';
 
-        iContext.beginPath();
-        iContext.rect( 10, 10, 20, 20 );
-        iContext.fill();
-        iContext.stroke();
+        aViewee.paint( iContext )
     }
 }

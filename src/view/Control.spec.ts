@@ -1,12 +1,13 @@
 import { Control } from './Control';
 import { Context2DMock } from './Context2D.mock';
+import { Rectangle } from './viewees/shapes/Rectangle';
+import { Rect } from './geometry/Rect';
 
 describe( 'Control', function() {
     var iContainer,
         iControl,
         iCanvas,
-        iMockContext,
-        iTonyBlair;
+        iMockContext;
 
     function createContainer() {
         iContainer = document.createElement( 'div' );
@@ -56,12 +57,14 @@ describe( 'Control', function() {
 
     });
 
-    describe( 'paint()', function() {
+    describe( 'setContents()', function() {
 
-        it( 'should draw a rect ( 10, 10, 20, 20 )', function() {
-            spyOn( iMockContext, 'rect' );
-            iControl.paint();
-            expect( iMockContext.rect ).toHaveBeenCalledWith( 10, 10, 20, 20 );
+        it( 'should call paint on the provided viewee', function() {
+            var iRectangle = new Rectangle( new Rect( 10, 10, 20, 20 ) );
+            spyOn( iRectangle, 'paint' )
+
+            iControl.setContents( iRectangle );
+            expect( iRectangle.paint ).toHaveBeenCalled();
         });
 
     });
