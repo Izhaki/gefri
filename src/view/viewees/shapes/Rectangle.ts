@@ -1,5 +1,6 @@
 import { Viewee } from './../Viewee';
 import { Rect } from './../../geometry/Rect';
+import { Painter } from './../../painters/Painter';
 
 export
 class Rectangle extends Viewee {
@@ -10,13 +11,8 @@ class Rectangle extends Viewee {
         this.rect = aRect;
     }
 
-    paint( aContext ) {
-        var r = this.rect;
-
-        aContext.beginPath();
-        aContext.rect( r.x, r.y, r.w, r.h );
-        aContext.fill();
-        aContext.stroke();
+    paint( aPainter: Painter ) {
+        aPainter.drawRectangle( this.rect );
     }
 
 }

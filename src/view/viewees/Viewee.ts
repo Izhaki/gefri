@@ -1,6 +1,8 @@
+import { Painter } from './../painters/Painter';
+
 export
 abstract class Viewee {
 
-    abstract paint( aContext );
+    abstract paint( aPainter: Painter );
 
 }
