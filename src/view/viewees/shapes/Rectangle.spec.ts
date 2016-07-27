@@ -5,17 +5,16 @@ import { Painter } from './../../painters/Painter';
 
 describe( 'Rectangle', function() {
 
-    describe( 'paint()', function() {
+    describe( 'paintSelf()', function() {
+        var iRect        = new Rect( 10, 10, 20, 20),
+            iRectangle   = new Rectangle( iRect ),
+            iMockContext = new Context2DMock(),
+            iPainter     = new Painter( iMockContext );
 
         it( 'should call drawRectangle on the painter provided', function() {
-            var iRect        = new Rect( 10, 10, 20, 20);
-            var iRectangle   = new Rectangle( iRect );
-            var iMockContext = new Context2DMock();
-            var iPainter     = new Painter( iMockContext )
-
             spyOn( iPainter, 'drawRectangle' );
 
-            iRectangle.paint( iPainter );
+            iRectangle.paintSelf( iPainter );
             expect( iPainter.drawRectangle ).toHaveBeenCalledWith( iRect );
         });
 

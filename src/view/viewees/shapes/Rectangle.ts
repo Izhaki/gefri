@@ -1,9 +1,9 @@
-import { Viewee } from './../Viewee';
+import { Shape } from './Shape';
 import { Rect } from './../../geometry/Rect';
 import { Painter } from './../../painters/Painter';
 
 export
-class Rectangle extends Viewee {
+class Rectangle extends Shape {
     rect: Rect;
 
     constructor( aRect: Rect ) {
@@ -11,8 +11,9 @@ class Rectangle extends Viewee {
         this.rect = aRect;
     }
 
-    paint( aPainter: Painter ) {
+    paintSelf( aPainter: Painter ): void {
         aPainter.drawRectangle( this.rect );
+        this.paintChildren( aPainter );
     }
 
 }
