@@ -1,5 +1,5 @@
-import { Shape } from './Shape';
-import { Rect } from './../../geometry/Rect';
+import { Shape }   from './Shape';
+import { Rect }    from './../../geometry/Rect';
 import { Painter } from './../../painters/Painter';
 
 export
@@ -13,7 +13,10 @@ class Rectangle extends Shape {
 
     paintSelf( aPainter: Painter ): void {
         aPainter.drawRectangle( this.rect );
-        this.paintChildren( aPainter );
+    }
+
+    getRectBounds(): Rect {
+        return this.rect;
     }
 
 }

@@ -1,17 +1,28 @@
-import { Shape } from './Shape';
+import { Shape }         from './Shape';
 import { Context2DMock } from './../../Context2D.mock';
-import { Painter } from './../../painters/Painter';
+import { Painter }       from './../../painters/Painter';
+import { Rect }          from './../../geometry/Rect';
 
 class MockShape extends Shape {
     paintSelf( aPainter: Painter ) {}
+    getRectBounds(): Rect { return null }
 }
 
 describe( 'Shape', function() {
 
+    var iMockContext,
+        iPainter,
+        iMockShape;
+
+
+    beforeEach( function () {
+        iMockContext = new Context2DMock();
+        iPainter     = new Painter( iMockContext )
+        iMockShape   = new MockShape();
+    });
+
     describe( 'paint()', function() {
-        var iMockShape   = new MockShape(),
-            iMockContext = new Context2DMock(),
-            iPainter     = new Painter( iMockContext );
+
 
         it( 'should paint itself', function() {
             spyOn( iMockShape, 'paintSelf' );
@@ -28,5 +39,20 @@ describe( 'Shape', function() {
         });
 
     });
+
+
+    describe( 'applyTransformations()', function() {
+        var iMockRectBounds = new Rect( 10, 10, 20, 20);
+
+        it( 'should call translate on the painter with the top-left corner of the shape rectangular bound', function() {
+            spyOn( iMockShape, 'getRectBounds' ).and.returnValue( iMockRectBounds );
+            spyOn( iPainter, 'translate' );
+
+            iMockShape.applyTransformations( iPainter );
+            expect( iPainter.translate ).toHaveBeenCalledWith( 10, 10 );
+        });
+
+    });
+
 
 });

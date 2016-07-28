@@ -1,5 +1,6 @@
-import { Viewee } from './../Viewee';
+import { Viewee }  from './../Viewee';
 import { Painter } from './../../painters/Painter';
+import { Rect }    from './../../geometry/Rect';
 
 export
 abstract class Shape extends Viewee {
@@ -10,4 +11,12 @@ abstract class Shape extends Viewee {
     }
 
     abstract paintSelf( aPainter: Painter ): void;
+
+    abstract getRectBounds(): Rect;
+
+    applyTransformations( aPainter: Painter ): void {
+        var iBounds = this.getRectBounds();
+        aPainter.translate( iBounds.getLeft(), iBounds.getTop() );
+    }
+
 }
