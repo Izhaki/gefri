@@ -1,5 +1,5 @@
 import { Viewee } from './Viewee';
-import { Context2DMock } from './../Context2D.mock';
+import { Context2DMock } from '../../../mocks/Context2D';
 import { Painter } from './../painters/Painter';
 
 class MockViewee extends Viewee {
@@ -19,7 +19,7 @@ describe( 'Viewee', function() {
         iMockViewee.addChildren( iChild1, iChild2 );
 
         it( 'should push the painter state', function() {
-            spyOn( iPainter, 'pushState' );
+            spyOn( iPainter, 'pushState' ).and.callThrough();
 
             iMockViewee.paintChildren( iPainter );
 

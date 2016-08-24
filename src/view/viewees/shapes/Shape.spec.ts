@@ -1,5 +1,5 @@
 import { Shape }         from './Shape';
-import { Context2DMock } from './../../Context2D.mock';
+import { Context2DMock } from '../../../../mocks/Context2D';
 import { Painter }       from './../../painters/Painter';
 import { Rect }          from './../../geometry/Rect';
 

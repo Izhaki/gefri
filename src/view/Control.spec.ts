@@ -1,53 +1,26 @@
 import { Control } from './Control';
-import { Context2DMock } from './Context2D.mock';
 import { Rectangle } from './viewees/shapes/Rectangle';
 import { Rect } from './geometry/Rect';
 
 describe( 'Control', function() {
-    var iContainer,
-        iControl,
-        iCanvas,
-        iMockContext;
-
-    function createContainer() {
-        iContainer = document.createElement( 'div' );
-
-        // For headless browser
-        iContainer.setAttribute( 'style','width:500px; height:400px;');
-
-        // For mocks
-        iContainer.offsetWidth  = 500;
-        iContainer.offsetHeight = 400;
-        document.body.appendChild( iContainer );
-    }
+    var iControl,
+        iCanvas
 
     beforeEach( function () {
-        iMockContext = new Context2DMock();
+        var iViewElement = document.getElementById( 'view' );
 
-        var createElement = document.createElement;
-        spyOn( document, 'createElement' ).and.callFake( function( tagName ) {
+        iViewElement.offsetWidth  = 500;
+        iViewElement.offsetHeight = 400;
+        iViewElement.innerHTML = '';
 
-            var element = createElement.call( document, tagName );
-            if ( tagName.toLowerCase() === 'canvas' ) {
-                element.getContext = function() {
-                    return iMockContext;
-                }
-            }
-            return element;
-        });
-    });
-
-    beforeEach( function () {
-        createContainer();
-        iControl = new Control( iContainer );
-        iCanvas = iContainer.firstElementChild;
+        iControl = new Control( iViewElement );
+        iCanvas = iViewElement.firstElementChild;
     });
 
     describe( 'constructor()', function() {
 
         it( 'should create a canvas and add it to the container', function() {
             expect( iCanvas.tagName ).toBe( 'CANVAS' );
-            expect( true ).toBe( true );
         });
 
         it( 'should size the canvas to the dimensions of its container', function() {

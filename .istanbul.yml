@@ -4,6 +4,6 @@ instrumentation:
     extensions: [ '.ts' ]
     default-excludes: true
     include-all-sources: true
-    excludes: [ '*.spec.ts', '*.mock.ts', '*.ns.ts' ]
+    excludes: [ '*.spec.ts', '*.ns.ts' ]
 reporting:
     dir: public/coverage

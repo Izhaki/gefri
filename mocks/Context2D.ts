@@ -3,8 +3,23 @@
 // - https://github.com/Microsoft/TypeScript/blob/ddadb472a6241bd14a267b915f5c4669bd094a28/src/lib/dom.generated.d.ts
 // '//' postfix signify no typings for member/method
 
+import { TransformMatrix } from '../src/view/geometry/TransformMatrix';
+import { Rect }            from '../src/view/geometry/Rect';
+import { Point }           from '../src/view/geometry/Point';
+
 export
 class Context2DMock implements CanvasRenderingContext2D {
+
+    matrix:     TransformMatrix;
+    stateStack: any[];
+
+    public rendered: any[];
+
+    constructor() {
+        this.matrix     = new TransformMatrix()
+        this.stateStack = [];
+        this.rendered   = [];
+    }
 
     // Drawing rectangles
 
@@ -64,7 +79,15 @@ class Context2DMock implements CanvasRenderingContext2D {
     public arc() {} //
     public arcTo() {} //
     public ellipse() {} //
-    public rect() {} //
+    public rect( x, y, width, height ) {
+        var iRect = new Rect( x, y, width, height );
+        var iTransformedRect = this.matrix.transformRect( iRect );
+
+        this.rendered.push({
+            type: 'rect',
+            bounds: iTransformedRect
+        })
+    } //
 
     // Drawing paths
 
@@ -81,7 +104,9 @@ class Context2DMock implements CanvasRenderingContext2D {
     public currentTransform; //
     public rotate( angle: number ): void {}
     public scale( x: number, y: number ): void {}
-    public translate( x: number, y: number ): void {}
+    public translate( x: number, y: number ): void {
+        this.matrix.translate( new Point( x, y ) );
+    }
     public transform( m11: number, m12: number, m21: number, m22: number, dx: number, dy: number ): void {}
     public setTransform( m11: number, m12: number, m21: number, m22: number, dx: number, dy: number ): void {}
     public resetTransform() {} //
@@ -107,8 +132,16 @@ class Context2DMock implements CanvasRenderingContext2D {
 
     // The canvas state
 
-    public save(): void {}
-    public restore(): void {}
+    public save(): void {
+        var iState = {
+            matrix: this.matrix.clone()
+        };
+        this.stateStack.push( iState );
+    }
+    public restore(): void {
+        var iState = this.stateStack.pop();
+        this.matrix = iState.matrix;
+    }
     public canvas: HTMLCanvasElement;
 
     // Hit regions
