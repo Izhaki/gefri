@@ -3,6 +3,7 @@ import { Point } from './Point';
 
 describe( 'Rect', function() {
 
+
     describe( 'constructor()', function() {
 
         it( 'Should keep the given coordinates and dimensions', function() {
@@ -15,6 +16,7 @@ describe( 'Rect', function() {
 
     });
 
+
     describe( 'clone()', function() {
 
         it( 'Should return a new rect with the same geometry', function() {
@@ -25,6 +27,7 @@ describe( 'Rect', function() {
         });
 
     });
+
 
     describe( 'getLeft()', function() {
 
@@ -41,6 +44,7 @@ describe( 'Rect', function() {
 
     });
 
+
     describe( 'getRight()', function() {
 
         it( 'should return x + w if the width is positive', function() {
@@ -54,6 +58,7 @@ describe( 'Rect', function() {
             expect( iRect.getRight() ).toEqual( 20 );
         });
     });
+
 
     describe( 'getTop()', function() {
 
@@ -70,6 +75,7 @@ describe( 'Rect', function() {
 
     });
 
+
     describe( 'getBottom()', function() {
 
         it( 'should return y + h if the height is positive', function() {
@@ -85,6 +91,7 @@ describe( 'Rect', function() {
 
     });
 
+
     describe( 'getLeftTop()', function() {
 
         it( 'should return the correct point for positive dimensions', function() {
@@ -96,6 +103,221 @@ describe( 'Rect', function() {
         it( 'should return the correct point for negative dimensions', function() {
             var iRect = new Rect( 20, 30, -10, -20 );
             expect( iRect.getLeftTop() ).toEqual( new Point( 10, 10 ) );
+        });
+
+    });
+
+
+    describe( 'intersect()', function() {
+
+        describe( 'should properly intersect two rects ', function() {
+
+            it( 'when the corner of one is contained within the other', function() {
+                var iRect1 = new Rect( 100, 100, 100, 100 );
+                var iRect2 = new Rect( 50,  50,  100, 100 );
+
+                iRect1.intersect( iRect2 );
+
+                expect( iRect1 ).toEqual( jasmine.objectContaining( { x: 100, y: 100, w: 50, h: 50 } ) );
+            });
+
+
+            it( 'when the side of one is contained within the other', function() {
+                var iRect1 = new Rect( 100, 100, 100, 100 );
+                var iRect2 = new Rect( 150, 120, 100, 60  );
+
+                iRect1.intersect( iRect2 );
+
+                expect( iRect1 ).toEqual( jasmine.objectContaining( { x: 150, y: 120, w: 50, h: 60 } ) );
+            });
+
+
+            it( 'when one contains the other', function() {
+                var iRect1 = new Rect( 100, 100, 100, 100 );
+                var iRect2 = new Rect( 120, 120, 60,  60  );
+
+                iRect1.intersect( iRect2 );
+
+                expect( iRect1 ).toEqual( jasmine.objectContaining( { x: 120, y: 120, w: 60, h: 60 } ) );
+            });
+        });
+
+    });
+
+
+    describe( 'isOverlappingWith()', function() {
+
+        describe( 'should return true', function() {
+
+            it( 'when the top-left corner of one rect is containted within the other', function() {
+                var iRect1 = new Rect( 100, 100, 100, 100 );
+                var iRect2 = new Rect( 150, 150, 100, 100 );
+
+                expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
+            });
+
+            it( 'when the top-right corner of one rect is containted within the other', function() {
+                var iRect1 = new Rect( 100, 100, 100, 100 );
+                var iRect2 = new Rect( 50,  150, 100, 100 );
+
+                expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
+            });
+
+            it( 'when the right side of one rect is containted within the other', function() {
+                var iRect1 = new Rect( 100, 100, 100, 100 );
+                var iRect2 = new Rect( 50,  120, 100, 20  );
+
+                expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
+            });
+
+            it( 'when the left side of one rect is containted within the other', function() {
+                var iRect1 = new Rect( 100, 100, 100, 100 );
+                var iRect2 = new Rect( 150,  120, 100, 20  );
+
+                expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
+            });
+
+            it( 'when the bottom side of one rect is containted within the other', function() {
+                var iRect1 = new Rect( 100, 100, 100, 100 );
+                var iRect2 = new Rect( 120, 50,  20,  100 );
+
+                expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
+            });
+
+            it( 'when the top side of one rect is containted within the other', function() {
+                var iRect1 = new Rect( 100, 100, 100, 100 );
+                var iRect2 = new Rect( 120, 150, 20,  100 );
+
+                expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
+            });
+
+
+            it( 'when one rect contains the other', function() {
+                var iRect1 = new Rect( 100, 100, 100, 100 );
+                var iRect2 = new Rect( 120, 120, 60,  60  );
+
+                expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
+            });
+
+            it( 'when two rects are the same', function() {
+                var iRect1 = new Rect( 100, 100, 100, 100 );
+                var iRect2 = new Rect( 100, 100, 100, 100 );
+
+                expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
+            });
+
+            it( 'when one rect contains the other and their left sides are touching', function() {
+                var iRect1 = new Rect( 100, 100, 100, 100 );
+                var iRect2 = new Rect( 100, 120, 60,  60  );
+
+                expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
+            });
+
+            it( 'when one rect contains the other and their right sides are touching', function() {
+                var iRect1 = new Rect( 100, 100, 100, 100 );
+                var iRect2 = new Rect( 140, 120, 60,  60  );
+
+                expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
+            });
+
+            it( 'when one rect contains the other and their top sides are touching', function() {
+                var iRect1 = new Rect( 100, 100, 100, 100 );
+                var iRect2 = new Rect( 120, 100, 60,  60  );
+
+                expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
+            });
+
+            it( 'when one rect contains the other and their bottom sides are touching', function() {
+                var iRect1 = new Rect( 100, 100, 100, 100 );
+                var iRect2 = new Rect( 140, 100, 60,  60  );
+
+                expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
+            });
+
+            it( 'when two rects left sides are touching', function() {
+                var iRect1 = new Rect( 100, 100, 100, 100 );
+                var iRect2 = new Rect( 0,   100, 100, 100  );
+
+                expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
+            });
+
+            it( 'when two rects top sides are touching', function() {
+                var iRect1 = new Rect( 100, 100, 100, 100 );
+                var iRect2 = new Rect( 100, 0,   100, 100 );
+
+                expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
+            });
+
+            it( 'when two rects top-left and bottom-right corners are touching', function() {
+                var iRect1 = new Rect( 100, 100, 100, 100 );
+                var iRect2 = new Rect( 0  , 0,   100, 100 );
+
+                expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
+            });
+
+            it( 'when two rects top-right and bottom-left corners are touching', function() {
+                var iRect1 = new Rect( 100, 100, 100, 100 );
+                var iRect2 = new Rect( 0  , 200,   100, 100 );
+
+                expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
+            });
+        });
+
+        describe( 'should return false', function() {
+
+            it( 'when two rects corners are not touching', function() {
+                var iRect1 = new Rect( 101, 101, 100, 100 );
+                var iRect2 = new Rect( 0  , 0,   100, 100 );
+
+                expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( false );
+            });
+
+            it( 'false when two rects x range overlaps but not the y', function() {
+                var iRect1 = new Rect( 100, 100, 100, 100 );
+                var iRect2 = new Rect( 100, 201, 100, 100 );
+
+                expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( false );
+            });
+
+            it( 'false when two rects y range overlaps but not the x', function() {
+                var iRect1 = new Rect( 100, 100, 100, 100 );
+                var iRect2 = new Rect( 201, 100, 100, 100 );
+
+                expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( false );
+            });
+
+        });
+
+    });
+
+    describe( 'expand()', function() {
+
+        it( 'should expand the rect by the given point when width and height are positive', function() {
+            var iRect = new Rect( 10, 10, 20, 20 );
+            iRect.expand( 5 );
+            expect( iRect ).toEqual( jasmine.objectContaining( { x: 5, y: 5, w: 30, h: 30 } ) );
+        });
+
+        it( 'should expand the rect by the given point when width and height are negative', function() {
+            var iRect = new Rect( 20, 20, -10, -10 );
+            iRect.expand( 5 );
+            expect( iRect ).toEqual( jasmine.objectContaining( { x: 25, y: 25, w: -20, h: -20 } ) );
+        });
+
+    });
+
+    describe( 'contract()', function() {
+
+        it( 'should contract the rect by the given point when width and height are positive', function() {
+            var iRect = new Rect( 10, 10, 20, 20 );
+            iRect.contract( 1 );
+            expect( iRect ).toEqual( jasmine.objectContaining( { x: 11, y: 11, w: 18, h: 18 } ) );
+        });
+
+        it( 'should contract the rect by the given point when width and height are negative', function() {
+            var iRect = new Rect( 20, 20, -10, -10 );
+            iRect.contract( 1 );
+            expect( iRect ).toEqual( jasmine.objectContaining( { x: 19, y: 19, w: -8, h: -8 } ) );
         });
 
     });

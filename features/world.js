@@ -2,7 +2,8 @@ function World() {
 
     // Takes a cucumber viewee table and returns the root of the viewee composition
     this.getCompositionFromTable = function ( aTable ) {
-    	var iVieweesHashes = aTable.hashes(),
+    	var self           = this,
+    	    iVieweesHashes = aTable.hashes(),
     	    iRootViewee    = undefined,
     	    iViewees       = {};
 
@@ -10,7 +11,7 @@ function World() {
         	var iVieweeID       = aVieweeHash.ID,
         	    iVieweeParentID = aVieweeHash.Parent,
         	    isRootViewee    = iVieweeParentID === '',
-        	    iViewee         = createViewee.call( this, aVieweeHash );
+        	    iViewee         = createViewee( aVieweeHash );
 
         	iViewees[ iVieweeID ] = iViewee;
 
@@ -20,13 +21,13 @@ function World() {
                 var iParent = iViewees[ iVieweeParentID ];
                 iParent.addChildren( iViewee );
         	}
-    	}, this );
+    	});
 
     	return iRootViewee
 
         function createViewee( aVieweeHash ) {
             var iVieweeType = aVieweeHash.Type,
-                iBounds     = this.getRectFromString( aVieweeHash.Bounds );
+                iBounds     = self.getRectFromString( aVieweeHash.Bounds );
 
             switch ( iVieweeType ) {
 

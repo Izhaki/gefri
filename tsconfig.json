@@ -4,6 +4,7 @@
     "preserveConstEnums": true
   },
   "files": [
+    "jasmineCustomMatchers.d.ts",
     "typings/index.d.ts"
   ],
   "exclude": [

@@ -10,15 +10,31 @@ import { Point }           from '../src/view/geometry/Point';
 export
 class Context2DMock implements CanvasRenderingContext2D {
 
+    // Mock helpers
+
     matrix:     TransformMatrix;
     stateStack: any[];
-
-    public rendered: any[];
+    rendered:   any[];
+    clipArea:   Rect;
+    
+    public showLog: boolean = false;
 
     constructor() {
         this.matrix     = new TransformMatrix()
         this.stateStack = [];
         this.rendered   = [];
+    }
+
+    public clearRendered(): void {
+        this.rendered   = [];
+    }
+    
+    private log( ...args: any[] ) {
+        if ( this.showLog ) {
+            args[0] = 'mockContext.' + args[0] + ':';
+            args[0] = String( args[0] + '                       ' ).slice( 0, 24 );
+            console.log.apply( console, args );
+        }
     }
 
     // Drawing rectangles
@@ -71,7 +87,21 @@ class Context2DMock implements CanvasRenderingContext2D {
     // Paths
 
     public beginPath(): void {}
-    public closePath() {} //
+    public closePath() {
+        
+        // closePath() means we have drawn the rect (rather than use it for clipping), 
+        // so intersect it with the clip area if exists
+        if ( this.clipArea ) {
+            var lastRender = this.rendered[ this.rendered.length - 1 ];
+            
+            if ( lastRender.type !== 'rect' ) {
+                throw new Error( 'closePath() was called but not with rect' )
+            }   
+            
+            lastRender.bounds.intersect( this.clipArea );
+            this.log( 'closePath()', 'intersected last rect with clip area', lastRender.bounds )        
+        }        
+    } //
     public moveTo() {} //
     public lineTo() {} //
     public bezierCurveTo() {} //
@@ -80,9 +110,13 @@ class Context2DMock implements CanvasRenderingContext2D {
     public arcTo() {} //
     public ellipse() {} //
     public rect( x, y, width, height ) {
-        var iRect = new Rect( x, y, width, height );
-        var iTransformedRect = this.matrix.transformRect( iRect );
 
+        var iRect = new Rect( x, y, width, height );
+        this.log( 'rect()', 'was given', iRect )       
+        var iTransformedRect = this.matrix.transformRect( iRect );
+        this.log( 'rect()', 'transformed to', iTransformedRect )        
+        
+        this.log( 'rect()', 'pushed to rendered', iTransformedRect )        
         this.rendered.push({
             type: 'rect',
             bounds: iTransformedRect
@@ -95,7 +129,26 @@ class Context2DMock implements CanvasRenderingContext2D {
     public stroke(): void {}
     public drawFocusIfNeeded() {} //
     public scrollPathIntoView() {} //
-    public clip( fillRule?: string ): void {}
+    public clip( fillRule?: string ): void {
+        var lastRender = this.rendered.pop();
+
+        if ( lastRender.type !== 'rect' ) {
+            throw new Error( 'clip() was called but not with rect' )
+        }
+
+        var iRect = lastRender.bounds.clone();
+        iRect.contract( 1 );
+        this.log( 'clip()', 'before intersection:', this.clipArea, iRect );
+
+        if ( this.clipArea ) {
+            this.clipArea.intersect( iRect );
+        } else {
+            this.clipArea = iRect;
+        }
+
+        this.log( 'clip()', 'after intersection:', this.clipArea );
+
+    }
     public isPointInPath( x: number, y: number, fillRule?: string ): boolean { return true }
     public isPointInStroke() {} //
 
@@ -133,12 +186,14 @@ class Context2DMock implements CanvasRenderingContext2D {
     // The canvas state
 
     public save(): void {
+        this.log( 'save()', '-------------------' )
         var iState = {
             matrix: this.matrix.clone()
         };
         this.stateStack.push( iState );
     }
     public restore(): void {
+        this.log( 'restore()', '-------------------' )
         var iState = this.stateStack.pop();
         this.matrix = iState.matrix;
     }

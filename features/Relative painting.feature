@@ -1,9 +1,9 @@
-Feature: Painting
+Feature: Relative painting
 
-    Scenario: Relative painting
+    Children viewees should be rendered in coordinates relative to their
+    parent top-left position.
 
-        Children viewees should be rendered in coordinates relative to their
-        parent top-left position.
+    Scenario: A viewee with two children
 
         Given the following viewee composition:
             | ID     | Parent | Type      | Bounds         |

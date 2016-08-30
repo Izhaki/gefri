@@ -11,13 +11,17 @@ abstract class Viewee extends Composite< Viewee > {
 
         aPainter.pushState();
 
-        this.applyTransformations( aPainter );
+        this.beforeChildrenPainting( aPainter );
 
         this.forEachChild( function( aChild ) {
             aChild.paint( aPainter );
         });
 
         aPainter.popState();
+    }
+
+    beforeChildrenPainting( aPainter: Painter ): void {
+        this.applyTransformations( aPainter );
     }
 
     applyTransformations( aPainter: Painter ): void {

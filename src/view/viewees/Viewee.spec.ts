@@ -1,59 +1,82 @@
-import { Viewee } from './Viewee';
-import { Context2DMock } from '../../../mocks/Context2D';
-import { Painter } from './../painters/Painter';
+import { Viewee }         from './Viewee';
+import { Context2DMock }  from '../../../mocks/Context2D';
+import { ContextPainter } from './../painters/ContextPainter';
+import { Painter }        from './../painters/Painter';
 
-class MockViewee extends Viewee {
+class TestViewee extends Viewee {
     paint( aPainter: Painter ) {}
 }
 
-describe( 'Viewee', function() {
+describe( "Viewee", function() {
+    var iTestViewee:  TestViewee,
+        iMockContext: Context2DMock,
+        iPainter:     ContextPainter;
 
-    describe( 'paintChildren()', function() {
-        var iMockViewee  = new MockViewee(),
-            iChild1      = new MockViewee(),
-            iChild2      = new MockViewee(),
+    beforeEach( function() {
+        iTestViewee  = new TestViewee();
+        iMockContext = new Context2DMock();
+        iPainter     = new ContextPainter( iMockContext );
+    });
 
-            iMockContext = new Context2DMock(),
-            iPainter     = new Painter( iMockContext );
+    describe( "paintChildren()", function() {
+        var iChild1: TestViewee,
+            iChild2: TestViewee;
 
-        iMockViewee.addChildren( iChild1, iChild2 );
+        beforeEach( function() {
+            iChild1 = new TestViewee();
+            iChild2 = new TestViewee();
 
-        it( 'should push the painter state', function() {
+            iTestViewee.addChildren( iChild1, iChild2 );
+        });
+
+        it( "should push the painter state", function() {
             spyOn( iPainter, 'pushState' ).and.callThrough();
 
-            iMockViewee.paintChildren( iPainter );
+            iTestViewee.paintChildren( iPainter );
 
             expect( iPainter.pushState ).toHaveBeenCalled();
         });
 
 
-        it( 'should apply any transformations to the painter', function() {
-            spyOn( iMockViewee, 'applyTransformations' );
+        it( "should call the beforeChildrenPainting method", function() {
+            spyOn( iTestViewee, 'beforeChildrenPainting' );
 
-            iMockViewee.paintChildren( iPainter );
+            iTestViewee.paintChildren( iPainter );
 
-            expect( iMockViewee.applyTransformations ).toHaveBeenCalledWith( iPainter );
+            expect( iTestViewee.beforeChildrenPainting ).toHaveBeenCalledWith( iPainter );
         });
 
 
-        it( 'should paint each of its children', function() {
+        it( "should paint each of its children", function() {
             spyOn( iChild1, 'paint' );
             spyOn( iChild2, 'paint' );
 
-            iMockViewee.paintChildren( iPainter );
+            iTestViewee.paintChildren( iPainter );
 
             expect( iChild1.paint ).toHaveBeenCalledWith( iPainter );
             expect( iChild2.paint ).toHaveBeenCalledWith( iPainter );
         });
 
-        it( 'should pop the painter state', function() {
+        it( "should pop the painter state", function() {
             spyOn( iPainter, 'popState' );
 
-            iMockViewee.paintChildren( iPainter );
+            iTestViewee.paintChildren( iPainter );
 
             expect( iPainter.popState ).toHaveBeenCalled();
         });
 
+
+    });
+
+    describe( "beforeChildrenPainting()", function() {
+
+        it( "should apply transformations", function() {
+            spyOn( iTestViewee, 'applyTransformations' );
+
+            iTestViewee.beforeChildrenPainting( iPainter );
+
+            expect( iTestViewee.applyTransformations ).toHaveBeenCalledWith( iPainter );
+        });
 
     });
 

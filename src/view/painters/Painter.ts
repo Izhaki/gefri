@@ -1,32 +1,52 @@
-import { Rect } from './../geometry/Rect';
+import { TransformMatrix } from '../geometry/TransformMatrix';
+import { Rect }            from '../geometry/Rect';
+import { Point }           from '../geometry/Point';
 
 export
-class Painter {
-    private context: CanvasRenderingContext2D;
+abstract class Painter {
+    protected clipArea: Rect;
+    protected matrix:   TransformMatrix;
 
-    constructor( aContext: CanvasRenderingContext2D ) {
-        this.context = aContext;
+    constructor() {
+        this.matrix = new TransformMatrix();
     }
 
-    drawRectangle( aRect: Rect ) {
-        var context = this.context;
-        context.beginPath();
-        context.rect( aRect.x, aRect.y, aRect.w, aRect.h );
-        context.fill();
-        context.stroke();
+    abstract drawRectangle( aRect: Rect ): void;
+
+    translate( x, y ): void {
+        this.matrix.translate( new Point( x, y ) )
     }
 
-    translate( x, y ) {
-        this.context.translate( x, y );
+    intersectClipAreaWith( aRect: Rect ): void {
+        // Our clipArea is in absolute coordinates, so we convert the rect
+        // to absolute ones.
+        var iAbsoluteRect = this.toAbsoluteRect( aRect );
+        if ( this.clipArea ) {
+            this.clipArea.intersect( iAbsoluteRect );
+        } else {
+            this.clipArea = iAbsoluteRect;
+        }
     }
 
-    pushState() {
-        this.context.save()
+    isRectWithinClipArea( aRect: Rect ): boolean {
+        // Clip area is in absolute coordinates
+        // So we convert the rect to absolute ones.
+        var iAbsoluteRect = this.toAbsoluteRect( aRect );
+        if ( this.clipArea ) {
+            return this.clipArea.isOverlappingWith( iAbsoluteRect );
+        } else {
+            return true;
+        }
     }
 
-    popState() {
-        this.context.restore()
+    toAbsoluteRect( aRect: Rect ): Rect {
+        return this.matrix.transformRect( aRect );
     }
 
+    pushState(): void {
+    }
+
+    popState(): void {
+    }
 
 }

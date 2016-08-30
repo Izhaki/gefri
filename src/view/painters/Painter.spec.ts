@@ -1,69 +1,94 @@
-import { Context2DMock } from '../../../mocks/Context2D';
-import { Rect } from './../geometry/Rect';
-import { Painter } from './../painters/Painter';
+import { Rect }    from '../geometry/Rect';
+import { Painter } from './Painter';
 
-describe( 'Painter', function() {
+class TestPainter extends Painter {
+    public matrix;
+    public clipArea;
 
-    var iMockContext,
-        iPainter;
+    drawRectangle( aRect: Rect ): void {}
+}
 
+describe( "Painter", function() {
+
+    var iPainter: TestPainter;
 
     beforeEach( function () {
-        iMockContext = new Context2DMock();
-        iPainter     = new Painter( iMockContext )
+        iPainter = new TestPainter()
     });
 
 
-    describe( 'drawRectangle()', function() {
+    describe( "translate()", function() {
 
-        it( 'should call rect on the context provided', function() {
-            spyOn( iMockContext, 'rect' );
-
-            var iRect = new Rect( 10, 10, 20, 20);
-            iPainter.drawRectangle( iRect );
-
-            expect( iMockContext.rect ).toHaveBeenCalledWith( 10, 10, 20, 20 );
-        });
-
-    });
-
-
-    describe( 'translate()', function() {
-
-        it( 'should call translate on the context provided', function() {
-            spyOn( iMockContext, 'translate' );
-
+        it( "should update the painter's transform matrix", function() {
+            iPainter.translate( 10, 20 );
             iPainter.translate( 10, 20 );
 
-            expect( iMockContext.translate ).toHaveBeenCalledWith( 10, 20 );
+            expect( iPainter.matrix.translateX ).toBe( 20 );
+            expect( iPainter.matrix.translateY ).toBe( 40 );
+        });
+
+
+    });
+
+
+    describe( "intersectClipAreaWith()", function() {
+
+        it( "should set the clip area to the given rect if the clip area was not intersected before", function() {
+            iPainter.intersectClipAreaWith( new Rect( 10, 10, 20, 20) );
+            expect( iPainter.clipArea ).toEqualRect( 10, 10, 20, 20 );
+        });
+
+        it( "should intersect an existing clip area with the given rect", function() {
+            iPainter.intersectClipAreaWith( new Rect( 10, 10, 20, 20) );
+            iPainter.intersectClipAreaWith( new Rect( 15, 15, 20, 20) );
+            expect( iPainter.clipArea ).toEqualRect( 15, 15, 15, 15 );
         });
 
     });
 
 
-    describe( 'pushState()', function() {
+    describe( "isRectWithinClipArea()", function() {
+        var iClipArea = new Rect( 10, 10, 20, 20);
 
-        it( 'should store the canvas state', function() {
-            spyOn( iMockContext, 'save' );
+        it( "should return true if there is not clip area", function() {
+            var iRect = new Rect( 15, 15, 20, 20);
 
-            iPainter.pushState();
+            var isWithin = iPainter.isRectWithinClipArea( iRect );
+            expect( isWithin ).toBe( true );
+        });
 
-            expect( iMockContext.save ).toHaveBeenCalled();
+        it( "should return true if the provided rect and the clip area are overlapping", function() {
+            var iRect = new Rect( 15, 15, 20, 20);
+
+            iPainter.intersectClipAreaWith( iClipArea );
+            var isWithin = iPainter.isRectWithinClipArea( iRect );
+            expect( isWithin ).toBe( true );
+        });
+
+        it( "should return false if the provided rect and the clip area do not overlap", function() {
+            var iRect = new Rect( 40, 40, 20, 20);
+
+            iPainter.intersectClipAreaWith( iClipArea );
+            var isWithin = iPainter.isRectWithinClipArea( iRect );
+            expect( isWithin ).toBe( false );
         });
 
     });
 
-    describe( 'popState()', function() {
 
-        it( 'should restore the canvas state', function() {
-            spyOn( iMockContext, 'restore' );
+    describe( "toAbsoluteRect()", function() {
 
-            iPainter.popState();
+        it( "should return the rect transformed to absolute coordinates", function() {
+            var iRect = new Rect( 100, 100, 100, 100);
 
-            expect( iMockContext.restore ).toHaveBeenCalled();
+            iPainter.translate( 10, 20 );
+            iPainter.translate( 10, 20 );
+
+            var iAbsoluteRect = iPainter.toAbsoluteRect( iRect );
+
+            expect( iAbsoluteRect ).toEqualRect( 120, 140, 100, 100 );
         });
 
     });
-
 
 });

@@ -3,10 +3,13 @@ var Jasmine = require('jasmine');
 var jasmine = new Jasmine();
 
 jasmine.loadConfig({
-  "spec_dir": "./src",
-  "spec_files": [ "**/*.spec.ts" ],
-  "stopSpecOnExpectationFailure": true,
-  "random": false
+    "spec_dir": "./src",
+    "spec_files": [ "**/*.spec.ts" ],
+    "stopSpecOnExpectationFailure": true,
+    "random": false,
+    "helpers": [
+        "../jasmineCustomMatchers.js"
+    ]
 });
 
 jasmine.configureDefaultReporter({});

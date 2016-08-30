@@ -1,6 +1,7 @@
 var chai       = require( 'chai' );
 var chaiSubset = require( 'chai-subset' );
 
+chai.config.truncateThreshold = 0; // To get some more details when expect fails
 chai.use( chaiSubset );
 expect = chai.expect
 
@@ -30,5 +31,11 @@ module.exports = function () {
 
 		aNext();
     });
+
+    this.Then( 'it should not render anything', function( aNext ){
+        var iRendered = this.control.context.rendered;
+        expect( iRendered ).to.be.empty;
+		aNext();
+    })
 
 };
