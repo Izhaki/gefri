@@ -2,101 +2,105 @@ import { TransformMatrix } from './TransformMatrix';
 import { Rect }            from './Rect';
 import { Point }           from './Point';
 
-describe( 'TransformMatrix', function() {
-    var iTransformMatrix: TransformMatrix;
+describe( 'TransformMatrix', () => {
 
-    beforeEach( function () {
-        iTransformMatrix = new TransformMatrix();
+    beforeEach( () => {
+        this.transformMatrix = new TransformMatrix();
     });
 
-    describe( 'constructor()', function() {
 
-        it( 'should initiate the translation', function() {
-            expect( iTransformMatrix.translateX ).toBe( 0 );
-            expect( iTransformMatrix.translateY ).toBe( 0 );
+    describe( 'constructor()', () => {
+
+        it( 'should initiate the translation', () => {
+            expect( this.transformMatrix.translateX ).toBe( 0 );
+            expect( this.transformMatrix.translateY ).toBe( 0 );
         });
 
-        it( 'should initiate the scale', function() {
-            expect( iTransformMatrix.scaleX ).toBe( 1 );
-            expect( iTransformMatrix.scaleY ).toBe( 1 );
-        });
-
-    });
-
-    describe( 'clone()', function() {
-
-        it( 'should return an indentical state', function() {
-            var iClone = iTransformMatrix.clone();
-            expect( iClone ).toEqual( iTransformMatrix );
+        it( 'should initiate the scale', () => {
+            expect( this.transformMatrix.scaleX ).toBe( 1 );
+            expect( this.transformMatrix.scaleY ).toBe( 1 );
         });
 
     });
 
-    describe( 'translate()', function() {
 
-        it( 'should apply the translation in a cumulative fashion', function() {
-            iTransformMatrix.translate( new Point( -10, 20 ) );
-            iTransformMatrix.translate( new Point( -30, 5 ) );
+    describe( 'clone()', () => {
 
-            expect( iTransformMatrix.translateX ).toBe( -40 );
-            expect( iTransformMatrix.translateY ).toBe( 25 );
+        it( 'should return an indentical state', () => {
+            var iClone = this.transformMatrix.clone();
+            expect( iClone ).toEqual( this.transformMatrix );
         });
 
     });
 
-    describe( 'scale()', function() {
 
-        it( 'should apply the scale in a cumulative fashion', function() {
-            iTransformMatrix.scale( new Point( 2, 0.5 ) );
-            iTransformMatrix.scale( new Point( 2, 0.5 ) );
+    describe( 'translate()', () => {
 
-            expect( iTransformMatrix.scaleX ).toBe( 4 );
-            expect( iTransformMatrix.scaleY ).toBe( 0.25 );
-        });
+        it( 'should apply the translation in a cumulative fashion', () => {
+            this.transformMatrix.translate( new Point( -10, 20 ) );
+            this.transformMatrix.translate( new Point( -30, 5 ) );
 
-        it( 'should apply the scale to existing translation', function() {
-            iTransformMatrix.translate( new Point( 10, 10 ) );
-            iTransformMatrix.scale( new Point( 2, 0.5 ) );
-
-            expect( iTransformMatrix.translateX ).toBe( 20 );
-            expect( iTransformMatrix.translateY ).toBe( 5 );
+            expect( this.transformMatrix.translateX ).toBe( -40 );
+            expect( this.transformMatrix.translateY ).toBe( 25 );
         });
 
     });
 
-    describe( 'transformPoint()', function() {
+
+    describe( 'scale()', () => {
+
+        it( 'should apply the scale in a cumulative fashion', () => {
+            this.transformMatrix.scale( new Point( 2, 0.5 ) );
+            this.transformMatrix.scale( new Point( 2, 0.5 ) );
+
+            expect( this.transformMatrix.scaleX ).toBe( 4 );
+            expect( this.transformMatrix.scaleY ).toBe( 0.25 );
+        });
+
+        it( 'should apply the scale to existing translation', () => {
+            this.transformMatrix.translate( new Point( 10, 10 ) );
+            this.transformMatrix.scale( new Point( 2, 0.5 ) );
+
+            expect( this.transformMatrix.translateX ).toBe( 20 );
+            expect( this.transformMatrix.translateY ).toBe( 5 );
+        });
+
+    });
+
+
+    describe( 'transformPoint()', () => {
         var iPoint: Point;
 
-        beforeEach( function () {
+        beforeEach( () => {
             iPoint = new Point ( 10, 20 );
         });
 
-        it( 'should apply the translation to the given point', function() {
-            iTransformMatrix.translate( new Point( -10, 20 ) );
-            var iTransformedPoint = iTransformMatrix.transformPoint( iPoint );
+        it( 'should apply the translation to the given point', () => {
+            this.transformMatrix.translate( new Point( -10, 20 ) );
+            var iTransformedPoint = this.transformMatrix.transformPoint( iPoint );
 
             expect( iTransformedPoint.x ).toBe( 0 );
             expect( iTransformedPoint.y ).toBe( 40 );
         });
 
-        it( 'should apply the scale to the given point', function() {
-            iTransformMatrix.scale( new Point( 2, 0.5 ) );
-            var iTransformedPoint = iTransformMatrix.transformPoint( iPoint );
+        it( 'should apply the scale to the given point', () => {
+            this.transformMatrix.scale( new Point( 2, 0.5 ) );
+            var iTransformedPoint = this.transformMatrix.transformPoint( iPoint );
 
             expect( iTransformedPoint.x ).toBe( 20 );
             expect( iTransformedPoint.y ).toBe( 10 );
         });
 
-        it( 'should apply both the scale and the translation to the given point', function() {
-            iTransformMatrix.translate( new Point( 10, 20 ) );
-            iTransformMatrix.scale( new Point( 2, 0.5 ) );
-            var iTransformedPoint = iTransformMatrix.transformPoint( iPoint );
+        it( 'should apply both the scale and the translation to the given point', () => {
+            this.transformMatrix.translate( new Point( 10, 20 ) );
+            this.transformMatrix.scale( new Point( 2, 0.5 ) );
+            var iTransformedPoint = this.transformMatrix.transformPoint( iPoint );
 
             expect( iTransformedPoint.x ).toBe( 40 );
             expect( iTransformedPoint.y ).toBe( 20 );
         });
 
-        it( 'should matter not at which order there scale and translation where applied', function() {
+        it( 'should matter not at which order there scale and translation where applied', () => {
             var iTransformMatrix1 = new TransformMatrix();
             iTransformMatrix1.translate( new Point( 10, 20 ) );
             iTransformMatrix1.scale( new Point( 2, 0.5 ) );
@@ -112,36 +116,37 @@ describe( 'TransformMatrix', function() {
 
     });
 
-    describe( 'transformRect()', function() {
+
+    describe( 'transformRect()', () => {
         var iRect: Rect;
 
-        beforeEach( function () {
+        beforeEach( () => {
             iRect = new Rect( 100, 100, 100, 100 );
         });
 
-        it( 'should transform the rect when only translation apply', function() {
-            iTransformMatrix.translate( new Point( 10, 20 ) );
-            var iTransformedRect = iTransformMatrix.transformRect( iRect );
+        it( 'should transform the rect when only translation apply', () => {
+            this.transformMatrix.translate( new Point( 10, 20 ) );
+            var iTransformedRect = this.transformMatrix.transformRect( iRect );
 
             expect( iTransformedRect ).toEqual( new Rect( 110, 120, 100, 100 ) );
         });
 
-        it( 'should transform the rect when only scale apply', function() {
-            iTransformMatrix.scale( new Point( 2, 0.5 ) );
-            var iTransformedRect = iTransformMatrix.transformRect( iRect );
+        it( 'should transform the rect when only scale apply', () => {
+            this.transformMatrix.scale( new Point( 2, 0.5 ) );
+            var iTransformedRect = this.transformMatrix.transformRect( iRect );
 
             expect( iTransformedRect ).toEqual( new Rect( 200, 50, 200, 50 ) );
         });
 
-        it( 'should transform the rect when both scale and translation apply', function() {
-            iTransformMatrix.scale( new Point( 2, 0.5 ) );
-            iTransformMatrix.translate( new Point( 10, 20 ) );
-            var iTransformedRect = iTransformMatrix.transformRect( iRect );
+        it( 'should transform the rect when both scale and translation apply', () => {
+            this.transformMatrix.scale( new Point( 2, 0.5 ) );
+            this.transformMatrix.translate( new Point( 10, 20 ) );
+            var iTransformedRect = this.transformMatrix.transformRect( iRect );
 
             expect( iTransformedRect ).toEqual( new Rect( 220, 60, 200, 50 ) );
         });
 
-        it( 'should matter not at which order there scale and translation where applied', function() {
+        it( 'should matter not at which order there scale and translation where applied', () => {
             var iTransformMatrix1 = new TransformMatrix();
             iTransformMatrix1.scale( new Point( 2, 0.5 ) );
             iTransformMatrix1.translate( new Point( 10, 20 ) );

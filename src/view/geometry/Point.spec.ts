@@ -1,10 +1,10 @@
 import { Point } from './Point';
 
-describe( 'Point', function() {
+describe( 'Point', () => {
 
-    describe( 'constructor()', function() {
+    describe( 'constructor()', () => {
 
-        it( 'Should keep the given coordinates', function() {
+        it( 'Should keep the given coordinates', () => {
             var iPoint = new Point( 15, 16 );
             expect( iPoint.x ).toBe( 15 );
             expect( iPoint.y ).toBe( 16 );
@@ -12,9 +12,10 @@ describe( 'Point', function() {
 
     });
 
-    describe( 'clone()', function() {
 
-        it( 'Should return a new point with the same coordinates', function() {
+    describe( 'clone()', () => {
+
+        it( 'Should return a new point with the same coordinates', () => {
             var iPoint = new Point( 10, 20 ),
                 iClone = iPoint.clone();
 

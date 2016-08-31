@@ -1,12 +1,12 @@
-import { Rect } from './Rect';
+import { Rect }  from './Rect';
 import { Point } from './Point';
 
-describe( 'Rect', function() {
+describe( 'Rect', () => {
 
 
-    describe( 'constructor()', function() {
+    describe( 'constructor()', () => {
 
-        it( 'Should keep the given coordinates and dimensions', function() {
+        it( 'Should keep the given coordinates and dimensions', () => {
             var iRect = new Rect( 10, 20, 30, 40 );
             expect( iRect.x ).toBe( 10 );
             expect( iRect.y ).toBe( 20 );
@@ -17,9 +17,9 @@ describe( 'Rect', function() {
     });
 
 
-    describe( 'clone()', function() {
+    describe( 'clone()', () => {
 
-        it( 'Should return a new rect with the same geometry', function() {
+        it( 'Should return a new rect with the same geometry', () => {
             var iRect  = new Rect( 10, 20, 30, 40 ),
                 iClone = iRect.clone();
 
@@ -29,15 +29,15 @@ describe( 'Rect', function() {
     });
 
 
-    describe( 'getLeft()', function() {
+    describe( 'getLeft()', () => {
 
-        it( 'should return x if the width is positive', function() {
+        it( 'should return x if the width is positive', () => {
             var iRect = new Rect( 20, 20, 100, 40 );
             expect( iRect.getLeft() ).toEqual( 20 );
         });
 
 
-        it( 'should return x + w if the width is negative', function() {
+        it( 'should return x + w if the width is negative', () => {
             var iRect = new Rect( 20, 20, -10, 40 );
             expect( iRect.getLeft() ).toEqual( 10 );
         });
@@ -45,30 +45,30 @@ describe( 'Rect', function() {
     });
 
 
-    describe( 'getRight()', function() {
+    describe( 'getRight()', () => {
 
-        it( 'should return x + w if the width is positive', function() {
+        it( 'should return x + w if the width is positive', () => {
             var iRect = new Rect( 20, 20, 100, 40 );
             expect( iRect.getRight() ).toEqual( 120 );
         });
 
 
-        it( 'should return x if the width is negative', function() {
+        it( 'should return x if the width is negative', () => {
             var iRect = new Rect( 20, 20, -10, 40 );
             expect( iRect.getRight() ).toEqual( 20 );
         });
     });
 
 
-    describe( 'getTop()', function() {
+    describe( 'getTop()', () => {
 
-        it( 'should return y if the height is positive', function() {
+        it( 'should return y if the height is positive', () => {
             var iRect = new Rect( 20, 20, 100, 40 );
             expect( iRect.getTop() ).toEqual( 20 );
         });
 
 
-        it( 'should return y + h if the height is negative', function() {
+        it( 'should return y + h if the height is negative', () => {
             var iRect = new Rect( 20, 20, 10, -10 );
             expect( iRect.getTop() ).toEqual( 10 );
         });
@@ -76,15 +76,15 @@ describe( 'Rect', function() {
     });
 
 
-    describe( 'getBottom()', function() {
+    describe( 'getBottom()', () => {
 
-        it( 'should return y + h if the height is positive', function() {
+        it( 'should return y + h if the height is positive', () => {
             var iRect = new Rect( 20, 20, 100, 40 );
             expect( iRect.getBottom() ).toEqual( 60 );
         });
 
 
-        it( 'should return y if the height is negative', function() {
+        it( 'should return y if the height is negative', () => {
             var iRect = new Rect( 20, 30, 10, -40 );
             expect( iRect.getBottom() ).toEqual( 30 );
         });
@@ -92,15 +92,15 @@ describe( 'Rect', function() {
     });
 
 
-    describe( 'getLeftTop()', function() {
+    describe( 'getLeftTop()', () => {
 
-        it( 'should return the correct point for positive dimensions', function() {
+        it( 'should return the correct point for positive dimensions', () => {
             var iRect = new Rect( 20, 30, 100, 100 );
             expect( iRect.getLeftTop() ).toEqual( new Point( 20, 30 ) );
         });
 
 
-        it( 'should return the correct point for negative dimensions', function() {
+        it( 'should return the correct point for negative dimensions', () => {
             var iRect = new Rect( 20, 30, -10, -20 );
             expect( iRect.getLeftTop() ).toEqual( new Point( 10, 10 ) );
         });
@@ -108,11 +108,11 @@ describe( 'Rect', function() {
     });
 
 
-    describe( 'intersect()', function() {
+    describe( 'intersect()', () => {
 
-        describe( 'should properly intersect two rects ', function() {
+        describe( 'should properly intersect two rects ', () => {
 
-            it( 'when the corner of one is contained within the other', function() {
+            it( 'when the corner of one is contained within the other', () => {
                 var iRect1 = new Rect( 100, 100, 100, 100 );
                 var iRect2 = new Rect( 50,  50,  100, 100 );
 
@@ -122,7 +122,7 @@ describe( 'Rect', function() {
             });
 
 
-            it( 'when the side of one is contained within the other', function() {
+            it( 'when the side of one is contained within the other', () => {
                 var iRect1 = new Rect( 100, 100, 100, 100 );
                 var iRect2 = new Rect( 150, 120, 100, 60  );
 
@@ -132,7 +132,7 @@ describe( 'Rect', function() {
             });
 
 
-            it( 'when one contains the other', function() {
+            it( 'when one contains the other', () => {
                 var iRect1 = new Rect( 100, 100, 100, 100 );
                 var iRect2 = new Rect( 120, 120, 60,  60  );
 
@@ -145,46 +145,46 @@ describe( 'Rect', function() {
     });
 
 
-    describe( 'isOverlappingWith()', function() {
+    describe( 'isOverlappingWith()', () => {
 
-        describe( 'should return true', function() {
+        describe( 'should return true', () => {
 
-            it( 'when the top-left corner of one rect is containted within the other', function() {
+            it( 'when the top-left corner of one rect is containted within the other', () => {
                 var iRect1 = new Rect( 100, 100, 100, 100 );
                 var iRect2 = new Rect( 150, 150, 100, 100 );
 
                 expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
             });
 
-            it( 'when the top-right corner of one rect is containted within the other', function() {
+            it( 'when the top-right corner of one rect is containted within the other', () => {
                 var iRect1 = new Rect( 100, 100, 100, 100 );
                 var iRect2 = new Rect( 50,  150, 100, 100 );
 
                 expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
             });
 
-            it( 'when the right side of one rect is containted within the other', function() {
+            it( 'when the right side of one rect is containted within the other', () => {
                 var iRect1 = new Rect( 100, 100, 100, 100 );
                 var iRect2 = new Rect( 50,  120, 100, 20  );
 
                 expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
             });
 
-            it( 'when the left side of one rect is containted within the other', function() {
+            it( 'when the left side of one rect is containted within the other', () => {
                 var iRect1 = new Rect( 100, 100, 100, 100 );
                 var iRect2 = new Rect( 150,  120, 100, 20  );
 
                 expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
             });
 
-            it( 'when the bottom side of one rect is containted within the other', function() {
+            it( 'when the bottom side of one rect is containted within the other', () => {
                 var iRect1 = new Rect( 100, 100, 100, 100 );
                 var iRect2 = new Rect( 120, 50,  20,  100 );
 
                 expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
             });
 
-            it( 'when the top side of one rect is containted within the other', function() {
+            it( 'when the top side of one rect is containted within the other', () => {
                 var iRect1 = new Rect( 100, 100, 100, 100 );
                 var iRect2 = new Rect( 120, 150, 20,  100 );
 
@@ -192,70 +192,70 @@ describe( 'Rect', function() {
             });
 
 
-            it( 'when one rect contains the other', function() {
+            it( 'when one rect contains the other', () => {
                 var iRect1 = new Rect( 100, 100, 100, 100 );
                 var iRect2 = new Rect( 120, 120, 60,  60  );
 
                 expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
             });
 
-            it( 'when two rects are the same', function() {
+            it( 'when two rects are the same', () => {
                 var iRect1 = new Rect( 100, 100, 100, 100 );
                 var iRect2 = new Rect( 100, 100, 100, 100 );
 
                 expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
             });
 
-            it( 'when one rect contains the other and their left sides are touching', function() {
+            it( 'when one rect contains the other and their left sides are touching', () => {
                 var iRect1 = new Rect( 100, 100, 100, 100 );
                 var iRect2 = new Rect( 100, 120, 60,  60  );
 
                 expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
             });
 
-            it( 'when one rect contains the other and their right sides are touching', function() {
+            it( 'when one rect contains the other and their right sides are touching', () => {
                 var iRect1 = new Rect( 100, 100, 100, 100 );
                 var iRect2 = new Rect( 140, 120, 60,  60  );
 
                 expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
             });
 
-            it( 'when one rect contains the other and their top sides are touching', function() {
+            it( 'when one rect contains the other and their top sides are touching', () => {
                 var iRect1 = new Rect( 100, 100, 100, 100 );
                 var iRect2 = new Rect( 120, 100, 60,  60  );
 
                 expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
             });
 
-            it( 'when one rect contains the other and their bottom sides are touching', function() {
+            it( 'when one rect contains the other and their bottom sides are touching', () => {
                 var iRect1 = new Rect( 100, 100, 100, 100 );
                 var iRect2 = new Rect( 140, 100, 60,  60  );
 
                 expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
             });
 
-            it( 'when two rects left sides are touching', function() {
+            it( 'when two rects left sides are touching', () => {
                 var iRect1 = new Rect( 100, 100, 100, 100 );
                 var iRect2 = new Rect( 0,   100, 100, 100  );
 
                 expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
             });
 
-            it( 'when two rects top sides are touching', function() {
+            it( 'when two rects top sides are touching', () => {
                 var iRect1 = new Rect( 100, 100, 100, 100 );
                 var iRect2 = new Rect( 100, 0,   100, 100 );
 
                 expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
             });
 
-            it( 'when two rects top-left and bottom-right corners are touching', function() {
+            it( 'when two rects top-left and bottom-right corners are touching', () => {
                 var iRect1 = new Rect( 100, 100, 100, 100 );
                 var iRect2 = new Rect( 0  , 0,   100, 100 );
 
                 expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( true );
             });
 
-            it( 'when two rects top-right and bottom-left corners are touching', function() {
+            it( 'when two rects top-right and bottom-left corners are touching', () => {
                 var iRect1 = new Rect( 100, 100, 100, 100 );
                 var iRect2 = new Rect( 0  , 200,   100, 100 );
 
@@ -263,23 +263,23 @@ describe( 'Rect', function() {
             });
         });
 
-        describe( 'should return false', function() {
+        describe( 'should return false', () => {
 
-            it( 'when two rects corners are not touching', function() {
+            it( 'when two rects corners are not touching', () => {
                 var iRect1 = new Rect( 101, 101, 100, 100 );
                 var iRect2 = new Rect( 0  , 0,   100, 100 );
 
                 expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( false );
             });
 
-            it( 'false when two rects x range overlaps but not the y', function() {
+            it( 'false when two rects x range overlaps but not the y', () => {
                 var iRect1 = new Rect( 100, 100, 100, 100 );
                 var iRect2 = new Rect( 100, 201, 100, 100 );
 
                 expect( iRect1.isOverlappingWith( iRect2 ) ).toBe( false );
             });
 
-            it( 'false when two rects y range overlaps but not the x', function() {
+            it( 'false when two rects y range overlaps but not the x', () => {
                 var iRect1 = new Rect( 100, 100, 100, 100 );
                 var iRect2 = new Rect( 201, 100, 100, 100 );
 
@@ -290,15 +290,15 @@ describe( 'Rect', function() {
 
     });
 
-    describe( 'expand()', function() {
+    describe( 'expand()', () => {
 
-        it( 'should expand the rect by the given point when width and height are positive', function() {
+        it( 'should expand the rect by the given point when width and height are positive', () => {
             var iRect = new Rect( 10, 10, 20, 20 );
             iRect.expand( 5 );
             expect( iRect ).toEqual( jasmine.objectContaining( { x: 5, y: 5, w: 30, h: 30 } ) );
         });
 
-        it( 'should expand the rect by the given point when width and height are negative', function() {
+        it( 'should expand the rect by the given point when width and height are negative', () => {
             var iRect = new Rect( 20, 20, -10, -10 );
             iRect.expand( 5 );
             expect( iRect ).toEqual( jasmine.objectContaining( { x: 25, y: 25, w: -20, h: -20 } ) );
@@ -306,15 +306,15 @@ describe( 'Rect', function() {
 
     });
 
-    describe( 'contract()', function() {
+    describe( 'contract()', () => {
 
-        it( 'should contract the rect by the given point when width and height are positive', function() {
+        it( 'should contract the rect by the given point when width and height are positive', () => {
             var iRect = new Rect( 10, 10, 20, 20 );
             iRect.contract( 1 );
             expect( iRect ).toEqual( jasmine.objectContaining( { x: 11, y: 11, w: 18, h: 18 } ) );
         });
 
-        it( 'should contract the rect by the given point when width and height are negative', function() {
+        it( 'should contract the rect by the given point when width and height are negative', () => {
             var iRect = new Rect( 20, 20, -10, -10 );
             iRect.contract( 1 );
             expect( iRect ).toEqual( jasmine.objectContaining( { x: 19, y: 19, w: -8, h: -8 } ) );

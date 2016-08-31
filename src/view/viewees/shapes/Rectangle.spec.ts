@@ -3,37 +3,33 @@ import { Rectangle }      from './Rectangle';
 import { Rect }           from './../../geometry/Rect';
 import { ContextPainter } from './../../painters/ContextPainter';
 
-describe( "Rectangle", function() {
+describe( 'Rectangle', () => {
 
-    var iMockContext: Context2DMock,
-        iPainter :    ContextPainter;
-
-
-    beforeEach( function () {
-        iMockContext = new Context2DMock();
-        iPainter     = new ContextPainter( iMockContext )
+    beforeEach( () => {
+        this.painter = new ContextPainter( new Context2DMock() );
     });
 
 
-    describe( "paintSelf()", function() {
+    describe( 'paintSelf()', () => {
 
-        var iRect        = new Rect( 10, 10, 20, 20),
-            iRectangle   = new Rectangle( iRect );
+        var iRect      = new Rect( 10, 10, 20, 20),
+            iRectangle = new Rectangle( iRect );
 
-        it( "should call drawRectangle on the painter provided", function() {
-            spyOn( iPainter, 'drawRectangle' );
+        it( 'should call drawRectangle on the painter provided', () => {
+            spyOn( this.painter, 'drawRectangle' );
 
-            iRectangle.paintSelf( iPainter );
-            expect( iPainter.drawRectangle ).toHaveBeenCalledWith( iRect );
+            iRectangle.paintSelf( this.painter );
+            expect( this.painter.drawRectangle ).toHaveBeenCalledWith( iRect );
         });
 
     });
 
-    describe( "getRectBounds()", function() {
+
+    describe( 'getRectBounds()', () => {
         var iRect        = new Rect( 10, 10, 20, 20),
             iRectangle   = new Rectangle( iRect );
 
-        it( "should return the bounds of the rectangle", function() {
+        it( 'should return the bounds of the rectangle', () => {
             expect( iRectangle.getRectBounds() ).toBe( iRect );
         });
 

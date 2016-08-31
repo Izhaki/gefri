@@ -1,65 +1,63 @@
-import { Control } from './Control';
+import { Control }   from './Control';
 import { Rectangle } from './viewees/shapes/Rectangle';
-import { Rect } from './geometry/Rect';
+import { Rect }      from './geometry/Rect';
 
-describe( 'Control', function() {
-    var iControl,
-        iCanvas
+describe( 'Control', () => {
 
-    beforeEach( function () {
+    beforeEach( () => {
         var iViewElement = document.getElementById( 'view' );
 
         iViewElement.offsetWidth  = 500;
         iViewElement.offsetHeight = 400;
         iViewElement.innerHTML = '';
 
-        iControl = new Control( iViewElement );
-        iCanvas = iViewElement.firstElementChild;
+        this.control = new Control( iViewElement );
+        this.canvas  = iViewElement.firstElementChild;
     });
 
 
-    describe( 'constructor()', function() {
+    describe( 'constructor()', () => {
 
-        it( 'should create a canvas and add it to the container', function() {
-            expect( iCanvas.tagName ).toBe( 'CANVAS' );
+        it( 'should create a canvas and add it to the container', () => {
+            expect( this.canvas.tagName ).toBe( 'CANVAS' );
         });
 
-        it( 'should size the canvas to the dimensions of its container', function() {
-            expect( iCanvas.width  ).toBe( 500 );
-            expect( iCanvas.height ).toBe( 400 );
+        it( 'should size the canvas to the dimensions of its container', () => {
+            expect( this.canvas.width  ).toBe( 500 );
+            expect( this.canvas.height ).toBe( 400 );
         });
 
     });
 
 
-    describe( 'setContents()', function() {
+    describe( 'setContents()', () => {
         var iRectangle: Rectangle;
 
-        beforeEach( function () {
+        beforeEach( () => {
             iRectangle = new Rectangle( new Rect( 10, 10, 20, 20 ) );
-            spyOn( iControl.painter, 'pushState' );
-            spyOn( iControl.painter, 'intersectClipAreaWith' );
+            spyOn( this.control.painter, 'pushState' );
+            spyOn( this.control.painter, 'intersectClipAreaWith' );
             spyOn( iRectangle, 'paint' );
-            spyOn( iControl.painter, 'popState' );
+            spyOn( this.control.painter, 'popState' );
 
-            iControl.setContents( iRectangle );
+            this.control.setContents( iRectangle );
         });
 
-        it( 'should push the painter state', function() {
-            expect( iControl.painter.pushState ).toHaveBeenCalled();
+        it( 'should push the painter state', () => {
+            expect( this.control.painter.pushState ).toHaveBeenCalled();
         });
 
-        it( 'should set the painters clip area to the control bounds', function() {
+        it( 'should set the painters clip area to the control bounds', () => {
             var iExpectedControlBounds = jasmine.objectContaining( { x: 0, y: 0, w: 500, h: 400 } );
-            expect( iControl.painter.intersectClipAreaWith ).toHaveBeenCalledWith( iExpectedControlBounds );
+            expect( this.control.painter.intersectClipAreaWith ).toHaveBeenCalledWith( iExpectedControlBounds );
         });
 
-        it( 'should call paint on the provided viewee', function() {
+        it( 'should call paint on the provided viewee', () => {
             expect( iRectangle.paint ).toHaveBeenCalled();
         });
 
-        it( 'should pop the painter state', function() {
-            expect( iControl.painter.popState ).toHaveBeenCalled();
+        it( 'should pop the painter state', () => {
+            expect( this.control.painter.popState ).toHaveBeenCalled();
         });
 
     });

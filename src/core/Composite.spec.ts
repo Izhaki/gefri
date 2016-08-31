@@ -1,63 +1,63 @@
 import { Composite } from './Composite';
 
-describe( 'Composite', function() {
-    var iParent,
-        iChild;
+describe( 'Composite', () => {
 
-    beforeEach( function () {
-        iParent = new Composite();
-        iChild  = new Composite();
+    beforeEach( () => {
+        this.parent = new Composite();
+        this.child  = new Composite();
     });
 
-    describe( 'addChild', function() {
+    describe( 'addChild', () => {
 
-        beforeEach( function () {
-            iParent.addChild( iChild );
+        beforeEach( () => {
+            this.parent.addChild( this.child );
         });
 
-        it( 'Should add a child', function() {
-            expect( iParent.children.length ).toBe( 1 );
-            expect( iParent.children[0] ).toBe( iChild );
+        it( 'Should add a child', () => {
+            expect( this.parent.children.length ).toBe( 1 );
+            expect( this.parent.children[0] ).toBe( this.child );
         });
 
-        it( 'Should mark the child parent', function() {
-            expect( iChild.parent ).toBe( iParent );
+        it( 'Should mark the child parent', () => {
+            expect( this.child.parent ).toBe( this.parent );
         });
+
     });
 
-    describe( 'addChildren', function() {
 
-        it( 'Should add a child', function() {
+    describe( 'addChildren', () => {
+
+        it( 'Should add a child', () => {
             var iAnotherChild = new Composite();
 
-            iParent.addChildren( iChild, iAnotherChild );
+            this.parent.addChildren( this.child, iAnotherChild );
 
-            expect( iParent.children.length ).toBe( 2 );
+            expect( this.parent.children.length ).toBe( 2 );
         });
 
     });
 
 
-    describe( 'deleteChild', function() {
+    describe( 'deleteChild', () => {
 
-        beforeEach( function () {
-            iParent.addChild( iChild );
-            iParent.removeChild( iChild );
+        beforeEach( () => {
+            this.parent.addChild( this.child );
+            this.parent.removeChild( this.child );
         });
 
-        it( 'Should remove the child', function() {
-            expect( iParent.children.length ).toBe( 0 );
+        it( 'Should remove the child', () => {
+            expect( this.parent.children.length ).toBe( 0 );
         });
 
-        it( 'Should unlink the child to its parent', function() {
-            expect( iChild.parent ).toBe( null );
+        it( 'Should unlink the child to its parent', () => {
+            expect( this.child.parent ).toBe( null );
         });
 
-        it( 'Should raise an execption if the child was not found', function() {
+        it( 'Should raise an execption if the child was not found', () => {
             var iAnotherChild  = new Composite();
 
-            var functionCall = function() {
-              iParent.removeChild( iAnotherChild );
+            var functionCall = () => {
+              this.parent.removeChild( iAnotherChild );
             }
 
             expect( functionCall ).toThrow();
@@ -65,48 +65,51 @@ describe( 'Composite', function() {
 
     });
 
-    describe( 'forEachChild', function() {
+
+    describe( 'forEachChild', () => {
         var iAnotherChild;
 
-        beforeEach( function () {
+        beforeEach( () => {
             iAnotherChild = new Composite();
 
-            iParent.addChildren( iChild, iAnotherChild );
+            this.parent.addChildren( this.child, iAnotherChild );
         });
 
-        it( 'Should iterate each child', function() {
+        it( 'Should iterate each child', () => {
             var iCallback = jasmine.createSpy('iCallback');
 
-            iParent.forEachChild( iCallback );
+            this.parent.forEachChild( iCallback );
 
-            expect( iCallback.calls.argsFor(0) ).toEqual([ iChild, 0 ]);
+            expect( iCallback.calls.argsFor(0) ).toEqual([ this.child, 0 ]);
             expect( iCallback.calls.argsFor(1) ).toEqual([ iAnotherChild, 1 ]);
         });
 
     });
 
-    describe( 'isChildless', function() {
 
-        it( 'Should return true if there are no children', function() {
-            expect( iParent.isChildless() ).toBe( true );
+    describe( 'isChildless', () => {
+
+        it( 'Should return true if there are no children', () => {
+            expect( this.parent.isChildless() ).toBe( true );
         });
 
-        it( 'Should return false if there are children', function() {
-            iParent.addChild( iChild );
-            expect( iParent.isChildless() ).toBe( false );
+        it( 'Should return false if there are children', () => {
+            this.parent.addChild( this.child );
+            expect( this.parent.isChildless() ).toBe( false );
         });
 
     });
 
-    describe( 'hasParent', function() {
 
-        it( 'Should return false', function() {
-            expect( iChild.hasParent() ).toBe( false );
+    describe( 'hasParent', () => {
+
+        it( 'Should return false', () => {
+            expect( this.child.hasParent() ).toBe( false );
         });
 
-        it( 'Should return true', function() {
-            iParent.addChild( iChild );
-            expect( iChild.hasParent() ).toBe( true );
+        it( 'Should return true', () => {
+            this.parent.addChild( this.child );
+            expect( this.child.hasParent() ).toBe( true );
         });
 
     });
