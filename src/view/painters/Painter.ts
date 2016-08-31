@@ -1,13 +1,15 @@
+import { Stateful }        from './Stateful';
 import { TransformMatrix } from '../geometry/TransformMatrix';
 import { Rect }            from '../geometry/Rect';
 import { Point }           from '../geometry/Point';
 
 export
-abstract class Painter {
+abstract class Painter extends Stateful {
     protected clipArea: Rect;
     protected matrix:   TransformMatrix;
 
     constructor() {
+        super();
         this.matrix = new TransformMatrix();
     }
 
@@ -43,10 +45,16 @@ abstract class Painter {
         return this.matrix.transformRect( aRect );
     }
 
-    pushState(): void {
+    protected getState() : any {
+        var iState = super.getState();
+        iState.matrix   = this.matrix.clone();
+        iState.clipArea = this.clipArea ? this.clipArea.clone() : undefined;
+        return iState;
     }
 
-    popState(): void {
+    protected restoreState( aState: any ) {
+        this.matrix   = aState.matrix;
+        this.clipArea = aState.clipArea;
     }
 
 }

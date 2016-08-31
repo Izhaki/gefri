@@ -1,11 +1,14 @@
 var iViewElement = document.getElementById( 'view' );
 var iControl = new gefri.view.Control( iViewElement );
 
-var iOut = new gefri.view.Rectangle( new gefri.view.geometry.Rect( 200, 200, 100, 100 ) );
-var iMid = new gefri.view.Rectangle( new gefri.view.geometry.Rect( 10, 10, 80, 80 ) );
-var iIn  = new gefri.view.Rectangle( new gefri.view.geometry.Rect( 10, 10, 60, 60 ) );
+var iFace   = new gefri.view.Rectangle( new gefri.view.geometry.Rect( 200, 200, 100, 100 ) );
+var iEyeL   = new gefri.view.Rectangle( new gefri.view.geometry.Rect( 10, 10, 20, 20 ) );
+var iPupilL = new gefri.view.Rectangle( new gefri.view.geometry.Rect( 5, 5, 10, 10 ) );
+var iEyeR   = new gefri.view.Rectangle( new gefri.view.geometry.Rect( 70, 10, 20, 20 ) );
+var iPupilR = new gefri.view.Rectangle( new gefri.view.geometry.Rect( 5, 5, 10, 10 ) );
 
-iMid.addChildren( iIn );
-iOut.addChildren( iMid );
+iEyeR.addChildren( iPupilR );
+iEyeL.addChildren( iPupilL );
+iFace.addChildren( iEyeL, iEyeR );
 
-iControl.setContents( iOut );
+iControl.setContents( iFace );

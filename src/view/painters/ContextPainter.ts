@@ -43,7 +43,6 @@ class ContextPainter extends Painter {
         this.context.clip();
     }
 
-    // TODO - needs to push to stack
     pushState(): void {
         super.pushState();
         this.context.save();

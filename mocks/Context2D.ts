@@ -16,7 +16,7 @@ class Context2DMock implements CanvasRenderingContext2D {
     stateStack: any[];
     rendered:   any[];
     clipArea:   Rect;
-    
+
     public showLog: boolean = false;
 
     constructor() {
@@ -28,7 +28,7 @@ class Context2DMock implements CanvasRenderingContext2D {
     public clearRendered(): void {
         this.rendered   = [];
     }
-    
+
     private log( ...args: any[] ) {
         if ( this.showLog ) {
             args[0] = 'mockContext.' + args[0] + ':';
@@ -88,19 +88,19 @@ class Context2DMock implements CanvasRenderingContext2D {
 
     public beginPath(): void {}
     public closePath() {
-        
-        // closePath() means we have drawn the rect (rather than use it for clipping), 
+
+        // closePath() means we have drawn the rect (rather than use it for clipping),
         // so intersect it with the clip area if exists
         if ( this.clipArea ) {
             var lastRender = this.rendered[ this.rendered.length - 1 ];
-            
+
             if ( lastRender.type !== 'rect' ) {
                 throw new Error( 'closePath() was called but not with rect' )
-            }   
-            
+            }
+
             lastRender.bounds.intersect( this.clipArea );
-            this.log( 'closePath()', 'intersected last rect with clip area', lastRender.bounds )        
-        }        
+            this.log( 'closePath()', 'intersected last rect with clip area', lastRender.bounds )
+        }
     } //
     public moveTo() {} //
     public lineTo() {} //
@@ -112,11 +112,11 @@ class Context2DMock implements CanvasRenderingContext2D {
     public rect( x, y, width, height ) {
 
         var iRect = new Rect( x, y, width, height );
-        this.log( 'rect()', 'was given', iRect )       
+        this.log( 'rect()', 'was given', iRect )
         var iTransformedRect = this.matrix.transformRect( iRect );
-        this.log( 'rect()', 'transformed to', iTransformedRect )        
-        
-        this.log( 'rect()', 'pushed to rendered', iTransformedRect )        
+        this.log( 'rect()', 'transformed to', iTransformedRect )
+
+        this.log( 'rect()', 'pushed to rendered', iTransformedRect )
         this.rendered.push({
             type: 'rect',
             bounds: iTransformedRect
@@ -188,14 +188,16 @@ class Context2DMock implements CanvasRenderingContext2D {
     public save(): void {
         this.log( 'save()', '-------------------' )
         var iState = {
-            matrix: this.matrix.clone()
+            matrix:   this.matrix.clone(),
+            clipArea: this.clipArea ? this.clipArea.clone() : undefined
         };
         this.stateStack.push( iState );
     }
     public restore(): void {
         this.log( 'restore()', '-------------------' )
-        var iState = this.stateStack.pop();
-        this.matrix = iState.matrix;
+        var iState    = this.stateStack.pop();
+        this.matrix   = iState.matrix;
+        this.clipArea = iState.clipArea
     }
     public canvas: HTMLCanvasElement;
 

@@ -27,7 +27,6 @@ describe( "Painter", function() {
             expect( iPainter.matrix.translateY ).toBe( 40 );
         });
 
-
     });
 
 
@@ -50,7 +49,7 @@ describe( "Painter", function() {
     describe( "isRectWithinClipArea()", function() {
         var iClipArea = new Rect( 10, 10, 20, 20);
 
-        it( "should return true if there is not clip area", function() {
+        it( "should return true if there is no clip area", function() {
             var iRect = new Rect( 15, 15, 20, 20);
 
             var isWithin = iPainter.isRectWithinClipArea( iRect );

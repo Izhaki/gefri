@@ -39,7 +39,7 @@ describe( "ContextPainter", function() {
         it( "should draw a rect on the context provided", function() {
             spyOn( iMockContext, 'rect' );
 
-            var iRect = new Rect( 10, 10, 20, 20);
+            var iRect = new Rect( 10, 10, 20, 20 );
             iPainter.drawRectangle( iRect );
 
             expect( iMockContext.rect ).toHaveBeenCalledWith( 10, 10, 20, 20 );
@@ -51,7 +51,7 @@ describe( "ContextPainter", function() {
     describe( "intersectClipAreaWith()", function() {
 
         it( "should intersect the clip area with the given rect", function() {
-            var iRect     = new Rect( 10, 10, 20, 20),
+            var iRect     = new Rect( 10, 10, 20, 20 ),
                 iDelegate = spyOn( Painter.prototype, 'intersectClipAreaWith' );
 
             iPainter.intersectClipAreaWith( iRect );
@@ -62,7 +62,7 @@ describe( "ContextPainter", function() {
         it( "should clip the context", function() {
             spyOn( iMockContext, 'rect' );
             spyOn( iMockContext, 'clip' );
-            iPainter.intersectClipAreaWith( new Rect( 10, 10, 20, 20) );
+            iPainter.intersectClipAreaWith( new Rect( 10, 10, 20, 20 ) );
             expect( iMockContext.rect ).toHaveBeenCalledWith( 9, 9, 22, 22 );
             expect( iMockContext.clip ).toHaveBeenCalled();
         });
@@ -87,11 +87,43 @@ describe( "ContextPainter", function() {
 
         it( "should restore the canvas state", function() {
             spyOn( iMockContext, 'restore' );
+            iPainter.pushState();
 
             iPainter.popState();
 
             expect( iMockContext.restore ).toHaveBeenCalled();
         });
+
+        it( "should restore the transformation matrix", function() {
+            iPainter.translate( 10, 15 );
+            iPainter.pushState();
+            iPainter.translate( 20, 20 );
+
+            iPainter.popState();
+
+            expect( iPainter.matrix.translateX ).toBe( 10 );
+            expect( iPainter.matrix.translateY ).toBe( 15 );
+        });
+
+        it( "should restore the clip area when it is undefined", function() {
+            iPainter.pushState();
+            iPainter.intersectClipAreaWith( new Rect( 10, 10, 20, 20 ) );
+
+            iPainter.popState();
+
+            expect( iPainter.clipArea ).not.toBeDefined();
+        });
+
+        it( "should restore the clip area when it is defined", function() {
+            iPainter.intersectClipAreaWith( new Rect( 10, 10, 20, 20 ) );
+            iPainter.pushState();
+            iPainter.intersectClipAreaWith( new Rect( 0, 0, 2, 2 ) );
+
+            iPainter.popState();
+
+            expect( iPainter.clipArea ).toEqualRect( 10, 10, 20, 20 );
+        });
+
 
     });
 
