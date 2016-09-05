@@ -4,18 +4,18 @@ import { Painter } from './../../painters/Painter';
 
 export
 class Rectangle extends Shape {
-    rect: Rect;
+    private rect: Rect;
 
     constructor( aRect: Rect ) {
         super();
         this.rect = aRect;
     }
 
-    paintSelf( aPainter: Painter ): void {
+    protected paintSelf( aPainter: Painter ): void {
         aPainter.drawRectangle( this.rect );
     }
 
-    getRectBounds(): Rect {
+    protected getRectBounds(): Rect {
         return this.rect;
     }
 

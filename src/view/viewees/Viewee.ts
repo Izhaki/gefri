@@ -6,7 +6,7 @@ abstract class Viewee extends Composite< Viewee > {
 
     abstract paint( aPainter: Painter ): void;
 
-    paintChildren( aPainter: Painter ): void {
+    protected paintChildren( aPainter: Painter ): void {
         if ( this.isChildless() ) return;
 
         aPainter.pushState();
@@ -20,11 +20,11 @@ abstract class Viewee extends Composite< Viewee > {
         aPainter.popState();
     }
 
-    beforeChildrenPainting( aPainter: Painter ): void {
+    protected beforeChildrenPainting( aPainter: Painter ): void {
         this.applyTransformations( aPainter );
     }
 
-    applyTransformations( aPainter: Painter ): void {
+    protected applyTransformations( aPainter: Painter ): void {
         // Does nothing by default. Children will override.
     }
 

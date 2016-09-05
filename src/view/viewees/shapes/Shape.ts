@@ -12,22 +12,22 @@ abstract class Shape extends Viewee {
         }
     }
 
-    abstract paintSelf( aPainter: Painter ): void;
+    protected abstract paintSelf( aPainter: Painter ): void;
 
-    abstract getRectBounds(): Rect;
+    protected abstract getRectBounds(): Rect;
 
-    beforeChildrenPainting( aPainter: Painter ): void {
+    protected beforeChildrenPainting( aPainter: Painter ): void {
         aPainter.intersectClipAreaWith( this.getRectBounds() );
         super.beforeChildrenPainting( aPainter );
     }
 
-    applyTransformations( aPainter: Painter ): void {
+    protected applyTransformations( aPainter: Painter ): void {
         super.applyTransformations( aPainter );
         var iBounds = this.getRectBounds();
         aPainter.translate( iBounds.getLeft(), iBounds.getTop() );
     }
 
-    isWithinClipArea( aPainter: Painter ): boolean {
+    protected isWithinClipArea( aPainter: Painter ): boolean {
         return aPainter.isRectWithinClipArea( this.getRectBounds() );
     }
 

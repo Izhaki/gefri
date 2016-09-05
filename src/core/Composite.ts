@@ -1,7 +1,7 @@
 export
 class Composite< T > {
-    children: T[];
-    parent :  T;
+    private children: T[];
+    private parent :  T;
 
     constructor() {
         this.children = [];
