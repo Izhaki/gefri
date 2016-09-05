@@ -2,3 +2,5 @@
 node_modules/
 typings/
 typings.json
+
+.DS_Store

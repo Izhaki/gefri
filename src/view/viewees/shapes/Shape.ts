@@ -22,6 +22,7 @@ abstract class Shape extends Viewee {
     }
 
     applyTransformations( aPainter: Painter ): void {
+        super.applyTransformations( aPainter );
         var iBounds = this.getRectBounds();
         aPainter.translate( iBounds.getLeft(), iBounds.getTop() );
     }

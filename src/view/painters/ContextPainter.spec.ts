@@ -1,25 +1,26 @@
 import { Context2DMock }  from '../../../mocks/Context2D';
 import { Rect }           from '../geometry/Rect';
-import { Painter }        from './Painter';
 import { ContextPainter } from './ContextPainter';
+import { Painter }        from './Painter';
+import { PainterSpecs }   from './Painter.spec.ts';
+
+function createPainter(): Painter {
+    return new ContextPainter( new Context2DMock() );
+}
 
 describe( 'ContextPainter', () => {
 
+    describe( 'is a Painter', () => {
+        PainterSpecs.call( this, createPainter );
+    })
+
     beforeEach( () => {
-        this.context = new Context2DMock();
-        this.painter = new ContextPainter( this.context )
+        this.painter = createPainter();
+        this.context = this.painter.context;
     });
 
 
     describe( 'translate()', () => {
-
-        it( 'should update the painter`s transform matrix', () => {
-            var iDelegate = spyOn( Painter.prototype, 'translate' );
-
-            this.painter.translate( 10, 20 );
-
-            expect( iDelegate ).toHaveBeenCalledWith( 10, 20 );
-        });
 
         it( 'should call translate on the context provided', () => {
             spyOn( this.context, 'translate' );
@@ -47,15 +48,6 @@ describe( 'ContextPainter', () => {
 
 
     describe( 'intersectClipAreaWith()', () => {
-
-        it( 'should intersect the clip area with the given rect', () => {
-            var iRect     = new Rect( 10, 10, 20, 20 ),
-                iDelegate = spyOn( Painter.prototype, 'intersectClipAreaWith' );
-
-            this.painter.intersectClipAreaWith( iRect );
-
-            expect( iDelegate ).toHaveBeenCalledWith( iRect );
-        });
 
         it( 'should clip the context', () => {
             spyOn( this.context, 'rect' );
@@ -91,37 +83,6 @@ describe( 'ContextPainter', () => {
 
             expect( this.context.restore ).toHaveBeenCalled();
         });
-
-        it( 'should restore the transformation matrix', () => {
-            this.painter.translate( 10, 15 );
-            this.painter.pushState();
-            this.painter.translate( 20, 20 );
-
-            this.painter.popState();
-
-            expect( this.painter.matrix.translateX ).toBe( 10 );
-            expect( this.painter.matrix.translateY ).toBe( 15 );
-        });
-
-        it( 'should restore the clip area when it is undefined', () => {
-            this.painter.pushState();
-            this.painter.intersectClipAreaWith( new Rect( 10, 10, 20, 20 ) );
-
-            this.painter.popState();
-
-            expect( this.painter.clipArea ).not.toBeDefined();
-        });
-
-        it( 'should restore the clip area when it is defined', () => {
-            this.painter.intersectClipAreaWith( new Rect( 10, 10, 20, 20 ) );
-            this.painter.pushState();
-            this.painter.intersectClipAreaWith( new Rect( 0, 0, 2, 2 ) );
-
-            this.painter.popState();
-
-            expect( this.painter.clipArea ).toEqualRect( 10, 10, 20, 20 );
-        });
-
 
     });
 
