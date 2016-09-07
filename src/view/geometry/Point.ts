@@ -3,12 +3,17 @@ class Point {
     x: number;
     y: number;
 
-    constructor( aX: number, aY: number ) {
-        this.x = aX;
-        this.y = aY;
+    constructor( x: number, y: number ) {
+        this.x = x;
+        this.y = y;
     }
 
     clone() : Point {
         return new Point( this.x, this.y );
+    }
+
+    set( x: number, y: number ) {
+        this.x = x;
+        this.y = y;
     }
 }

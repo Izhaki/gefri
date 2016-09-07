@@ -19,6 +19,10 @@ abstract class Painter extends Stateful {
         this.matrix.translate( new Point( x, y ) )
     }
 
+    scale( x, y ): void {
+        this.matrix.scale( new Point( x, y ) )
+    }
+
     intersectClipAreaWith( aRect: Rect ): void {
         // Our clipArea is in absolute coordinates, so we convert the rect
         // to absolute ones.

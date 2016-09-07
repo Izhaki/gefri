@@ -33,6 +33,19 @@ describe( 'ContextPainter', () => {
     });
 
 
+    describe( 'scale()', () => {
+
+        it( 'should call scale on the context provided', () => {
+            spyOn( this.context, 'scale' );
+
+            this.painter.scale( 2, 4 );
+
+            expect( this.context.scale ).toHaveBeenCalledWith( 2, 4 );
+        });
+
+    });
+
+
     describe( 'drawRectangle()', () => {
 
         it( 'should draw a rect on the context provided', () => {

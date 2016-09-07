@@ -24,6 +24,11 @@ class ContextPainter extends Painter {
         this.context.translate( x, y );
     }
 
+    scale( x, y ): void {
+        super.scale( x, y );
+        this.context.scale( x, y );
+    }
+
     intersectClipAreaWith( aRect: Rect ): void {
         super.intersectClipAreaWith( aRect );
 

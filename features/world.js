@@ -23,7 +23,10 @@ function World() {
         	}
     	});
 
-    	return iRootViewee
+    	return {
+        	root:    iRootViewee,
+        	viewees: iViewees
+        }
 
         function createViewee( aVieweeHash ) {
             var iVieweeType = aVieweeHash.Type,
@@ -32,7 +35,9 @@ function World() {
             switch ( iVieweeType ) {
 
                 case 'Rectangle':
-                    return new gefri.view.Rectangle( iBounds )
+                    return new gefri.view.Rectangle( iBounds );
+                case 'Transformer':
+                    return new gefri.view.Transformer();
 
             }
 

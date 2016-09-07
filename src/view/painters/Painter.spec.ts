@@ -22,6 +22,18 @@ function PainterSpecs( createPainter: () => Painter ) {
 
         });
 
+        describe( 'scale()', () => {
+
+            it( 'should update the painter`s transform matrix', () => {
+                this.painter.scale( 2, 2 );
+                this.painter.scale( 4, 4 );
+
+                expect( this.painter.matrix.scaleX ).toBe( 8 );
+                expect( this.painter.matrix.scaleY ).toBe( 8 );
+            });
+
+        });
+
 
         describe( 'intersectClipAreaWith()', () => {
 

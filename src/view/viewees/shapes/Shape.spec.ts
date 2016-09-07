@@ -110,13 +110,13 @@ function ShapeSpecs( createShape: () => Shape, createPainter: () => Painter ) {
         describe( 'applyTransformations()', () => {
 
             it( 'should translate the context using the top-left corner', () => {
-                var oldTranslateX = this.painter.matrix.translateX,
-                    oldTranslateY = this.painter.matrix.translateY;
+                spyOn( this.painter, 'translate' )
+                this.shape.applyTransformations( this.painter );
 
-                this.viewee.applyTransformations( this.painter );
+                var expectedTranslateX = this.shape.getRectBounds().getLeft(),
+                    expectedTranslateY = this.shape.getRectBounds().getTop();
 
-                expect( this.painter.matrix.translateX ).toEqual( oldTranslateX + this.viewee.getRectBounds().getLeft() );
-                expect( this.painter.matrix.translateY ).toEqual( oldTranslateX + this.viewee.getRectBounds().getTop()  );
+                expect( this.painter.translate ).toHaveBeenCalledWith( expectedTranslateX, expectedTranslateY );
             });
 
         });

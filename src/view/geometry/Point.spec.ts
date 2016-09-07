@@ -24,4 +24,18 @@ describe( 'Point', () => {
 
     });
 
+    describe( 'set()', () => {
+
+        it( 'Should set the given parameters and the point coordinate', () => {
+            var iPoint = new Point( 10, 20 );
+
+            iPoint.set( 5, 15 )
+
+            expect( iPoint.x ).toEqual( 5 );
+            expect( iPoint.y ).toEqual( 15 );
+        });
+
+    });
+
+
 });
