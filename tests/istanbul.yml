@@ -6,4 +6,4 @@ instrumentation:
     include-all-sources: true
     excludes: [ '*.spec.ts', '*.ns.ts' ]
 reporting:
-    dir: public/coverage
+    dir: tests/coverage

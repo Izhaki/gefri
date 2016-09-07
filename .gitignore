@@ -1,4 +1,4 @@
-/public/coverage/
+/tests/coverage/
 node_modules/
 typings/
 typings.json

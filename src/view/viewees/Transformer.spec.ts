@@ -1,6 +1,6 @@
 import { VieweeSpecs }    from './Viewee.spec.ts';
 import { Transformer }    from './Transformer';
-import { Context2DMock }  from '../../../mocks/Context2D';
+import { Context2DMock }  from '../../../tests/mocks/Context2D';
 import { Painter }        from './../painters/Painter';
 import { ContextPainter } from './../painters/ContextPainter';
 

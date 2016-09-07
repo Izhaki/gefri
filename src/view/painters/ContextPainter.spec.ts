@@ -1,4 +1,4 @@
-import { Context2DMock }  from '../../../mocks/Context2D';
+import { Context2DMock }  from '../../../tests/mocks/Context2D';
 import { Rect }           from '../geometry/Rect';
 import { ContextPainter } from './ContextPainter';
 import { Painter }        from './Painter';

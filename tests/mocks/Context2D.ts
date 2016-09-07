@@ -3,9 +3,9 @@
 // - https://github.com/Microsoft/TypeScript/blob/ddadb472a6241bd14a267b915f5c4669bd094a28/src/lib/dom.generated.d.ts
 // '//' postfix signify no typings for member/method
 
-import { TransformMatrix } from '../src/view/geometry/TransformMatrix';
-import { Rect }            from '../src/view/geometry/Rect';
-import { Point }           from '../src/view/geometry/Point';
+import { TransformMatrix } from '../../src/view/geometry/TransformMatrix';
+import { Rect }            from '../../src/view/geometry/Rect';
+import { Point }           from '../../src/view/geometry/Point';
 
 export
 class Context2DMock implements CanvasRenderingContext2D {

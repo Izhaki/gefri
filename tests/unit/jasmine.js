@@ -1,4 +1,4 @@
-var mockDom = require( './mocks/mockDom' );
+var mockDom = require( '../mocks/mockDom' );
 var Jasmine = require('jasmine');
 var jasmine = new Jasmine();
 
@@ -8,7 +8,7 @@ jasmine.loadConfig({
     "stopSpecOnExpectationFailure": true,
     "random": false,
     "helpers": [
-        "../jasmineCustomMatchers.js"
+        "../tests/unit/jasmineCustomMatchers.js"
     ]
 });
 

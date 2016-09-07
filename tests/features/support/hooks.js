@@ -1,4 +1,4 @@
-var mockDom = require( '../mocks/mockDom' );
+var mockDom = require( '../../../tests/mocks/mockDom' );
 
 var hooks = function () {
 
