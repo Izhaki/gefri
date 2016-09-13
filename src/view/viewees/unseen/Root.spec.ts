@@ -1,8 +1,8 @@
 import { UnseenSpecs }    from './Unseen.spec.ts';
 import { Control }        from '../../Control';
 import { Context2DMock }  from '../../../../tests/mocks/Context2D';
-import { Painter }        from '../../painters/Painter';
-import { ContextPainter } from '../../painters/ContextPainter';
+import { Painter }        from '../../output/Painter';
+import { ContextPainter } from '../../output/ContextPainter';
 import { Root }           from './Root'
 import { Rect }           from '../../geometry/Rect';
 

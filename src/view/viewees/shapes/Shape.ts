@@ -1,6 +1,7 @@
-import { Viewee }  from './../Viewee';
-import { Painter } from './../../painters/Painter';
-import { Rect }    from './../../geometry/Rect';
+import { Viewee }        from './../Viewee';
+import { Painter }       from './../../output/Painter';
+import { Transformable } from './../../output/Transformable';
+import { Rect }          from './../../geometry/Rect';
 
 export
 abstract class Shape extends Viewee {
@@ -21,10 +22,10 @@ abstract class Shape extends Viewee {
         super.beforeChildrenPainting( aPainter );
     }
 
-    protected applyTransformations( aPainter: Painter ): void {
-        super.applyTransformations( aPainter );
+    protected applyTransformations( aTransformable: Transformable ): void {
+        super.applyTransformations( aTransformable );
         var iBounds = this.getRectBounds();
-        aPainter.translate( iBounds.getLeft(), iBounds.getTop() );
+        aTransformable.translate( iBounds.getLeft(), iBounds.getTop() );
     }
 
     protected isWithinClipArea( aPainter: Painter ): boolean {

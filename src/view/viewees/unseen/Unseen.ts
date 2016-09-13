@@ -1,5 +1,5 @@
 import { Viewee }  from '../Viewee';
-import { Painter } from '../../painters/Painter';
+import { Painter } from '../../output/Painter';
 
 export
 class Unseen extends Viewee {

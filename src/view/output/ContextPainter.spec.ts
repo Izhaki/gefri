@@ -91,7 +91,6 @@ describe( 'ContextPainter', () => {
         it( 'should restore the canvas state', () => {
             spyOn( this.context, 'restore' );
             this.painter.pushState();
-
             this.painter.popState();
 
             expect( this.context.restore ).toHaveBeenCalled();

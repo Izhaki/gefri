@@ -1,6 +1,7 @@
-import { Unseen }  from './Unseen';
-import { Painter } from '../../painters/Painter';
-import { Point }   from '../../geometry/Point';
+import { Unseen }        from './Unseen';
+import { Painter }       from '../../output/Painter';
+import { Transformable } from './../../output/Transformable';
+import { Point }         from '../../geometry/Point';
 
 export
 class Transformer extends Unseen {
@@ -16,10 +17,10 @@ class Transformer extends Unseen {
         this.scale.set( x, y );
     }
 
-    protected applyTransformations( aPainter: Painter ): void {
-        super.applyTransformations( aPainter );
-        aPainter.translate( this.translation.x, this.translation.y );
-        aPainter.scale( this.scale.x, this.scale.y );
+    protected applyTransformations( aTransformable: Transformable ): void {
+        super.applyTransformations( aTransformable );
+        aTransformable.translate( this.translation.x, this.translation.y );
+        aTransformable.scale( this.scale.x, this.scale.y );
     }
 
 }

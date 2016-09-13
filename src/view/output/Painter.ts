@@ -1,27 +1,12 @@
-import { Stateful }        from './Stateful';
-import { TransformMatrix } from '../geometry/TransformMatrix';
-import { Rect }            from '../geometry/Rect';
-import { Point }           from '../geometry/Point';
+import { Transformable } from './Transformable';
+import { Rect }          from '../geometry/Rect';
+import { Point }         from '../geometry/Point';
 
 export
-abstract class Painter extends Stateful {
+abstract class Painter extends Transformable {
     protected clipArea: Rect;
-    protected matrix:   TransformMatrix;
-
-    constructor() {
-        super();
-        this.matrix = new TransformMatrix();
-    }
 
     abstract drawRectangle( aRect: Rect ): void;
-
-    translate( x, y ): void {
-        this.matrix.translate( new Point( x, y ) )
-    }
-
-    scale( x, y ): void {
-        this.matrix.scale( new Point( x, y ) )
-    }
 
     intersectClipAreaWith( aRect: Rect ): void {
         // Our clipArea is in absolute coordinates, so we convert the rect
@@ -45,19 +30,14 @@ abstract class Painter extends Stateful {
         }
     }
 
-    toAbsoluteRect( aRect: Rect ): Rect {
-        return this.matrix.transformRect( aRect );
-    }
-
     protected getState() : any {
         var iState = super.getState();
-        iState.matrix   = this.matrix.clone();
         iState.clipArea = this.clipArea ? this.clipArea.clone() : undefined;
         return iState;
     }
 
     protected restoreState( aState: any ) {
-        this.matrix   = aState.matrix;
+        super.restoreState( aState );
         this.clipArea = aState.clipArea;
     }
 

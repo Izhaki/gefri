@@ -6,3 +6,5 @@ typings.json
 .DS_Store
 
 .editorconfig
+
+.vscode/tasks.json

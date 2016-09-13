@@ -1,6 +1,6 @@
 import { Shape }   from './Shape';
 import { Rect }    from './../../geometry/Rect';
-import { Painter } from './../../painters/Painter';
+import { Painter } from './../../output/Painter';
 
 export
 class Rectangle extends Shape {

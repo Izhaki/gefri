@@ -1,5 +1,6 @@
-import { Composite } from './../../core/Composite';
-import { Painter }   from './../painters/Painter';
+import { Composite }     from './../../core/Composite';
+import { Painter }       from './../output/Painter';
+import { Transformable } from './../output/Transformable';
 
 export
 abstract class Viewee extends Composite< Viewee > {
@@ -24,8 +25,12 @@ abstract class Viewee extends Composite< Viewee > {
         this.applyTransformations( aPainter );
     }
 
-    protected applyTransformations( aPainter: Painter ): void {
+    protected applyTransformations( aTransformable: Transformable ): void {
         // Does nothing by default. Children will override.
     }
+
+    // public erase( aUpdater: Updater ) {
+
+    // }
 
 }

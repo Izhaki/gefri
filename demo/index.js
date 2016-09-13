@@ -13,6 +13,6 @@ iEyeL.addChildren( iPupilL );
 iFace.addChildren( iEyeL, iEyeR );
 iTransformer.addChildren( iFace );
 
-iTransformer.setScale( 0.5, 0.5 );
+//iTransformer.setScale( 0.5, 0.5 );
 
 iControl.setContents( iTransformer );

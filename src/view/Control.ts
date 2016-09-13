@@ -1,5 +1,5 @@
 import { Viewee }         from './viewees/Viewee';
-import { ContextPainter } from './painters/ContextPainter';
+import { ContextPainter } from './output/ContextPainter';
 import { Rect }           from './geometry/Rect';
 import { Root }           from './viewees/unseen/Root'
 

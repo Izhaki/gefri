@@ -1,6 +1,6 @@
 import { VieweeSpecs } from '../Viewee.spec.ts';
 import { Unseen }      from './Unseen';
-import { Painter }     from './../../painters/Painter';
+import { Painter }     from './../../output/Painter';
 
 export
 function UnseenSpecs( createUnseen: () => Unseen, createPainter: () => Painter ) {

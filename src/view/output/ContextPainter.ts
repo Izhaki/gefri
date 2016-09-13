@@ -53,8 +53,8 @@ class ContextPainter extends Painter {
         this.context.save();
     }
 
-    popState(): void {
-        super.popState();
+    protected restoreState( aState: any ) {
+        super.restoreState( aState );
         this.context.restore();
     }
 

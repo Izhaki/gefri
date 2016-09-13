@@ -1,5 +1,5 @@
 import { Viewee }         from './Viewee';
-import { Painter }        from './../painters/Painter';
+import { Painter }        from './../output/Painter';
 import { CompositeSpecs } from '../../core/Composite.spec.ts';
 
 export

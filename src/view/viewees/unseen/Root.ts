@@ -1,5 +1,5 @@
 import { Unseen }  from './Unseen';
-import { Painter } from '../../painters/Painter';
+import { Painter } from '../../output/Painter';
 import { Control } from '../../Control';
 
 // An adapter between the viewee composition and the control.

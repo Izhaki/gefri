@@ -1,37 +1,18 @@
-import { Painter } from './Painter';
-import { Rect }    from '../geometry/Rect';
+import { TransformableSpecs } from './Transformable.spec.ts'
+import { Painter }            from './Painter';
+import { Rect }               from '../geometry/Rect';
 
 export
 function PainterSpecs( createPainter: () => Painter ) {
 
     describe( 'Painter', () => {
 
+        describe( 'is a Transformable', () => {
+            TransformableSpecs.call( this, createPainter );
+        })
+
         beforeEach( () => {
             this.painter = createPainter();
-        });
-
-        describe( 'translate()', () => {
-
-            it( 'should update the painter`s transform matrix', () => {
-                this.painter.translate( 10, 20 );
-                this.painter.translate( 10, 20 );
-
-                expect( this.painter.matrix.translateX ).toBe( 20 );
-                expect( this.painter.matrix.translateY ).toBe( 40 );
-            });
-
-        });
-
-        describe( 'scale()', () => {
-
-            it( 'should update the painter`s transform matrix', () => {
-                this.painter.scale( 2, 2 );
-                this.painter.scale( 4, 4 );
-
-                expect( this.painter.matrix.scaleX ).toBe( 8 );
-                expect( this.painter.matrix.scaleY ).toBe( 8 );
-            });
-
         });
 
 
@@ -80,33 +61,7 @@ function PainterSpecs( createPainter: () => Painter ) {
         });
 
 
-        describe( 'toAbsoluteRect()', () => {
-
-            it( 'should return the rect transformed to absolute coordinates', () => {
-                var iRect = new Rect( 100, 100, 100, 100);
-
-                this.painter.translate( 10, 20 );
-                this.painter.translate( 10, 20 );
-
-                var iAbsoluteRect = this.painter.toAbsoluteRect( iRect );
-
-                expect( iAbsoluteRect ).toEqualRect( 120, 140, 100, 100 );
-            });
-
-        });
-
         describe( 'popState()', () => {
-
-            it( 'should restore the transformation matrix', () => {
-                this.painter.translate( 10, 15 );
-                this.painter.pushState();
-                this.painter.translate( 20, 20 );
-
-                this.painter.popState();
-
-                expect( this.painter.matrix.translateX ).toBe( 10 );
-                expect( this.painter.matrix.translateY ).toBe( 15 );
-            });
 
             it( 'should restore the clip area when it is undefined', () => {
                 this.painter.pushState();

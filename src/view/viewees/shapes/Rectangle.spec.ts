@@ -1,7 +1,7 @@
 import { ShapeSpecs }     from './Shape.spec.ts';
 import { Context2DMock }  from '../../../../tests/mocks/Context2D';
-import { Painter }        from '../../painters/Painter';
-import { ContextPainter } from '../../painters/ContextPainter';
+import { Painter }        from '../../output/Painter';
+import { ContextPainter } from '../../output/ContextPainter';
 import { Rectangle }      from './Rectangle';
 import { Rect }           from '../../geometry/Rect';
 

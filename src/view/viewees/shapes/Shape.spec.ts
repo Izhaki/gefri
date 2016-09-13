@@ -1,6 +1,6 @@
 import { VieweeSpecs } from '../Viewee.spec.ts';
 import { Shape }       from './Shape';
-import { Painter }     from './../../painters/Painter';
+import { Painter }     from './../../output/Painter';
 import { Rect }        from './../../geometry/Rect';
 
 export
