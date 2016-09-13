@@ -1,8 +1,8 @@
-import { VieweeSpecs }    from './Viewee.spec.ts';
+import { UnseenSpecs }    from './Unseen.spec.ts';
 import { Transformer }    from './Transformer';
-import { Context2DMock }  from '../../../tests/mocks/Context2D';
-import { Painter }        from './../painters/Painter';
-import { ContextPainter } from './../painters/ContextPainter';
+import { Context2DMock }  from '../../../../tests/mocks/Context2D';
+import { Painter }        from '../../painters/Painter';
+import { ContextPainter } from '../../painters/ContextPainter';
 
 function createTransformer(): Transformer {
     return new Transformer();
@@ -14,12 +14,12 @@ function createPainter(): Painter {
 
 describe( 'Transformer', () => {
 
-    describe( 'is a Viewee', () => {
-        VieweeSpecs.call( this, createTransformer, createPainter );
+    describe( 'is an Unseen', () => {
+        UnseenSpecs.call( this, createTransformer, createPainter );
     });
 
     beforeEach( () => {
-        this.transformer = createTransformer();
+        this.transformer = createTransformer()
         this.painter     = createPainter();
     });
 
@@ -59,7 +59,7 @@ describe( 'Transformer', () => {
     describe( 'applyTransformations()', () => {
 
         it( 'should translate the context using the current translation', () => {
-            spyOn( this.painter, 'translate' )
+            spyOn( this.painter, 'translate' );
             this.transformer.setTranslate( 2, 4 );
             this.transformer.applyTransformations( this.painter );
 
@@ -67,7 +67,7 @@ describe( 'Transformer', () => {
         });
 
         it( 'should translate the context using the current translation', () => {
-            spyOn( this.painter, 'scale' )
+            spyOn( this.painter, 'scale' );
             this.transformer.setScale( 2, 4 );
             this.transformer.applyTransformations( this.painter );
 
@@ -75,6 +75,5 @@ describe( 'Transformer', () => {
         });
 
     });
-
 
 });

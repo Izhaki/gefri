@@ -31,36 +31,43 @@ describe( 'Control', () => {
 
 
     describe( 'setContents()', () => {
-        var iRectangle: Rectangle;
 
         beforeEach( () => {
-            iRectangle = new Rectangle( new Rect( 10, 10, 20, 20 ) );
-            spyOn( this.control.painter, 'pushState' );
-            spyOn( this.control.painter, 'intersectClipAreaWith' );
-            spyOn( iRectangle, 'paint' );
-            spyOn( this.control.painter, 'popState' );
-
-            this.control.setContents( iRectangle );
+            this.rectangle = new Rectangle( new Rect( 10, 10, 20, 20 ) );
         });
 
-        it( 'should push the painter state', () => {
-            expect( this.control.painter.pushState ).toHaveBeenCalled();
+        it( 'should remove the previous contents from the root', () => {
+            this.control.setContents( this.rectangle );
+            this.control.setContents( this.rectangle );
+
+            expect( this.control.root.children.length ).toBe( 1 );
+            expect( this.control.root.children[ 0 ] ).toBe( this.rectangle );
         });
 
-        it( 'should set the painters clip area to the control bounds', () => {
-            var iExpectedControlBounds = jasmine.objectContaining( { x: 0, y: 0, w: 500, h: 400 } );
-            expect( this.control.painter.intersectClipAreaWith ).toHaveBeenCalledWith( iExpectedControlBounds );
+        it( 'should add the viewee provided as a child of the root viewee', () => {
+            this.control.setContents( this.rectangle );
+
+            expect( this.control.root.children.length ).toBe( 1 );
+            expect( this.control.root.children[ 0 ] ).toBe( this.rectangle );
         });
 
-        it( 'should call paint on the provided viewee', () => {
-            expect( iRectangle.paint ).toHaveBeenCalled();
-        });
+        it( 'should paint the root viewee', () => {
+            spyOn( this.control.root, 'paint' );
 
-        it( 'should pop the painter state', () => {
-            expect( this.control.painter.popState ).toHaveBeenCalled();
+            this.control.setContents( this.rectangle );
+
+            expect( this.control.root.paint ).toHaveBeenCalled();
         });
 
     });
 
+
+    describe( 'getBoundingRect()', () => {
+
+        it( 'should return a rect at 0,0 with the dimensions of the control' , () => {
+            expect( this.control.getBoundingRect() ).toEqualRect( 0, 0, 500, 400 );
+        });
+
+    });
 
 });

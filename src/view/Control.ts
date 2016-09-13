@@ -1,6 +1,7 @@
-import { Viewee }  from './viewees/Viewee';
+import { Viewee }         from './viewees/Viewee';
 import { ContextPainter } from './painters/ContextPainter';
-import { Rect }    from './geometry/Rect';
+import { Rect }           from './geometry/Rect';
+import { Root }           from './viewees/unseen/Root'
 
 export
 class Control {
@@ -9,6 +10,8 @@ class Control {
     private context:   CanvasRenderingContext2D;
     private painter:   ContextPainter;
     private bounds:    Rect;
+    private contents:  Viewee = null;
+    private root:      Root;
 
     constructor( aContainer: HTMLElement ) {
         this.container = aContainer;
@@ -16,6 +19,8 @@ class Control {
         this.canvas    = this.createCanvas( aContainer );
         this.context   = this.getContext( this.canvas );
         this.painter   = new ContextPainter( this.context );
+
+        this.root = new Root( this );
     }
 
     private createCanvas( aContainer: HTMLElement ) : HTMLCanvasElement {
@@ -36,9 +41,17 @@ class Control {
     }
 
     public setContents( aViewee: Viewee ) {
-        this.painter.pushState();
-        this.painter.intersectClipAreaWith( this.bounds )
-        aViewee.paint( this.painter );
-        this.painter.popState();
+        if ( this.contents !== null ) {
+            this.root.removeChild( this.contents );
+        }
+
+        this.contents = aViewee;
+        this.root.addChild( aViewee );
+
+        this.root.paint( this.painter );
+    }
+
+    public getBoundingRect() {
+        return this.bounds;
     }
 }

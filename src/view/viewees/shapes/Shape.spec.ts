@@ -1,7 +1,7 @@
-import { VieweeSpecs }   from '../Viewee.spec.ts';
-import { Shape }          from './Shape';
-import { Painter }        from './../../painters/Painter';
-import { Rect }           from './../../geometry/Rect';
+import { VieweeSpecs } from '../Viewee.spec.ts';
+import { Shape }       from './Shape';
+import { Painter }     from './../../painters/Painter';
+import { Rect }        from './../../geometry/Rect';
 
 export
 function ShapeSpecs( createShape: () => Shape, createPainter: () => Painter ) {

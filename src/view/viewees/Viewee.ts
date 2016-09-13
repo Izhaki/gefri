@@ -1,5 +1,5 @@
 import { Composite } from './../../core/Composite';
-import { Painter } from './../painters/Painter';
+import { Painter }   from './../painters/Painter';
 
 export
 abstract class Viewee extends Composite< Viewee > {

@@ -1,16 +1,12 @@
-import { Viewee }  from './Viewee';
-import { Painter } from './../painters/Painter';
-import { Point }   from './../geometry/Point';
+import { Unseen }  from './Unseen';
+import { Painter } from '../../painters/Painter';
+import { Point }   from '../../geometry/Point';
 
 export
-class Transformer extends Viewee {
+class Transformer extends Unseen {
 
     private translation: Point = new Point( 0, 0 );
-    private scale: Point       = new Point( 1, 1 );
-
-    paint( aPainter: Painter ): void {
-        this.paintChildren( aPainter );
-    }
+    private scale:       Point = new Point( 1, 1 );
 
     setTranslate( x: number, y: number ) {
         this.translation.set( x, y );
