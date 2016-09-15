@@ -16,3 +16,9 @@ iTransformer.addChildren( iFace );
 //iTransformer.setScale( 0.5, 0.5 );
 
 iControl.setContents( iTransformer );
+
+
+
+$( '#erase-button' ).click( function() {
+    iEyeL.erase();
+});

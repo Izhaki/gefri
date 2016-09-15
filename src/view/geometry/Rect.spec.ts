@@ -290,6 +290,18 @@ describe( 'Rect', () => {
 
     });
 
+    describe( 'translate()', () => {
+
+        // TODO: what if negative w or h?
+        it( 'should add the offset provided to the top left corener', () => {
+            var iRect = new Rect( 10, 10, 20, 20 );
+            iRect.translate( new Point( 5, -5 ) );
+            expect( iRect ).toEqual( jasmine.objectContaining( { x: 15, y: 5, w: 20, h: 20 } ) );
+        });
+
+    });
+
+
     describe( 'expand()', () => {
 
         it( 'should expand the rect by the given point when width and height are positive', () => {

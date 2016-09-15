@@ -15,7 +15,7 @@ class Rectangle extends Shape {
         aPainter.drawRectangle( this.rect );
     }
 
-    protected getRectBounds(): Rect {
+    protected getBoundingRect(): Rect {
         return this.rect;
     }
 

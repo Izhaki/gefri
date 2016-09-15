@@ -1,6 +1,9 @@
 import { Point } from './Point';
 
 export
+type Rects = Rect[];
+
+export
 class Rect {
     x: number;
     y: number;
@@ -57,6 +60,11 @@ class Rect {
             this.getTop()   <= aRect.getBottom() &&
             aRect.getTop()  <= this.getBottom()
         )
+    }
+
+    translate( aOffest: Point ) {
+        this.x += aOffest.x;
+        this.y += aOffest.y;
     }
 
     expand( aPoints: number ): void {

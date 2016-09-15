@@ -2,6 +2,9 @@ import { Painter } from './Painter';
 import { Rect } from '../geometry/Rect';
 
 export
+const ANTIALIASING_EXTRA_MARGINS = 1
+
+export
 class ContextPainter extends Painter {
     protected context:  CanvasRenderingContext2D;
 
@@ -19,6 +22,13 @@ class ContextPainter extends Painter {
         context.closePath();
     }
 
+    erase( aRect: Rect ): void {
+        let iExpandedRect = aRect.clone();
+        iExpandedRect.expand( ANTIALIASING_EXTRA_MARGINS );
+
+        this.context.clearRect( iExpandedRect.x, iExpandedRect.y, iExpandedRect.w, iExpandedRect.h );
+    };
+
     translate( x, y ): void {
         super.translate( x, y );
         this.context.translate( x, y );
@@ -32,9 +42,8 @@ class ContextPainter extends Painter {
     intersectClipAreaWith( aRect: Rect ): void {
         super.intersectClipAreaWith( aRect );
 
-        // We add some extra margins to account for antialiasing
         var iRect = aRect.clone();
-        iRect.expand( 1 );
+        iRect.expand( ANTIALIASING_EXTRA_MARGINS );
 
         this.context.beginPath();
 

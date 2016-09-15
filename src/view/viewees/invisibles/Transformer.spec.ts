@@ -1,8 +1,10 @@
-import { UnseenSpecs }    from './Unseen.spec.ts';
-import { Transformer }    from './Transformer';
-import { Context2DMock }  from '../../../../tests/mocks/Context2D';
-import { Painter }        from '../../output/Painter';
-import { ContextPainter } from '../../output/ContextPainter';
+import { InvisibleSpecs }     from './Invisible.spec.ts';
+import { summonUpdaterSpecs } from '../tactics/children/summonUpdater.spec.ts'
+
+import { Transformer }        from './Transformer';
+import { Context2DMock }      from '../../../../tests/mocks/Context2D';
+import { Painter }            from '../../output/Painter';
+import { ContextPainter }     from '../../output/ContextPainter';
 
 function createTransformer(): Transformer {
     return new Transformer();
@@ -14,14 +16,17 @@ function createPainter(): Painter {
 
 describe( 'Transformer', () => {
 
-    describe( 'is an Unseen', () => {
-        UnseenSpecs.call( this, createTransformer, createPainter );
+
+    describe( 'is an Invisible', () => {
+        InvisibleSpecs.call( this, createTransformer, createPainter );
     });
+
 
     beforeEach( () => {
         this.transformer = createTransformer()
         this.painter     = createPainter();
     });
+
 
     describe( 'paint()', () => {
 
@@ -34,6 +39,7 @@ describe( 'Transformer', () => {
 
     });
 
+
     describe( 'setTranslate()', () => {
 
         it( 'should set the translation to the given parameters', () => {
@@ -45,6 +51,7 @@ describe( 'Transformer', () => {
 
     });
 
+
     describe( 'setScale()', () => {
 
         it( 'should set the scale to the given parameters', () => {
@@ -55,6 +62,7 @@ describe( 'Transformer', () => {
         });
 
     });
+
 
     describe( 'applyTransformations()', () => {
 
@@ -75,5 +83,11 @@ describe( 'Transformer', () => {
         });
 
     });
+
+
+    describe( 'summonUpdater', () => {
+        summonUpdaterSpecs.call( this, createTransformer );
+    });
+
 
 });

@@ -11,27 +11,27 @@ function CompositeSpecs( createComposite: () => Composite< any > ) {
         });
 
 
-        describe( 'addChild', () => {
+        describe( 'addChild()', () => {
 
             beforeEach( () => {
                 this.parent.addChild( this.child );
             });
 
-            it( 'Should add a child', () => {
+            it( 'should add a child', () => {
                 expect( this.parent.children.length ).toBe( 1 );
                 expect( this.parent.children[0] ).toBe( this.child );
             });
 
-            it( 'Should mark the child parent', () => {
+            it( 'should mark the child parent', () => {
                 expect( this.child.parent ).toBe( this.parent );
             });
 
         });
 
 
-        describe( 'addChildren', () => {
+        describe( 'addChildren()', () => {
 
-            it( 'Should add a child', () => {
+            it( 'should add a child', () => {
                 var iAnotherChild = new Composite();
 
                 this.parent.addChildren( this.child, iAnotherChild );
@@ -41,23 +41,34 @@ function CompositeSpecs( createComposite: () => Composite< any > ) {
 
         });
 
+        describe( 'getParent()', () => {
 
-        describe( 'deleteChild', () => {
+            it( 'should the child`s parent', () => {
+                this.parent.addChildren( this.child  );
+
+                expect( this.child.getParent() ).toBe( this.parent );
+            });
+
+        });
+
+
+
+        describe( 'deleteChild()', () => {
 
             beforeEach( () => {
                 this.parent.addChild( this.child );
                 this.parent.removeChild( this.child );
             });
 
-            it( 'Should remove the child', () => {
+            it( 'should remove the child', () => {
                 expect( this.parent.children.length ).toBe( 0 );
             });
 
-            it( 'Should unlink the child to its parent', () => {
+            it( 'should unlink the child to its parent', () => {
                 expect( this.child.parent ).toBe( null );
             });
 
-            it( 'Should raise an execption if the child was not found', () => {
+            it( 'should raise an execption if the child was not found', () => {
                 var iAnotherChild  = new Composite();
 
                 var functionCall = () => {
@@ -70,7 +81,7 @@ function CompositeSpecs( createComposite: () => Composite< any > ) {
         });
 
 
-        describe( 'forEachChild', () => {
+        describe( 'forEachChild()', () => {
             var iAnotherChild;
 
             beforeEach( () => {
@@ -79,7 +90,7 @@ function CompositeSpecs( createComposite: () => Composite< any > ) {
                 this.parent.addChildren( this.child, iAnotherChild );
             });
 
-            it( 'Should iterate each child', () => {
+            it( 'should iterate each child', () => {
                 var iCallback = jasmine.createSpy('iCallback');
 
                 this.parent.forEachChild( iCallback );
@@ -91,13 +102,13 @@ function CompositeSpecs( createComposite: () => Composite< any > ) {
         });
 
 
-        describe( 'isChildless', () => {
+        describe( 'isChildless()', () => {
 
-            it( 'Should return true if there are no children', () => {
+            it( 'should return true if there are no children', () => {
                 expect( this.parent.isChildless() ).toBe( true );
             });
 
-            it( 'Should return false if there are children', () => {
+            it( 'should return false if there are children', () => {
                 this.parent.addChild( this.child );
                 expect( this.parent.isChildless() ).toBe( false );
             });
@@ -105,13 +116,13 @@ function CompositeSpecs( createComposite: () => Composite< any > ) {
         });
 
 
-        describe( 'hasParent', () => {
+        describe( 'hasParent()', () => {
 
-            it( 'Should return false', () => {
+            it( 'should return false', () => {
                 expect( this.child.hasParent() ).toBe( false );
             });
 
-            it( 'Should return true', () => {
+            it( 'should return true', () => {
                 this.parent.addChild( this.child );
                 expect( this.child.hasParent() ).toBe( true );
             });

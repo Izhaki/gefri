@@ -1,9 +1,10 @@
-import { ShapeSpecs }     from './Shape.spec.ts';
-import { Context2DMock }  from '../../../../tests/mocks/Context2D';
-import { Painter }        from '../../output/Painter';
-import { ContextPainter } from '../../output/ContextPainter';
-import { Rectangle }      from './Rectangle';
-import { Rect }           from '../../geometry/Rect';
+import { ShapeSpecs }         from './Shape.spec.ts';
+import { summonUpdaterSpecs } from '../tactics/children/summonUpdater.spec.ts'
+import { Context2DMock }      from '../../../../tests/mocks/Context2D';
+import { Painter }            from '../../output/Painter';
+import { ContextPainter }     from '../../output/ContextPainter';
+import { Rectangle }          from './Rectangle';
+import { Rect }               from '../../geometry/Rect';
 
 var iTestRect: Rect = new Rect( 10, 10, 20, 20 );
 
@@ -39,13 +40,15 @@ describe( 'Rectangle', () => {
     });
 
 
-    describe( 'getRectBounds()', () => {
+    describe( 'getBoundingRect()', () => {
         it( 'should return the bounds of the rectangle', () => {
-            expect( this.rectangle.getRectBounds() ).toEqualRect( 10, 10, 20, 20 );
+            expect( this.rectangle.getBoundingRect() ).toEqualRect( 10, 10, 20, 20 );
         });
 
     });
 
-
+    describe( 'summonUpdater', () => {
+        summonUpdaterSpecs.call( this, createRectangle );
+    });
 
 });

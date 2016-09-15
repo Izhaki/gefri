@@ -1,10 +1,8 @@
 /tests/coverage/
 node_modules/
 typings/
-typings.json
-
 .DS_Store
-
 .editorconfig
-
 .vscode/tasks.json
+demo/vendor.js
+demo/vendor.css

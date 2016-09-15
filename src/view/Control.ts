@@ -1,17 +1,24 @@
 import { Viewee }         from './viewees/Viewee';
 import { ContextPainter } from './output/ContextPainter';
 import { Rect }           from './geometry/Rect';
-import { Root }           from './viewees/unseen/Root'
+import { Root }           from './viewees/invisibles/Root'
+import * as Rx            from 'rxjs';
+
+const animationFrame = Rx.Scheduler.animationFrame;
 
 export
 class Control {
-    private container: HTMLElement;
-    private canvas:    HTMLCanvasElement;
-    private context:   CanvasRenderingContext2D;
-    private painter:   ContextPainter;
-    private bounds:    Rect;
-    private contents:  Viewee = null;
-    private root:      Root;
+    private container:      HTMLElement;
+    private canvas:         HTMLCanvasElement;
+    private context:        CanvasRenderingContext2D;
+    private painter:        ContextPainter;
+    private bounds:         Rect;
+    private contents:       Viewee  = null;
+    private root:           Root;
+    private refreshIsQueued: boolean = false;
+
+    // TODO: change to private
+    public waitForFrame:    any = Rx.Scheduler.animationFrame;
 
     constructor( aContainer: HTMLElement ) {
         this.container = aContainer;
@@ -21,6 +28,42 @@ class Control {
         this.painter   = new ContextPainter( this.context );
 
         this.root = new Root( this );
+    }
+
+    setContents( aViewee: Viewee ): void {
+        if ( this.contents !== null ) {
+            this.root.removeChild( this.contents );
+        }
+
+        this.contents = aViewee;
+        this.root.addChild( aViewee );
+
+        this.root.paint( this.painter );
+    }
+
+    getBoundingRect(): Rect {
+        return this.bounds;
+    }
+
+    queueRefresh(): void {
+        if ( !this.refreshIsQueued ) {
+            this.refreshIsQueued = true;
+
+            // waitForFrame will call the callback before the next render.
+            // Using requestAnimationFrame also mean this will happen after
+            // current tasks in the even loop has been fully processed, which
+            // may be a user action that triggered many changes to the viewee
+            // composition.
+            // For more: https://blog.risingstack.com/writing-a-javascript-framework-execution-timing-beyond-settimeout/
+            this.waitForFrame.schedule( () => {
+                this.refreshIsQueued = false;
+                this.root.refresh( this.painter );
+            });
+        }
+    }
+
+    getRoot(): Root {
+        return this.root;
     }
 
     private createCanvas( aContainer: HTMLElement ) : HTMLCanvasElement {
@@ -40,18 +83,4 @@ class Control {
         return context;
     }
 
-    public setContents( aViewee: Viewee ) {
-        if ( this.contents !== null ) {
-            this.root.removeChild( this.contents );
-        }
-
-        this.contents = aViewee;
-        this.root.addChild( aViewee );
-
-        this.root.paint( this.painter );
-    }
-
-    public getBoundingRect() {
-        return this.bounds;
-    }
 }

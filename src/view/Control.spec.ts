@@ -2,17 +2,38 @@ import { Control }   from './Control';
 import { Rectangle } from './viewees/shapes/Rectangle';
 import { Rect }      from './geometry/Rect';
 
+class waitForFrameMock {
+    private callback;
+
+    schedule( aCallback ) {
+        this.callback = aCallback;
+    }
+
+    flush() {
+        this.callback();
+    }
+
+}
+
+export
+function createControl(): Control {
+    var iViewElement = document.getElementById( 'view' );
+
+    iViewElement.offsetWidth  = 500;
+    iViewElement.offsetHeight = 400;
+    iViewElement.innerHTML    = '';
+
+    var iControl = new Control( iViewElement );
+    iControl.waitForFrame = new waitForFrameMock();
+
+    return iControl;
+}
+
 describe( 'Control', () => {
 
     beforeEach( () => {
-        var iViewElement = document.getElementById( 'view' );
-
-        iViewElement.offsetWidth  = 500;
-        iViewElement.offsetHeight = 400;
-        iViewElement.innerHTML = '';
-
-        this.control = new Control( iViewElement );
-        this.canvas  = iViewElement.firstElementChild;
+        this.control = createControl();
+        this.canvas  = this.control.container.firstElementChild;
     });
 
 
@@ -66,6 +87,37 @@ describe( 'Control', () => {
 
         it( 'should return a rect at 0,0 with the dimensions of the control' , () => {
             expect( this.control.getBoundingRect() ).toEqualRect( 0, 0, 500, 400 );
+        });
+
+    });
+
+    describe( 'queueRefresh()', () => {
+        beforeEach( () => {
+            this.root    = this.control.root,
+            this.painter = this.control.painter;
+            spyOn( this.root, 'refresh' );
+        });
+
+        it( 'should ask the root viewee to refresh before the next render' , () => {
+            this.control.queueRefresh();
+            this.control.waitForFrame.flush();
+
+            expect( this.root.refresh ).toHaveBeenCalledWith( this.painter );
+        });
+
+        it( 'should not queue any refresh requests until the previous one has been processed', () => {
+
+            this.control.queueRefresh();
+            this.control.queueRefresh();
+            this.control.queueRefresh();
+            this.control.waitForFrame.flush();
+
+            this.control.queueRefresh();
+            this.control.queueRefresh();
+            this.control.waitForFrame.flush();
+
+            expect( this.root.refresh.calls.count() ).toBe( 2 );
+
         });
 
     });

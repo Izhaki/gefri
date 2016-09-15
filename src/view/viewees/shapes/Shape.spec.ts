@@ -71,7 +71,7 @@ function ShapeSpecs( createShape: () => Shape, createPainter: () => Painter ) {
             var iMockRectBounds = new Rect( 10, 10, 20, 20);
 
             beforeEach( () => {
-                spyOn( this.shape, 'getRectBounds' ).and.returnValue( iMockRectBounds );
+                spyOn( this.shape, 'getBoundingRect' ).and.returnValue( iMockRectBounds );
                 spyOn( this.painter, 'translate' );
                 spyOn( this.painter, 'intersectClipAreaWith' );
 
@@ -113,8 +113,8 @@ function ShapeSpecs( createShape: () => Shape, createPainter: () => Painter ) {
                 spyOn( this.painter, 'translate' )
                 this.shape.applyTransformations( this.painter );
 
-                var expectedTranslateX = this.shape.getRectBounds().getLeft(),
-                    expectedTranslateY = this.shape.getRectBounds().getTop();
+                var expectedTranslateX = this.shape.getBoundingRect().getLeft(),
+                    expectedTranslateY = this.shape.getBoundingRect().getTop();
 
                 expect( this.painter.translate ).toHaveBeenCalledWith( expectedTranslateX, expectedTranslateY );
             });

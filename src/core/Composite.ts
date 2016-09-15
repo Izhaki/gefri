@@ -1,7 +1,7 @@
 export
 class Composite< T > {
-    private children: T[];
-    private parent :  T;
+    private children: Composite<T>[];
+    private parent;
 
     constructor() {
         this.children = [];
@@ -12,9 +12,9 @@ class Composite< T > {
      * Adding and removing
      ***************************************************************************/
 
-    addChild( aChild ): void {
+    addChild( aChild: Composite<T> ): void {
         this.children.push( aChild );
-        aChild.parent = this;
+        aChild.setParent( this );
     }
 
     addChildren( ...args: T[] ): void {
@@ -23,7 +23,7 @@ class Composite< T > {
         }
     }
 
-    removeChild( aChild ): void {
+    removeChild( aChild: Composite<T> ): void {
         var iChildIndex = this.children.indexOf( aChild );
 
         if ( iChildIndex === -1 ) {
@@ -32,6 +32,22 @@ class Composite< T > {
             aChild.parent = null;
             this.children.splice( iChildIndex, 1 );
         }
+    }
+
+    /****************************************************************************
+     * Parent
+     ***************************************************************************/
+
+    hasParent(): boolean {
+        return this.parent != null;
+    }
+
+    setParent( aParent: Composite<T> ): void {
+        this.parent = aParent;
+    }
+
+    getParent() : T {
+        return this.parent;
     }
 
     /****************************************************************************
@@ -46,10 +62,6 @@ class Composite< T > {
 
     isChildless(): boolean {
         return this.children.length === 0;
-    }
-
-    hasParent(): boolean {
-        return this.parent != null;
     }
 
 }

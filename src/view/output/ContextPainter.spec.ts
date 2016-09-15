@@ -1,8 +1,9 @@
-import { Context2DMock }  from '../../../tests/mocks/Context2D';
-import { Rect }           from '../geometry/Rect';
-import { ContextPainter } from './ContextPainter';
-import { Painter }        from './Painter';
-import { PainterSpecs }   from './Painter.spec.ts';
+import { Context2DMock }              from '../../../tests/mocks/Context2D';
+import { Rect }                       from '../geometry/Rect';
+import { ContextPainter,
+         ANTIALIASING_EXTRA_MARGINS } from './ContextPainter';
+import { Painter }                    from './Painter';
+import { PainterSpecs }               from './Painter.spec.ts';
 
 function createPainter(): Painter {
     return new ContextPainter( new Context2DMock() );
@@ -48,7 +49,7 @@ describe( 'ContextPainter', () => {
 
     describe( 'drawRectangle()', () => {
 
-        it( 'should draw a rect on the context provided', () => {
+        it( 'should draw a rect on the context', () => {
             spyOn( this.context, 'rect' );
 
             var iRect = new Rect( 10, 10, 20, 20 );
@@ -59,6 +60,21 @@ describe( 'ContextPainter', () => {
 
     });
 
+    describe( 'erase()', () => {
+
+        it( 'should clear the rect on the context while applying some extra margins to account for antialiasing effect', () => {
+            spyOn( this.context, 'clearRect' );
+
+            var iRect = new Rect( 10, 10, 20, 20 );
+            this.painter.erase( iRect );
+
+            let iExpected = iRect.clone();
+            iExpected.expand( ANTIALIASING_EXTRA_MARGINS );
+
+            expect( this.context.clearRect ).toHaveBeenCalledWith( iExpected.x, iExpected.y, iExpected.w, iExpected.h );
+        });
+
+    });
 
     describe( 'intersectClipAreaWith()', () => {
 

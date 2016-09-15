@@ -1,6 +1,10 @@
 import { Viewee }         from './Viewee';
 import { Painter }        from './../output/Painter';
+import { Rectangle }      from './shapes/Rectangle';
 import { CompositeSpecs } from '../../core/Composite.spec.ts';
+import { createControl }  from '../Control.spec.ts';
+import { Rect }           from '../geometry/Rect';
+import { Point }          from '../geometry/Point';
 
 export
 function VieweeSpecs(  createViewee: () => Viewee, createPainter: () => Painter  ) {
@@ -79,6 +83,38 @@ function VieweeSpecs(  createViewee: () => Viewee, createPainter: () => Painter 
 
         });
 
+
+        describe( 'erase()', () => {
+
+            beforeEach( () => {
+
+                this.control = createControl();
+                this.painter = this.control.painter;
+
+                // To ensure we erase in absolute coordinates
+                this.absoluteOffset = new Point( 10, 12 );
+                this.rect = new Rectangle( new Rect( this.absoluteOffset.x, this.absoluteOffset.y , 500, 500 ) );
+                this.rect.addChildren( this.viewee );
+
+                this.control.setContents( this.rect );
+
+                spyOn( this.painter, 'erase' );
+            });
+
+            it( 'should erase its bounds from the context', () => {
+                this.viewee.erase();
+                this.control.waitForFrame.flush();
+
+                let iActualBound    = this.painter.erase.calls.argsFor(0)[0],
+                    iExpectedBounds = this.viewee.getBoundingRect();
+
+                // Accounting for absolute coordinates.
+                iExpectedBounds.translate( this.absoluteOffset );
+
+                expect( iActualBound ).toEqual( iExpectedBounds );
+            });
+
+        });
 
     });
 
