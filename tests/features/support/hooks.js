@@ -3,7 +3,7 @@ var mockDom = require( '../../../tests/mocks/mockDom' );
 var hooks = function () {
 
     this.Before( function ( aScenario, aNext ) {
-        mockDom( [ 'dist/gefri.js' ], aNext );
+        mockDom( [ 'demo/gefri.js' ], aNext );
     });
 
     this.Before( function ( aScenario, aNext ) {

@@ -7,7 +7,7 @@
     "loglevel": "warn"
   },
   "scripts": {
-    "postinstall": "typings install && mkdir -p dist && npm run build-vendor",
+    "postinstall": "typings install && npm run build-vendor",
     "build-vendor": "npm run build-vendor-js && npm run build-vendor-css",
     "build-vendor-js": "cat node_modules/material-design-lite/material.min.js node_modules/jquery/dist/jquery.slim.min.js > demo/vendor.js",
     "build-vendor-css": "cat node_modules/material-design-lite/material.min.css > demo/vendor.css",
@@ -15,10 +15,10 @@
     "features": "./echolor.sh --hex 1abc9c 'Running behaviour tests...' && ts-node node_modules/.bin/cucumber.js --tags ~@ignore --format progress tests/features",
     "coverage": "./echolor.sh --hex 1abc9c 'Running unit tests...' && ts-node node_modules/istanbul/lib/cli.js cover --config=./tests/istanbul.yml ./tests/unit/jasmine.js",
     "build-js-min": "./echolor.sh --hex 1abc9c 'Building gefri.min.js...' && browserify src/gefri.ns.ts -p [tsify] --standalone gefri | uglifyjs -c warnings=false > dist/gefri.min.js",
-    "build-js": "./echolor.sh --hex 1abc9c 'Building gefri.js...' && browserify src/gefri.ns.ts -p [tsify] -v --debug -o --standalone gefri > dist/gefri.js && cat dist/gefri.js > demo/gefri.js",
+    "build-js": "./echolor.sh --hex 1abc9c 'Building gefri.js...' && browserify src/gefri.ns.ts -p [tsify] -v --debug -o --standalone gefri > demo/gefri.js",
     "watch": "npm run watch-ts & npm run watch-specs & npm run watch-features",
     "watch-ts": "chokidar -p --poll-interval 999 'src/**/!(*spec).ts' -c 'npm run on-ts-change'",
-    "on-ts-change": "npm run coverage && npm run build-js && npm run build-js-min && npm run features && npm run done",
+    "on-ts-change": "npm run coverage && npm run build-js && npm run features && npm run done",
     "watch-specs": "chokidar -p --poll-interval 999 'src/**/*.spec.ts' -c 'npm run on-specs-change'",
     "on-specs-change": "npm run coverage && npm run done",
     "watch-features": "chokidar -p --poll-interval 999 'features/**/*.*' -c 'npm run on-features-change'",

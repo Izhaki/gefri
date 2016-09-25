@@ -6,3 +6,4 @@ typings/
 .vscode/tasks.json
 demo/vendor.js
 demo/vendor.css
+demo/gefri.js
