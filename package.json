@@ -8,23 +8,23 @@
   },
   "scripts": {
     "postinstall": "typings install && npm run build-vendor",
-    "build-vendor": "npm run build-vendor-js && npm run build-vendor-css",
-    "build-vendor-js": "cat node_modules/material-design-lite/material.min.js node_modules/jquery/dist/jquery.slim.min.js > demo/vendor.js",
-    "build-vendor-css": "cat node_modules/material-design-lite/material.min.css > demo/vendor.css",
+    "build-vendor": "npm-run-all build-vendor:*",
+    "build-vendor:js": "cat node_modules/material-design-lite/material.min.js node_modules/jquery/dist/jquery.slim.min.js > demo/vendor.js",
+    "build-vendor:css": "cat node_modules/material-design-lite/material.min.css > demo/vendor.css",
     "test": "ts-node ./tests/unit/jasmine.js",
     "features": "./echolor.sh --hex 1abc9c 'Running behaviour tests...' && ts-node node_modules/.bin/cucumber.js --tags ~@ignore --format progress tests/features",
     "coverage": "./echolor.sh --hex 1abc9c 'Running unit tests...' && ts-node node_modules/istanbul/lib/cli.js cover --config=./tests/istanbul.yml ./tests/unit/jasmine.js",
     "build-js-min": "./echolor.sh --hex 1abc9c 'Building gefri.min.js...' && browserify src/gefri.ns.ts -p [tsify] --standalone gefri | uglifyjs -c warnings=false > dist/gefri.min.js",
     "build-js": "./echolor.sh --hex 1abc9c 'Building gefri.js...' && browserify src/gefri.ns.ts -p [tsify] -v --debug -o --standalone gefri > demo/gefri.js",
-    "watch": "npm run watch-ts & npm run watch-specs & npm run watch-features",
-    "watch-ts": "chokidar -p --poll-interval 999 'src/**/!(*spec).ts' -c 'npm run on-ts-change'",
-    "on-ts-change": "npm run coverage && npm run build-js && npm run features && npm run done",
-    "watch-specs": "chokidar -p --poll-interval 999 'src/**/*.spec.ts' -c 'npm run on-specs-change'",
-    "on-specs-change": "npm run coverage && npm run done",
-    "watch-features": "chokidar -p --poll-interval 999 'features/**/*.*' -c 'npm run on-features-change'",
-    "on-features-change": "npm run build-js && npm run features && npm run done",
+    "watch": "npm-run-all --parallel watch:*",
+    "watch:ts": "chokidar -p --poll-interval 999 'src/**/!(*spec).ts' -c 'npm run on-ts-change'",
+    "on-ts-change": "npm-run-all coverage build-js features done",
+    "watch:specs": "chokidar -p --poll-interval 999 'src/**/*.spec.ts' -c 'npm run on-specs-change'",
+    "on-specs-change": "npm-run-all coverage done",
+    "watch:features": "chokidar -p --poll-interval 999 'features/**/*.*' -c 'npm run on-features-change'",
+    "on-features-change": "npm-run-all build-js features done",
     "serve": "npm run build-js && http-server demo/",
-    "serve-watch": "npm run serve & npm run watch",
+    "serve-watch": "npm-run-all --parallel serve watch",
     "dev": "npm run serve-watch --silent",
     "done": "figlet -f 'Dancing Font' 'Done'"
   },
@@ -51,6 +51,7 @@
     "jasmine": "^2.4.1",
     "jasmine-fail-fast": "^2.0.0",
     "jsdom": "^9.4.1",
+    "npm-run-all": "^3.1.0",
     "rxjs": "^5.0.0-beta.12",
     "ts-node": "^0.9.3",
     "tsify": "^0.16.0",
@@ -60,9 +61,7 @@
     "zone.js": "^0.6.25"
   },
   "dependencies": {
-    "@angular/core": "^2.0.1",
     "jquery": "^3.1.0",
-    "material-design-lite": "^1.2.1",
-    "zone.js": "^0.6.25"
+    "material-design-lite": "^1.2.1"
   }
 }
