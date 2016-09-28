@@ -1,8 +1,8 @@
-import { Composite }     from './../../core/Composite';
-import { Painter }       from './../output/Painter';
-import { Updater }       from './../output/Updater';
-import { Transformable } from './../output/Transformable';
-import { Rect }          from '../geometry/Rect';
+import { Composite     } from './../../core';
+import { Painter,
+         Updater,
+         Transformable } from './../output';
+import { Rect          } from '../geometry';
 
 export
 abstract class Viewee extends Composite< Viewee > {

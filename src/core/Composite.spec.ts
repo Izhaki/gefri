@@ -1,4 +1,4 @@
-import { Composite } from './Composite';
+import { Composite } from './';
 
 export
 function CompositeSpecs( createComposite: () => Composite< any > ) {

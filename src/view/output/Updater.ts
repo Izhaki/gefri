@@ -1,6 +1,6 @@
-import { Transformable } from './Transformable';
-import { Rect, Rects }   from '../geometry/Rect';
-import { Painter }       from './Painter';
+import { Transformable,
+         Painter        } from './';
+import { Rect, Rects    } from '../geometry';
 
 export
 

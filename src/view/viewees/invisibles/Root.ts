@@ -1,8 +1,8 @@
-import { Invisible }  from './Invisible';
-import { Painter }    from '../../output/Painter';
-import { Updater }    from '../../output/Updater';
-import { Control }    from '../../Control';
-import { Rect }       from '../../geometry/Rect';
+import { Invisible } from './';
+import { Painter, 
+         Updater   } from '../../output';
+import { Control   } from '../../Control';
+import { Rect      } from '../../geometry';
 
 // An adapter between the viewee composition and the control.
 // There is only one root per viewee hierarchy, and it is created automatically

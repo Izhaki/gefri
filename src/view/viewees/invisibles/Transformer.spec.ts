@@ -1,10 +1,11 @@
-import { InvisibleSpecs }     from './Invisible.spec.ts';
+import { InvisibleSpecs     } from './Invisible.spec.ts';
 import { summonUpdaterSpecs } from '../tactics/children/summonUpdater.spec.ts'
 
-import { Transformer }        from './Transformer';
-import { Context2DMock }      from '../../../../tests/mocks/Context2D';
-import { Painter }            from '../../output/Painter';
-import { ContextPainter }     from '../../output/ContextPainter';
+import { Transformer        } from './';
+import { Context2DMock      } from '../../../../tests/mocks';
+import { Painter,
+         ContextPainter     } from '../../output';
+
 
 function createTransformer(): Transformer {
     return new Transformer();

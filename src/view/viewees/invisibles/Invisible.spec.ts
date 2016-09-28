@@ -1,6 +1,6 @@
 import { VieweeSpecs } from '../Viewee.spec.ts';
-import { Invisible }   from './Invisible';
-import { Painter }     from './../../output/Painter';
+import { Invisible   } from './';
+import { Painter     } from './../../output';
 
 export
 function InvisibleSpecs( createInvisible: () => Invisible, createPainter: () => Painter ) {

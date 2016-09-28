@@ -1,8 +1,8 @@
-import { Viewee }         from './viewees/Viewee';
-import { ContextPainter } from './output/ContextPainter';
-import { Rect }           from './geometry/Rect';
-import { Root }           from './viewees/invisibles/Root';
-import { inject }         from '../inject';
+import { Viewee         } from './viewees/Viewee';
+import { ContextPainter } from './output';
+import { Rect           } from './geometry';
+import { Root           } from './viewees/invisibles';
+import { inject         } from '../inject';
 
 export
 class Control {

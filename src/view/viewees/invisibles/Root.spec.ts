@@ -1,11 +1,10 @@
 import { InvisibleSpecs } from './Invisible.spec.ts';
-import { createControl }  from '../../Control.spec.ts';
-import { Context2DMock }  from '../../../../tests/mocks/Context2D';
-import { Painter }        from '../../output/Painter';
-import { ContextPainter } from '../../output/ContextPainter';
-import { Root }           from './Root'
-import { Rect }           from '../../geometry/Rect';
-
+import { createControl  } from '../../Control.spec.ts';
+import { Context2DMock  } from '../../../../tests/mocks';
+import { Painter,
+         ContextPainter } from '../../output';
+import { Root           } from './'
+import { Rect           } from '../../geometry';
 
 export
 function createRoot(): Root {

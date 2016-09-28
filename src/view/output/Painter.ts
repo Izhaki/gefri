@@ -1,6 +1,6 @@
-import { Transformable } from './Transformable';
-import { Rect }          from '../geometry/Rect';
-import { Point }         from '../geometry/Point';
+import { Transformable } from './';
+import { Rect, 
+         Point         } from '../geometry';
 
 export
 abstract class Painter extends Transformable {

@@ -1,4 +1,4 @@
-import { Updater } from '../../../output/Updater';
+import { Updater } from '../../../output';
 
 export
 function summonUpdater( viewee ) : Updater {

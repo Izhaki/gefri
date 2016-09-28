@@ -1,9 +1,9 @@
-import { Context2DMock }              from '../../../tests/mocks/Context2D';
-import { Rect }                       from '../geometry/Rect';
+import { Context2DMock              } from '../../../tests/mocks';
+import { Rect                       } from '../geometry';
 import { ContextPainter,
          ANTIALIASING_EXTRA_MARGINS } from './ContextPainter';
-import { Painter }                    from './Painter';
-import { PainterSpecs }               from './Painter.spec.ts';
+import { Painter                    } from './';
+import { PainterSpecs               } from './Painter.spec.ts';
 
 function createPainter(): Painter {
     return new ContextPainter( new Context2DMock() );

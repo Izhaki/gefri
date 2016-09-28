@@ -1,10 +1,9 @@
-import { Invisible }     from './Invisible';
-import { Painter }       from '../../output/Painter';
-import { Updater }       from '../../output/Updater';
-import { Transformable } from '../../output/Transformable';
-import { Point }         from '../../geometry/Point';
-import { Rect }          from '../../geometry/Rect';
-
+import { Invisible     } from './';
+import { Painter,
+         Updater,
+         Transformable } from '../../output';
+import { Point, 
+         Rect          } from '../../geometry';
 import { summonUpdater } from '../tactics/children/summonUpdater'
 
 export

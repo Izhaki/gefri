@@ -1,6 +1,6 @@
 import { Control }   from './Control';
 import { Rectangle } from './viewees/shapes/Rectangle';
-import { Rect }      from './geometry/Rect';
+import { Rect }      from './geometry';
 import { inject }    from '../inject';
 
 export

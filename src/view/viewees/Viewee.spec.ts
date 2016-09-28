@@ -1,10 +1,11 @@
-import { Viewee }         from './Viewee';
-import { Painter }        from './../output/Painter';
-import { Rectangle }      from './shapes/Rectangle';
+import { Viewee         } from './Viewee';
+import { Painter        } from './../output';
+import { Rectangle      } from './shapes/Rectangle';
 import { CompositeSpecs } from '../../core/Composite.spec.ts';
-import { createControl }  from '../Control.spec.ts';
-import { Rect }           from '../geometry/Rect';
-import { Point }          from '../geometry/Point';
+import { createControl  } from '../Control.spec.ts';
+import { Rect, 
+         Point          } from '../geometry';
+
 
 export
 function VieweeSpecs(  createViewee: () => Viewee, createPainter: () => Painter  ) {

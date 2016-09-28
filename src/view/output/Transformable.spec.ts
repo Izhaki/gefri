@@ -1,5 +1,5 @@
-import { Transformable } from './Transformable';
-import { Rect }    from '../geometry/Rect';
+import { Transformable } from './';
+import { Rect          } from '../geometry';
 
 export
 function TransformableSpecs( createTransformable: () => Transformable ) {

@@ -1,9 +1,8 @@
-import { Viewee }        from './../Viewee';
-import { Painter }       from './../../output/Painter';
-import { Updater }       from './../../output/Updater';
-import { Transformable } from './../../output/Transformable';
-import { Rect }          from './../../geometry/Rect';
-
+import { Viewee        } from './../Viewee';
+import { Painter, 
+         Updater, 
+         Transformable } from './../../output';
+import { Rect          } from './../../geometry';
 import { summonUpdater } from '../tactics/children/summonUpdater'
 
 export

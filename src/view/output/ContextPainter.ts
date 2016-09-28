@@ -1,5 +1,5 @@
-import { Painter } from './Painter';
-import { Rect } from '../geometry/Rect';
+import { Painter } from './';
+import { Rect    } from '../geometry';
 
 export
 const ANTIALIASING_EXTRA_MARGINS = 1

@@ -1,6 +1,6 @@
 import { TransformableSpecs } from './Transformable.spec.ts'
-import { Painter }            from './Painter';
-import { Rect }               from '../geometry/Rect';
+import { Painter            } from './';
+import { Rect               } from '../geometry';
 
 export
 function PainterSpecs( createPainter: () => Painter ) {

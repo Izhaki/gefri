@@ -1,7 +1,7 @@
-import { Stateful }        from './Stateful';
-import { TransformMatrix } from '../geometry/TransformMatrix';
-import { Rect }            from '../geometry/Rect';
-import { Point }           from '../geometry/Point';
+import { Stateful         } from './';
+import { TransformMatrix, 
+         Rect, 
+         Point            } from '../geometry';
 
 export
 abstract class Transformable extends Stateful {

@@ -1,6 +1,6 @@
-import { TransformMatrix } from './TransformMatrix';
-import { Rect }            from './Rect';
-import { Point }           from './Point';
+import { TransformMatrix,
+         Rect, 
+         Point            } from './';
 
 describe( 'TransformMatrix', () => {
 

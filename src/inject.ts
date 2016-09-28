@@ -1,5 +1,6 @@
-import { ReflectiveInjector, Provider } from '@angular/core';
-import * as Rx                          from 'rxjs';
+import { ReflectiveInjector,
+         Provider            } from '@angular/core';
+import * as Rx                 from 'rxjs';
 
 const animationFrame = Rx.Scheduler.animationFrame;
 

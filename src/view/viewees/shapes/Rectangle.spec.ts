@@ -1,10 +1,10 @@
-import { ShapeSpecs }         from './Shape.spec.ts';
-import { summonUpdaterSpecs } from '../tactics/children/summonUpdater.spec.ts'
-import { Context2DMock }      from '../../../../tests/mocks/Context2D';
-import { Painter }            from '../../output/Painter';
-import { ContextPainter }     from '../../output/ContextPainter';
-import { Rectangle }          from './Rectangle';
-import { Rect }               from '../../geometry/Rect';
+import { ShapeSpecs         } from './Shape.spec.ts';
+import { summonUpdaterSpecs } from '../tactics/children/summonUpdater.spec.ts';
+import { Context2DMock      } from '../../../../tests/mocks';
+import { Painter,
+         ContextPainter     } from '../../output';
+import { Rectangle          } from './Rectangle';
+import { Rect               } from '../../geometry';
 
 var iTestRect: Rect = new Rect( 10, 10, 20, 20 );
 

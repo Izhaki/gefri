@@ -1,2 +1,2 @@
-export { Point } from './Point';
-export { Rect } from './Rect';
+export { Point } from './';
+export { Rect  } from './';

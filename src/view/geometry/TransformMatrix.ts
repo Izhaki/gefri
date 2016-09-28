@@ -4,8 +4,8 @@
  * skew).
  */
 
-import { Rect }  from './Rect';
-import { Point } from './Point';
+import { Rect,
+         Point } from './';
 
 export
 class TransformMatrix {

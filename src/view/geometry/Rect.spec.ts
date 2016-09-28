@@ -1,5 +1,5 @@
-import { Rect }  from './Rect';
-import { Point } from './Point';
+import { Rect }  from './';
+import { Point } from './';
 
 describe( 'Rect', () => {
 

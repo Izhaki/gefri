@@ -1,6 +1,6 @@
-import { Viewee }  from '../Viewee';
-import { Painter } from '../../output/Painter';
-import { Updater } from '../../output/Updater';
+import { Viewee   }  from '../Viewee';
+import { Painter, 
+         Updater  } from '../../output';
 
 export
 abstract class Invisible extends Viewee {
