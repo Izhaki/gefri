@@ -1,19 +1,7 @@
 import { Control }   from './Control';
 import { Rectangle } from './viewees/shapes/Rectangle';
 import { Rect }      from './geometry/Rect';
-
-class waitForFrameMock {
-    private callback;
-
-    schedule( aCallback ) {
-        this.callback = aCallback;
-    }
-
-    flush() {
-        this.callback();
-    }
-
-}
+import { inject }    from '../inject';
 
 export
 function createControl(): Control {
@@ -24,7 +12,6 @@ function createControl(): Control {
     iViewElement.innerHTML    = '';
 
     var iControl = new Control( iViewElement );
-    iControl.waitForFrame = new waitForFrameMock();
 
     return iControl;
 }
@@ -91,30 +78,32 @@ describe( 'Control', () => {
 
     });
 
+
     describe( 'queueRefresh()', () => {
         beforeEach( () => {
-            this.root    = this.control.root,
-            this.painter = this.control.painter;
+            this.root         = this.control.root,
+            this.painter      = this.control.painter;
+            this.waitForFrame = inject('waitForFrame');
             spyOn( this.root, 'refresh' );
         });
 
         it( 'should ask the root viewee to refresh before the next render' , () => {
             this.control.queueRefresh();
-            this.control.waitForFrame.flush();
+            this.waitForFrame.flush();
 
             expect( this.root.refresh ).toHaveBeenCalledWith( this.painter );
         });
 
-        it( 'should not queue any refresh requests until the previous one has been processed', () => {
+        it( 'should not queue any new refresh requests until the previous one has been processed', () => {
 
             this.control.queueRefresh();
             this.control.queueRefresh();
             this.control.queueRefresh();
-            this.control.waitForFrame.flush();
+            this.waitForFrame.flush();
 
             this.control.queueRefresh();
             this.control.queueRefresh();
-            this.control.waitForFrame.flush();
+            this.waitForFrame.flush();
 
             expect( this.root.refresh.calls.count() ).toBe( 2 );
 

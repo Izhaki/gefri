@@ -1,33 +1,30 @@
 import { Viewee }         from './viewees/Viewee';
 import { ContextPainter } from './output/ContextPainter';
 import { Rect }           from './geometry/Rect';
-import { Root }           from './viewees/invisibles/Root'
-import * as Rx            from 'rxjs';
-
-const animationFrame = Rx.Scheduler.animationFrame;
+import { Root }           from './viewees/invisibles/Root';
+import { inject }         from '../inject';
 
 export
 class Control {
-    private container:      HTMLElement;
-    private canvas:         HTMLCanvasElement;
-    private context:        CanvasRenderingContext2D;
-    private painter:        ContextPainter;
-    private bounds:         Rect;
-    private contents:       Viewee  = null;
-    private root:           Root;
+    private container:       HTMLElement;
+    private canvas:          HTMLCanvasElement;
+    private context:         CanvasRenderingContext2D;
+    private painter:         ContextPainter;
+    private bounds:          Rect;
+    private contents:        Viewee  = null;
+    private root:            Root;
     private refreshIsQueued: boolean = false;
-
-    // TODO: change to private
-    public waitForFrame:    any = Rx.Scheduler.animationFrame;
+    private waitForFrame:    any;
 
     constructor( aContainer: HTMLElement ) {
-        this.container = aContainer;
-        this.bounds    = new Rect( 0, 0, aContainer.offsetWidth, aContainer.offsetHeight );
-        this.canvas    = this.createCanvas( aContainer );
-        this.context   = this.getContext( this.canvas );
-        this.painter   = new ContextPainter( this.context );
+        this.container    = aContainer;
+        this.bounds       = new Rect( 0, 0, aContainer.offsetWidth, aContainer.offsetHeight );
+        this.canvas       = this.createCanvas( aContainer );
+        this.context      = this.getContext( this.canvas );
+        this.painter      = new ContextPainter( this.context );
+        this.waitForFrame = inject( 'waitForFrame' );
 
-        this.root = new Root( this );
+        this.root         = new Root( this );
     }
 
     setContents( aViewee: Viewee ): void {

@@ -1,4 +1,6 @@
-var mockDom  = require( '../mocks/mockDom' );
+var mockDom          = require( '../mocks/mockDom' );
+var mockWaitForFrame = require( '../mocks/mockWaitForFrame.ts' ).mockWaitForFrame;
+
 var Jasmine  = require('jasmine');
 var failFast = require('jasmine-fail-fast');
 var jasmine  = new Jasmine();
@@ -19,6 +21,8 @@ jasmine.onComplete( function( passed ) {
         console.log( 'Ola Kala' );
     }
 });
+
+mockWaitForFrame();
 
 mockDom( [], function () {
     jasmine.execute();
