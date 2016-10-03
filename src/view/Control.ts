@@ -35,7 +35,7 @@ class Control {
         this.contents = aViewee;
         this.root.addChild( aViewee );
 
-        this.root.paint( this.painter );
+        this.queueRefresh();
     }
 
     getBoundingRect(): Rect {

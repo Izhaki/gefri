@@ -41,7 +41,8 @@ describe( 'Control', () => {
     describe( 'setContents()', () => {
 
         beforeEach( () => {
-            this.rectangle = new Rectangle( new Rect( 10, 10, 20, 20 ) );
+            this.rectangle    = new Rectangle( new Rect( 10, 10, 20, 20 ) );
+            this.waitForFrame = inject( 'waitForFrame' );
         });
 
         it( 'should remove the previous contents from the root', () => {
@@ -63,6 +64,7 @@ describe( 'Control', () => {
             spyOn( this.control.root, 'paint' );
 
             this.control.setContents( this.rectangle );
+            this.waitForFrame.flush();
 
             expect( this.control.root.paint ).toHaveBeenCalled();
         });
@@ -83,7 +85,7 @@ describe( 'Control', () => {
         beforeEach( () => {
             this.root         = this.control.root,
             this.painter      = this.control.painter;
-            this.waitForFrame = inject('waitForFrame');
+            this.waitForFrame = inject( 'waitForFrame' );
             spyOn( this.root, 'refresh' );
         });
 

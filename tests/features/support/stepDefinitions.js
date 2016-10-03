@@ -1,5 +1,6 @@
 var chai       = require( 'chai' );
 var chaiSubset = require( 'chai-subset' );
+var inject     = require( '../../../src/inject' ).inject;
 
 chai.config.truncateThreshold = 0; // To get some more details when expect fails
 chai.use( chaiSubset );
@@ -62,7 +63,9 @@ module.exports = function () {
 
 
 	this.When( `the view is rendered`, function ( aNext ) {
+        var waitForFrame = inject( 'waitForFrame' );
 		this.control.setContents( this.rootViewee );
+        waitForFrame.flush();
 		aNext();
 	});
 
