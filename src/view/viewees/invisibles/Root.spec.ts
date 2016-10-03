@@ -38,6 +38,13 @@ describe( 'Root', () => {
             expect( iUpdater.flushUpdates ).toHaveBeenCalledWith( this.painter );
         });
 
+        it( 'should repaint the composition', () => {
+            spyOn( this.root, 'paint' );
+            this.root.refresh( this.painter );
+
+            expect( this.root.paint ).toHaveBeenCalledWith( this.painter );
+        });
+
     });
 
     describe( 'beforeChildrenPainting()', () => {

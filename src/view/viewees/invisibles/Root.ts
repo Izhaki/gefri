@@ -1,5 +1,5 @@
 import { Invisible } from './';
-import { Painter, 
+import { Painter,
          Updater   } from '../../output';
 import { Control   } from '../../Control';
 import { Rect      } from '../../geometry';
@@ -20,6 +20,10 @@ class Root extends Invisible {
 
     refresh( aPainter: Painter ): void {
         this.updater.flushUpdates( aPainter );
+
+        // TODO: For now, we just repaint the whole composition rather than
+        // damaged areas only.
+        this.paint( aPainter );
     }
 
     summonUpdater() : Updater {
