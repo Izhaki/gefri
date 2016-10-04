@@ -1,11 +1,15 @@
-var mockDom = require( '../../../tests/mocks/mockDom' );
+var mockDom          = require( '../../../tests/mocks/mockDom' );
 var mockWaitForFrame = require( '../../../tests/mocks/mockWaitForFrame.ts' ).mockWaitForFrame;
 
 var hooks = function () {
 
     this.Before( function ( aScenario, aNext ) {
-        mockWaitForFrame();
         mockDom( [ 'demo/gefri.js' ], aNext );
+    });
+
+    this.Before( function ( aScenario, aNext ) {
+        mockWaitForFrame( gefri.di );
+        aNext();
     });
 
     this.Before( function ( aScenario, aNext ) {

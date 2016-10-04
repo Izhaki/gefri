@@ -1,7 +1,7 @@
 import { Control }   from './Control';
 import { Rectangle } from './viewees/shapes/Rectangle';
 import { Rect }      from './geometry';
-import { inject }    from '../inject';
+import { inject }    from '../di';
 
 export
 function createControl(): Control {

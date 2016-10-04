@@ -1,2 +1,5 @@
 import * as view from './view/view.ns';
-export {view};
+export { view };
+
+import * as di from './di'
+export { di };

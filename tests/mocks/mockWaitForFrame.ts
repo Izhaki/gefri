@@ -1,5 +1,3 @@
-import { overrideProviders } from '../../src/inject';
-
 class waitForFrameMock {
     private callback;
 
@@ -13,8 +11,8 @@ class waitForFrameMock {
 }
 
 export
-function mockWaitForFrame() {
-    overrideProviders([{
+function mockWaitForFrame( di ) {
+    di.overrideProviders([{
         provide: 'waitForFrame', useClass: waitForFrameMock
     }]);
 }

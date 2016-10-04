@@ -2,7 +2,7 @@ import { Viewee         } from './viewees/Viewee';
 import { ContextPainter } from './output';
 import { Rect           } from './geometry';
 import { Root           } from './viewees/invisibles';
-import { inject         } from '../inject';
+import { inject         } from '../di';
 
 export
 class Control {
