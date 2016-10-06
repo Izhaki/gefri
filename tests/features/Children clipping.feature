@@ -9,7 +9,6 @@ Feature: Children clipping
             | Top    |        | Rectangle | 10, 10, 80, 80 |
             |   Mid  | Top    | Rectangle | 10, 10, 80, 60 |
             |    Bot | Mid    | Rectangle | 10, 10, 80, 80 |
-        When the view is rendered
         Then it should render the following:
             | Type | Bounds         |
             | rect | 10, 10, 80, 80 |

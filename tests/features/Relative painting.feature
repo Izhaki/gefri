@@ -10,7 +10,6 @@ Feature: Relative painting
             | Face   |        | Rectangle | 10, 10, 80, 80 |
             |   EyeL | Face   | Rectangle | 10, 10, 10, 10 |
             |   EyeR | Face   | Rectangle | 60, 10, 10, 10 |
-        When the view is rendered
         Then it should render the following:
             | Type | Bounds         |
             | rect | 10, 10, 80, 80 |

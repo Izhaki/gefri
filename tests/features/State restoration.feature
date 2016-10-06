@@ -15,7 +15,6 @@ Feature: State restoration
             |     PupilL | EyeL   | Rectangle | 5,   5,   10,  10  |
             |   EyeR     | Face   | Rectangle | 70,  10,  20,  20  |
             |     PupilR | EyeR   | Rectangle | 5,   5,   10,  10  |
-        When the view is rendered
         Then it should render the following:
             | Type | Bounds             |
             | rect | 200, 200, 100, 100 |

@@ -9,6 +9,8 @@ var hooks = function () {
 
     this.Before( function ( aScenario, aNext ) {
         mockWaitForFrame( gefri.di );
+        this.inject       = gefri.di.inject;
+        this.waitForFrame = this.inject( 'waitForFrame' );
         aNext();
     });
 

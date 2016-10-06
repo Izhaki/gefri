@@ -12,7 +12,6 @@ Feature: Zoom and scroll
         And the Transformer scale is set to { 0.5, 0.5 }
 
         # Lets check initial rendering
-        When the view is rendered
         Then it should render the following:
             | Type | Bounds       |
             | rect | 25, 25, 5, 5 |
@@ -20,7 +19,6 @@ Feature: Zoom and scroll
         # Now lets check updating works
         And the Transformer translate is set to { 50, 50 }
         Given the Transformer scale is set to { 2, 2 }
-        When the view is rendered
         Then it should render the following:
             | Type | Bounds           |
             | rect | 300, 300, 20, 20 |

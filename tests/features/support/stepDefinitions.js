@@ -61,17 +61,10 @@ module.exports = function () {
     	aNext();
 	});
 
-
-	this.When( `the view is rendered`, function ( aNext ) {
-        this.control.context.reset();
-
-        var inject       = gefri.di.inject;
-        var waitForFrame = inject( 'waitForFrame' );
-        waitForFrame.flush();
-		aNext();
-	});
-
     this.Then( `it should render the following:`, function( aTable, aNext ){
+        this.control.context.reset();
+        this.waitForFrame.flush();
+        
         var iRendered = this.control.context.rendered;
         var iExpected = aTable.hashes();
 
