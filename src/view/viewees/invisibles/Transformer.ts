@@ -2,7 +2,7 @@ import { Invisible     } from './';
 import { Painter,
          Updater,
          Transformable } from '../../output';
-import { Point, 
+import { Point,
          Rect          } from '../../geometry';
 import { summonUpdater } from '../tactics/children/summonUpdater'
 
@@ -14,15 +14,17 @@ class Transformer extends Invisible {
 
     setTranslate( x: number, y: number ) {
         this.translation.set( x, y );
+        this.erase();
     }
 
     setScale( x: number, y: number ) {
         this.scale.set( x, y );
+        this.erase();
     }
 
-    protected getBoundingRect(): Rect {
+    getBoundingRect(): Rect {
         // TODO change to tactic
-        return new Rect( 0, 0, 100, 100 );
+        return this.getParent().getBoundingRect();
     }
 
     protected applyTransformations( aTransformable: Transformable ): void {

@@ -22,3 +22,25 @@ iControl.setContents( iTransformer );
 $( '#erase-button' ).click( function() {
     iEyeL.erase();
 });
+
+var zoomSlider = $( '#zoom-slider' );
+function getZoomValue() { return zoomSlider.val(); }
+function toRatio( val ) { return Math.pow( 1.1, val ); }
+function setZoom( val ) { iTransformer.setScale( val, val ); }
+
+Rx.Observable
+    .fromEvent( zoomSlider, 'change mousemove' )
+    .map( getZoomValue )
+    .distinctUntilChanged()
+    .map( toRatio )
+    .subscribe( setZoom );
+
+var scrollSlider = $( '#scroll-slider' );
+function getScrollValue() { return scrollSlider.val(); }
+function setScroll( val ) { iTransformer.setTranslate( val, val ); }
+
+Rx.Observable
+    .fromEvent( scrollSlider, 'change mousemove' )
+    .map( getScrollValue )
+    .distinctUntilChanged()
+    .subscribe( setScroll );

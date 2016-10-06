@@ -20,13 +20,13 @@ class Context2DMock implements CanvasRenderingContext2D {
     public showLog: boolean = false;
 
     constructor() {
-        this.matrix     = new TransformMatrix()
-        this.stateStack = [];
-        this.rendered   = [];
+        this.matrix = new TransformMatrix()
+        this.reset();
     }
 
-    public clearRendered(): void {
+    public reset(): void {
         this.rendered   = [];
+        this.stateStack = [];
     }
 
     private log( ...args: any[] ) {

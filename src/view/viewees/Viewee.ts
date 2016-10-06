@@ -17,7 +17,7 @@ abstract class Viewee extends Composite< Viewee > {
         aUpdater.erase( this.getBoundingRect() );
     }
 
-    protected abstract getBoundingRect(): Rect;
+    abstract getBoundingRect(): Rect;
 
     protected paintChildren( aPainter: Painter ): void {
         if ( this.isChildless() ) return;

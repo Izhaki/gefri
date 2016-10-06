@@ -37,6 +37,7 @@ module.exports = function () {
     	this.composition = this.getCompositionFromTable( aTable );
         this.rootViewee  = this.composition.root;
         this.viewees     = this.composition.viewees;
+		this.control.setContents( this.rootViewee );
         aNext();
 	});
 
@@ -62,9 +63,10 @@ module.exports = function () {
 
 
 	this.When( `the view is rendered`, function ( aNext ) {
+        this.control.context.reset();
+
         var inject       = gefri.di.inject;
         var waitForFrame = inject( 'waitForFrame' );
-		this.control.setContents( this.rootViewee );
         waitForFrame.flush();
 		aNext();
 	});

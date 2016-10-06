@@ -43,6 +43,10 @@ describe( 'Transformer', () => {
 
     describe( 'setTranslate()', () => {
 
+        beforeEach( () => {
+            spyOn( this.transformer, 'erase' );
+        });
+
         it( 'should set the translation to the given parameters', () => {
 
             this.transformer.setTranslate( 5, 15 );
@@ -50,16 +54,29 @@ describe( 'Transformer', () => {
             expect( this.transformer.translation.y ).toBe( 15 );
         });
 
+        it( 'should erase itself from the canvas', () => {
+            this.transformer.setTranslate( 5, 15 );
+            expect( this.transformer.erase ).toHaveBeenCalled();
+        });
+
     });
 
 
     describe( 'setScale()', () => {
 
-        it( 'should set the scale to the given parameters', () => {
+        beforeEach( () => {
+            spyOn( this.transformer, 'erase' );
+        });
 
+        it( 'should set the scale to the given parameters', () => {
             this.transformer.setScale( 2, 4 );
             expect( this.transformer.scale.x ).toBe( 2 );
             expect( this.transformer.scale.y ).toBe( 4 );
+        });
+
+        it( 'should erase itself from the canvas', () => {
+            this.transformer.setScale( 2, 4 );
+            expect( this.transformer.erase ).toHaveBeenCalled();
         });
 
     });
@@ -67,16 +84,26 @@ describe( 'Transformer', () => {
 
     describe( 'applyTransformations()', () => {
 
+        beforeEach( () => {
+            // TODO: We spy on erase because setScale calls it, which in
+            // turn calls summonUpdater on the parent, which the test doesn't
+            // mock. We really ought not to call erase from within setScale,
+            // rather use an event or whatever.
+            spyOn( this.transformer, 'erase' );
+        });
+
         it( 'should translate the context using the current translation', () => {
             spyOn( this.painter, 'translate' );
+
             this.transformer.setTranslate( 2, 4 );
             this.transformer.applyTransformations( this.painter );
 
             expect( this.painter.translate ).toHaveBeenCalledWith( 2, 4 );
         });
 
-        it( 'should translate the context using the current translation', () => {
+        it( 'should translate the context using the current scale', () => {
             spyOn( this.painter, 'scale' );
+
             this.transformer.setScale( 2, 4 );
             this.transformer.applyTransformations( this.painter );
 

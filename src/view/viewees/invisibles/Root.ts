@@ -31,9 +31,9 @@ class Root extends Invisible {
         return this.updater;
     }
 
-    protected getBoundingRect(): Rect {
+    getBoundingRect(): Rect {
         // TODO change to tactic
-        return new Rect( 0, 0, 100, 100 );
+        return this.control.getBoundingRect();
     }
 
     protected beforeChildrenPainting( aPainter: Painter ): void {
