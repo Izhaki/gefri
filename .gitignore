@@ -3,7 +3,7 @@ node_modules/
 typings/
 .DS_Store
 .editorconfig
-.vscode/tasks.json
+.vscode/
 demo/vendor.js
 demo/vendor.css
 demo/gefri.js

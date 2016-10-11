@@ -1,4 +1,4 @@
-import { TransformableSpecs } from './Transformable.spec.ts'
+import { TransformableSpecs } from './Transformable.spec'
 import { Painter            } from './';
 import { Rect               } from '../geometry';
 

@@ -64,7 +64,7 @@ module.exports = function () {
     this.Then( `it should render the following:`, function( aTable, aNext ){
         this.control.context.reset();
         this.waitForFrame.flush();
-        
+
         var iRendered = this.control.context.rendered;
         var iExpected = aTable.hashes();
 
@@ -80,6 +80,9 @@ module.exports = function () {
     });
 
     this.Then( `it should not render anything`, function( aNext ){
+        this.control.context.reset();
+        this.waitForFrame.flush();
+
         var iRendered = this.control.context.rendered;
         expect( iRendered ).to.be.empty;
 		aNext();

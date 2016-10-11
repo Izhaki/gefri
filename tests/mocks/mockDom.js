@@ -28,6 +28,7 @@ var mockDom = function( aScriptFiles, aDoneCallback ) {
             throw new Error( aError )
         } else {
             mockContext( aWindow.document );
+            overrideOffsetGetters( aWindow );
             setGlobals( aWindow );
         }
         aDoneCallback();
@@ -46,6 +47,18 @@ var mockDom = function( aScriptFiles, aDoneCallback ) {
             }
             return element;
         };
+    }
+
+    function overrideOffsetGetters( aWindow ) {
+
+        Object.defineProperties( aWindow.HTMLElement.prototype, {
+            offsetHeight: {
+                get: function() { return parseFloat( aWindow.getComputedStyle(this).height) || 0; }
+            },
+            offsetWidth: {
+                get: function() { return parseFloat( aWindow.getComputedStyle(this).width) || 0; }
+            }
+        });
     }
 
     function setGlobals( aWindow ) {

@@ -1,5 +1,5 @@
-import { InvisibleSpecs } from './Invisible.spec.ts';
-import { createControl  } from '../../Control.spec.ts';
+import { InvisibleSpecs } from './Invisible.spec';
+import { createControl  } from '../../Control.spec';
 import { Context2DMock  } from '../../../../tests/mocks';
 import { Painter,
          ContextPainter } from '../../output';

@@ -1,9 +1,9 @@
 import { Viewee         } from './Viewee';
 import { Painter        } from './../output';
 import { Rectangle      } from './shapes/Rectangle';
-import { CompositeSpecs } from '../../core/Composite.spec.ts';
-import { createControl  } from '../Control.spec.ts';
-import { Rect, 
+import { CompositeSpecs } from '../../core/Composite.spec';
+import { createControl  } from '../Control.spec';
+import { Rect,
          Point          } from '../geometry';
 
 

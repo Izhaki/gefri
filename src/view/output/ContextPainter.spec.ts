@@ -3,7 +3,7 @@ import { Rect                       } from '../geometry';
 import { ContextPainter,
          ANTIALIASING_EXTRA_MARGINS } from './ContextPainter';
 import { Painter                    } from './';
-import { PainterSpecs               } from './Painter.spec.ts';
+import { PainterSpecs               } from './Painter.spec';
 
 function createPainter(): Painter {
     return new ContextPainter( new Context2DMock() );

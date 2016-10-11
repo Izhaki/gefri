@@ -1,5 +1,5 @@
-import { ShapeSpecs         } from './Shape.spec.ts';
-import { summonUpdaterSpecs } from '../tactics/children/summonUpdater.spec.ts';
+import { ShapeSpecs         } from './Shape.spec';
+import { summonUpdaterSpecs } from '../tactics/children/summonUpdater.spec';
 import { Context2DMock      } from '../../../../tests/mocks';
 import { Painter,
          ContextPainter     } from '../../output';

@@ -5,11 +5,11 @@ import { inject }    from '../di';
 
 export
 function createControl(): Control {
+
     var iViewElement = document.getElementById( 'view' );
 
-    iViewElement.offsetWidth  = 500;
-    iViewElement.offsetHeight = 400;
-    iViewElement.innerHTML    = '';
+    iViewElement.setAttribute( 'style', 'width:500px; height:400px;' );
+    iViewElement.innerHTML = '';
 
     var iControl = new Control( iViewElement );
 

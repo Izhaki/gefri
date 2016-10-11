@@ -3,7 +3,7 @@ var mockWaitForFrame = require( '../../../tests/mocks/mockWaitForFrame.ts' ).moc
 
 var hooks = function () {
 
-    this.Before( function ( aScenario, aNext ) {
+    this.BeforeFeatures( function( aFeatures, aNext ) {
         mockDom( [ 'demo/gefri.js' ], aNext );
     });
 
@@ -17,8 +17,7 @@ var hooks = function () {
     this.Before( function ( aScenario, aNext ) {
         var iViewElement = document.getElementById( 'view' );
 
-        iViewElement.offsetWidth  = 500;
-        iViewElement.offsetHeight = 400;
+        iViewElement.setAttribute( 'style', 'width:500px; height:400px;' );
         iViewElement.innerHTML = '';
 
         this.control = new gefri.view.Control( iViewElement );

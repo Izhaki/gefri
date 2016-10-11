@@ -1,4 +1,4 @@
-import { VieweeSpecs } from '../Viewee.spec.ts';
+import { VieweeSpecs } from '../Viewee.spec';
 import { Invisible   } from './';
 import { Painter     } from './../../output';
 

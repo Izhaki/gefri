@@ -1,5 +1,5 @@
-import { InvisibleSpecs     } from './Invisible.spec.ts';
-import { summonUpdaterSpecs } from '../tactics/children/summonUpdater.spec.ts'
+import { InvisibleSpecs     } from './Invisible.spec';
+import { summonUpdaterSpecs } from '../tactics/children/summonUpdater.spec'
 
 import { Transformer        } from './';
 import { Context2DMock      } from '../../../../tests/mocks';
