@@ -1,5 +1,5 @@
 import { Control }   from './Control';
-import { Rectangle } from './viewees/shapes/Rectangle';
+import { Rectangle } from './viewees/shapes';
 import { Rect }      from './geometry';
 import { inject }    from '../di';
 

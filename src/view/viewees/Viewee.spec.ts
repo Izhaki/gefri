@@ -1,6 +1,6 @@
 import { Viewee         } from './Viewee';
 import { Painter        } from './../output';
-import { Rectangle      } from './shapes/Rectangle';
+import { Rectangle      } from './shapes';
 import { CompositeSpecs } from '../../core/Composite.spec';
 import { createControl  } from '../Control.spec';
 import { Rect,

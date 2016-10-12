@@ -3,7 +3,7 @@ import { summonUpdaterSpecs } from '../tactics/children/summonUpdater.spec';
 import { Context2DMock      } from '../../../../tests/mocks';
 import { Painter,
          ContextPainter     } from '../../output';
-import { Rectangle          } from './Rectangle';
+import { Rectangle          } from './';
 import { Rect               } from '../../geometry';
 
 var iTestRect: Rect = new Rect( 10, 10, 20, 20 );

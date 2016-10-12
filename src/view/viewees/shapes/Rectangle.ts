@@ -1,4 +1,4 @@
-import { Shape   } from './';
+import { Shape   } from './Shape';
 import { Rect    } from './../../geometry';
 import { Painter } from './../../output';
 
