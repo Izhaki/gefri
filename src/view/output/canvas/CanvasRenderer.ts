@@ -19,11 +19,15 @@ class CanvasRenderer extends ContextPainter {
     renderChildren( aViewee: Viewee ): void {
         if ( aViewee.isChildless() ) return;
 
+        this.pushState();
+
         aViewee.applyTransformations( this );
 
         aViewee.forEachChild( ( aChild ) => {
             this.render( aChild );
         });
+
+        this.popState();
     }
 
     renderRectangle( aRactangle: Rectangle ): void {

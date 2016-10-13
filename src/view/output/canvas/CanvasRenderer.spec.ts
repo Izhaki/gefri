@@ -37,6 +37,26 @@ fdescribe( 'CanvasRenderer', () => {
         expect( this.context ).toHaveRenderedRect( 30, 30, 60,  60  );
     });
 
+    // Without state restoration (for transforms), this wouldn't work.
+    it( 'should render siblings in relative coordinates', () => {
+        let iFace:   Rectangle = new Rectangle( new Rect( 10, 10, 100, 100 ) ),
+            iEyeL:   Rectangle = new Rectangle( new Rect( 10, 10, 10,  10  ) ),
+            iPupilL: Rectangle = new Rectangle( new Rect( 2,  2,  6,   6   ) ),
+            iEyeR:   Rectangle = new Rectangle( new Rect( 80, 10, 10,  10  ) ),
+            iPupilR: Rectangle = new Rectangle( new Rect( 2,  2,  6,   6   ) );
+
+        iEyeL.addChild( iPupilL );
+        iEyeR.addChild( iPupilR );
+        iFace.addChildren( iEyeL, iEyeR );
+
+        this.renderer.render( iFace );
+
+        expect( this.context ).toHaveRenderedRect( 10, 10, 100, 100 );
+        expect( this.context ).toHaveRenderedRect( 20, 20, 10,  10  );
+        expect( this.context ).toHaveRenderedRect( 22, 22, 6,   6   );
+        expect( this.context ).toHaveRenderedRect( 90, 20, 10,  10  );
+        expect( this.context ).toHaveRenderedRect( 92, 22, 6,   6   );
+    });
 
 
 });
