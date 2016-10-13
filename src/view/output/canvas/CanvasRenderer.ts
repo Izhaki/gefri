@@ -21,6 +21,10 @@ class CanvasRenderer extends ContextPainter {
 
         this.pushState();
 
+        if ( aViewee.isClipping ) {
+            this.intersectClipAreaWith( aViewee.getBoundingRect() );
+        }
+
         aViewee.applyTransformations( this );
 
         aViewee.forEachChild( ( aChild ) => {

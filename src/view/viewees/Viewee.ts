@@ -6,6 +6,7 @@ import { Rect          } from '../geometry';
 
 export
 abstract class Viewee extends Composite< Viewee > {
+    protected clipping: boolean = true;
 
     abstract paint( aPainter: Painter ): void;
 
@@ -18,6 +19,10 @@ abstract class Viewee extends Composite< Viewee > {
     }
 
     abstract getBoundingRect(): Rect;
+
+    get isClipping(): boolean {
+        return this.clipping;
+    }
 
     applyTransformations( aTransformable: Transformable ): void {
         // Does nothing by default. Children will override.

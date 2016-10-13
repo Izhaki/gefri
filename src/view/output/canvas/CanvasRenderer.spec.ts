@@ -24,8 +24,8 @@ fdescribe( 'CanvasRenderer', () => {
 
     it( 'should render children in relative coordinates', () => {
         let iGrandparent: Rectangle = new Rectangle( new Rect( 10, 10, 100, 100 ) ),
-            iParent:      Rectangle = new Rectangle( new Rect( 10, 10, 80, 80 ) ),
-            iChild:       Rectangle = new Rectangle( new Rect( 10, 10, 60, 60 ) );
+            iParent:      Rectangle = new Rectangle( new Rect( 10, 10, 80,  80  ) ),
+            iChild:       Rectangle = new Rectangle( new Rect( 10, 10, 60,  60  ) );
 
         iGrandparent.addChild( iParent );
         iParent.addChild( iChild );
@@ -57,6 +57,22 @@ fdescribe( 'CanvasRenderer', () => {
         expect( this.context ).toHaveRenderedRect( 90, 20, 10,  10  );
         expect( this.context ).toHaveRenderedRect( 92, 22, 6,   6   );
     });
+
+    it( 'should clip children', () => {
+        let iGrandparent: Rectangle = new Rectangle( new Rect( 10, 10, 80, 80 ) ),
+            iParent:      Rectangle = new Rectangle( new Rect( 10, 10, 80, 60 ) ),
+            iChild:       Rectangle = new Rectangle( new Rect( 10, 10, 80, 80 ) );
+
+        iGrandparent.addChild( iParent );
+        iParent.addChild( iChild );
+
+        this.renderer.render( iGrandparent );
+
+        expect( this.context ).toHaveRenderedRect( 10, 10, 80, 80 );
+        expect( this.context ).toHaveRenderedRect( 20, 20, 70, 60  );
+        expect( this.context ).toHaveRenderedRect( 30, 30, 60, 50  );
+    });
+
 
 
 });
