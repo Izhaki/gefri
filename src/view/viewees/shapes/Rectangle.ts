@@ -19,4 +19,8 @@ class Rectangle extends Shape {
         return this.rect;
     }
 
+    getRect(): Rect {
+        return this.rect;
+    }
+
 }
