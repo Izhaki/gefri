@@ -1,6 +1,5 @@
 /tests/coverage/
 node_modules/
-typings/
 .DS_Store
 .editorconfig
 .vscode/

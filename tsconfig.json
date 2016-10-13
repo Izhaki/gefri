@@ -1,11 +1,11 @@
 {
-  "compilerOptions": {
-    "removeComments": true,
-    "preserveConstEnums": true
-  },
-  "exclude": [
-    "node_modules",
-    "demo",
-    "dist"
-  ]
+    "compilerOptions": {
+        "removeComments": true,
+        "preserveConstEnums": true
+    },
+    "exclude": [
+        "node_modules",
+        "demo",
+        "dist"
+    ]
 }
