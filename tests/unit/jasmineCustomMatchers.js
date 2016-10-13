@@ -26,10 +26,9 @@ beforeEach(function(){
                 compare: function ( context, expectedX, expectedY, expectedW, expectedH ) {
                     var result = {};
 
-                    var rendered = context.rendered[0],
+                    var rendered = context.rendered.shift(),
                         type     = rendered.type,
                         bounds   = rendered.bounds;
-
 
                     result.pass =
                         ( type == 'rect' ) &&
@@ -40,7 +39,7 @@ beforeEach(function(){
 
                     if ( result.pass === false ) {
                         result.message = "Expected " +
-                            " ( " + actual.x + ', ' + actual.y + ', ' + actual.w + ', ' + actual.h + ' )' +
+                            " ( " + bounds.x + ', ' + bounds.y + ', ' + bounds.w + ', ' + bounds.h + ' )' +
                             " to be ( " + expectedX + ', ' + expectedY + ', ' + expectedW + ', ' + expectedH + ' )';
                     }
                     return result;

@@ -19,6 +19,10 @@ abstract class Viewee extends Composite< Viewee > {
 
     abstract getBoundingRect(): Rect;
 
+    applyTransformations( aTransformable: Transformable ): void {
+        // Does nothing by default. Children will override.
+    }
+
     protected paintChildren( aPainter: Painter ): void {
         if ( this.isChildless() ) return;
 
@@ -35,10 +39,6 @@ abstract class Viewee extends Composite< Viewee > {
 
     protected beforeChildrenPainting( aPainter: Painter ): void {
         this.applyTransformations( aPainter );
-    }
-
-    protected applyTransformations( aTransformable: Transformable ): void {
-        // Does nothing by default. Children will override.
     }
 
     abstract summonUpdater(): Updater;

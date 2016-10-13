@@ -27,7 +27,7 @@ class Transformer extends Invisible {
         return this.getParent().getBoundingRect();
     }
 
-    protected applyTransformations( aTransformable: Transformable ): void {
+    applyTransformations( aTransformable: Transformable ): void {
         super.applyTransformations( aTransformable );
         aTransformable.translate( this.translation.x, this.translation.y );
         aTransformable.scale( this.scale.x, this.scale.y );

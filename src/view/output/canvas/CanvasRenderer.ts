@@ -12,6 +12,18 @@ class CanvasRenderer extends ContextPainter {
             iMethodName  = 'render' + iVieweeClass;
 
         this[ iMethodName ]( aViewee );
+
+        this.renderChildren( aViewee );
+    }
+
+    renderChildren( aViewee: Viewee ): void {
+        if ( aViewee.isChildless() ) return;
+
+        aViewee.applyTransformations( this );
+
+        aViewee.forEachChild( ( aChild ) => {
+            this.render( aChild );
+        });
     }
 
     renderRectangle( aRactangle: Rectangle ): void {
