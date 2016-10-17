@@ -24,6 +24,10 @@ abstract class Viewee extends Composite< Viewee > {
         return this.clipping;
     }
 
+    set isClipping( clipping: boolean ) {
+        this.clipping = clipping;
+    }
+
     applyTransformations( aTransformable: Transformable ): void {
         // Does nothing by default. Children will override.
     }

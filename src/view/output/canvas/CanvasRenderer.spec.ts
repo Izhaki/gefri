@@ -58,7 +58,7 @@ fdescribe( 'CanvasRenderer', () => {
         expect( this.context ).toHaveRenderedRect( 92, 22, 6,   6   );
     });
 
-    it( 'should clip children', () => {
+    it( 'should clip children if the viewee is clipping its children', () => {
         let iGrandparent: Rectangle = new Rectangle( new Rect( 10, 10, 80, 80 ) ),
             iParent:      Rectangle = new Rectangle( new Rect( 10, 10, 80, 60 ) ),
             iChild:       Rectangle = new Rectangle( new Rect( 10, 10, 80, 80 ) );
@@ -73,6 +73,22 @@ fdescribe( 'CanvasRenderer', () => {
         expect( this.context ).toHaveRenderedRect( 30, 30, 60, 50  );
     });
 
+    it( 'should not clip children if the viewee is not clipping its children', () => {
+        let iGrandparent: Rectangle = new Rectangle( new Rect( 10, 10, 80, 80 ) ),
+            iParent:      Rectangle = new Rectangle( new Rect( 10, 10, 80, 60 ) ),
+            iChild:       Rectangle = new Rectangle( new Rect( 10, 10, 80, 80 ) );
 
+        iGrandparent.isClipping = false;
+        iParent.isClipping      = false;
+
+        iGrandparent.addChild( iParent );
+        iParent.addChild( iChild );
+
+        this.renderer.render( iGrandparent );
+
+        expect( this.context ).toHaveRenderedRect( 10, 10, 80, 80 );
+        expect( this.context ).toHaveRenderedRect( 20, 20, 80, 60  );
+        expect( this.context ).toHaveRenderedRect( 30, 30, 80, 80  );
+    });
 
 });
