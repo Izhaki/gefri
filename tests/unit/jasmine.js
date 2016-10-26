@@ -11,7 +11,7 @@ jasmine.loadConfig({
     "spec_files":                   [ "**/*.spec.ts" ],
     "stopSpecOnExpectationFailure": true,
     "random":                       false,
-    "helpers":                      [ "../tests/unit/jasmineCustomMatchers.js" ]
+    "helpers":                      [ "../tests/unit/jasmineCustomMatchers.ts" ]
 });
 
 jasmine.configureDefaultReporter({});
