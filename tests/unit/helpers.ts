@@ -2,8 +2,9 @@
 // overrides the `this` binding jasmine relies on. Rather, we simply import these helpers
 // functions when needed.
 
-import { Rect } from '../../src/view/geometry';
-import { Rectangle } from '../../src/view/viewees/shapes';
+import { Rect        } from '../../src/view/geometry';
+import { Rectangle   } from '../../src/view/viewees/shapes';
+import { Transformer } from '../../src/view/viewees/invisibles';
 
 export
 type Row = string[];
@@ -32,13 +33,15 @@ function createViewees( aTable: string ) {
 
     return iViewees;
 
-    function createViewee( aType, aParams ) {
+    function createViewee( aType, aParams ): any {
         switch ( aType ) {
             case 'Rectangle':
                 let iBounds = rectFromString( aParams );
                 return new Rectangle( iBounds );
+            case 'Transformer':
+                return new Transformer();
             default:
-                throw new Error( "Could not find the requested viewee type" )
+                throw new Error( `Could not find the requested viewee type (${ aType })` );
         }
     }
 
@@ -68,15 +71,19 @@ function getRows( aString: string ): Row[] {
 
 function breakdownCells( aRows ): Row[] {
     return aRows.map( ( aRow ) => {
-        let aCells = aRow.split('|');
-        aCells = removeEmptyStrings( aCells );
-        return aCells;
+        let iRowContent = getStringBetweenFirstAndLastPipes( aRow ),
+            iCells      = iRowContent.split('|');
+        return iCells;
     });
 }
 
+function getStringBetweenFirstAndLastPipes( aString ): string {
+    return aString.match(/\|(.*)\|/).pop()
+}
+
 function removeEmptyStrings( aStrings: string[] ): string[] {
-    return aStrings.filter( ( aLine ) => {
-        return isEmptyString( aLine );
+    return aStrings.filter( ( aString ) => {
+        return isEmptyString( aString );
     });
 }
 

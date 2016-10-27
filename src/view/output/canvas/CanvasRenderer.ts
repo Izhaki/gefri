@@ -37,4 +37,8 @@ class CanvasRenderer extends ContextPainter {
     renderRectangle( aRactangle: Rectangle ): void {
         this.drawRectangle( aRactangle.getRect() );
     }
+
+    renderTransformer( aRactangle: Rectangle ): void {
+    }
+
 }

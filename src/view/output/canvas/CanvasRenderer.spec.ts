@@ -103,7 +103,25 @@ describe( 'CanvasRenderer', () => {
             | Rectangle | 20, 20, 80, 60 |
             | Rectangle | 30, 30, 80, 80 |
         `);
+    });
 
+    it( 'should transform and scale child viewees', () =>{
+        let { iTransformer } = this.createViewees(`
+            | iTransformer | Transformer |                   |
+            |   iSquare    | Rectangle   | 100, 100, 10, 10  |
+        `);
+
+        // TODO: Remove once moving updates out of viewees
+        spyOn( iTransformer, 'erase' );
+
+        iTransformer.setTranslate( -50, -50 );
+        iTransformer.setScale( 0.5, 0.5 );
+
+        this.renderer.render( iTransformer );
+
+        expect( this.context ).toHaveRendered(`
+            | Rectangle | 25, 25, 5, 5 |
+        `);
     });
 
 });

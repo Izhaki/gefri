@@ -56,6 +56,10 @@ beforeEach( () => {
 
                     let iRows = getRows( expected );
 
+                    if ( !lengthMatch( context.rendered, iRows ) ) {
+                        throw new Error( `Expected and actual render operations differ ( ${ context.rendered.length } vs ${ iRows.length } )` )
+                    }
+
                     iRows.forEach( ( aRow ) => {
                         let iRendered = context.rendered.shift(),
                             iRowMatch = rowMatch( iRendered, aRow );
@@ -79,6 +83,10 @@ beforeEach( () => {
                     default:
                         throw new Error( "Could not find the requested render action" )
                 }
+            }
+
+            function lengthMatch( aActual: any[], aExpected: any[] ) : boolean {
+                return aActual.length == aExpected.length;
             }
 
             function renderedRectangleMatch( aRendered, aParams ): jasmine.CustomMatcherResult {

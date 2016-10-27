@@ -12,6 +12,11 @@ class Transformer extends Invisible {
     private translation: Point = new Point( 0, 0 );
     private scale:       Point = new Point( 1, 1 );
 
+    constructor() {
+        super();
+        this.isClipping = false;
+    }
+
     setTranslate( x: number, y: number ) {
         this.translation.set( x, y );
         this.erase();
