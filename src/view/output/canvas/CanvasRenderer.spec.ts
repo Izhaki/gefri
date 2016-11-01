@@ -9,7 +9,7 @@ function createCanvasRenderer(): CanvasRenderer {
     return new CanvasRenderer( new Context2DMock() );
 }
 
-fdescribe( 'CanvasRenderer', () => {
+describe( 'CanvasRenderer', () => {
 
     beforeEach( () => {
         this.createViewees = helpers.createViewees;

@@ -18,6 +18,7 @@ class Root extends Invisible {
         this.updater = new Updater();
     }
 
+    /* istanbul ignore next */
     refresh( aPainter: Painter ): void {
         this.updater.flushUpdates( aPainter );
 

@@ -27,7 +27,7 @@ describe( 'Root', () => {
         this.painter = createPainter();
     });
 
-    describe( 'refresh()', () => {
+    xdescribe( 'refresh()', () => {
 
         it( 'should flush any pending updates', () => {
             let iUpdater = this.root.updater;

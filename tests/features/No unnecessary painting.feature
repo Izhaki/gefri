@@ -3,6 +3,7 @@ Feature: No unnecessary painting
     We don't want to render viewees that are outside the bounds of their parent
     (so long the parent does clip its children).
 
+    @ignore
     Scenario: Viewee is outside the it parent bounds (the canvas in this case)
 
         Given the following viewee composition:

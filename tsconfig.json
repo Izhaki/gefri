@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "target":             "es5",
-        "removeComments":     true,
+        "removeComments":     false,
         "preserveConstEnums": true
     },
     "exclude": [

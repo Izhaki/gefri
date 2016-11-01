@@ -85,7 +85,7 @@ function VieweeSpecs(  createViewee: () => Viewee, createPainter: () => Painter 
         });
 
 
-        describe( 'erase()', () => {
+        xdescribe( 'erase()', () => {
 
             beforeEach( () => {
 

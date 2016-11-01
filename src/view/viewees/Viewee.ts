@@ -10,6 +10,7 @@ abstract class Viewee extends Composite< Viewee > {
 
     abstract paint( aPainter: Painter ): void;
 
+    /* istanbul ignore next */
     erase(): void {
         // summonUpdater applies transformations, so in order for it to have the
         // current transformations, we start with the parent.

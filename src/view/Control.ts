@@ -1,5 +1,5 @@
 import { Viewee         } from './viewees/Viewee';
-import { ContextPainter } from './output';
+import { CanvasRenderer } from './output/canvas';
 import { Rect           } from './geometry';
 import { Root           } from './viewees/invisibles';
 import { inject         } from '../di';
@@ -9,7 +9,7 @@ class Control {
     private container:       HTMLElement;
     private canvas:          HTMLCanvasElement;
     private context:         CanvasRenderingContext2D;
-    private painter:         ContextPainter;
+    private painter:         CanvasRenderer;
     private bounds:          Rect;
     private contents:        Viewee  = null;
     private root:            Root;
@@ -21,7 +21,7 @@ class Control {
         this.bounds       = new Rect( 0, 0, aContainer.offsetWidth, aContainer.offsetHeight );
         this.canvas       = this.createCanvas( aContainer );
         this.context      = this.getContext( this.canvas );
-        this.painter      = new ContextPainter( this.context );
+        this.painter      = new CanvasRenderer( this.context );
         this.waitForFrame = inject( 'waitForFrame' );
 
         this.root         = new Root( this );
@@ -42,6 +42,7 @@ class Control {
         return this.bounds;
     }
 
+    /* istanbul ignore next */
     queueRefresh(): void {
         if ( !this.refreshIsQueued ) {
             this.refreshIsQueued = true;
@@ -54,7 +55,7 @@ class Control {
             // For more: https://blog.risingstack.com/writing-a-javascript-framework-execution-timing-beyond-settimeout/
             this.waitForFrame.schedule( () => {
                 this.refreshIsQueued = false;
-                this.root.refresh( this.painter );
+                this.painter.render( this.root );
             });
         }
     }

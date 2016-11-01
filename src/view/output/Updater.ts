@@ -12,11 +12,13 @@ class Updater extends Transformable {
         this.toErase = [];
     }
 
+    /* istanbul ignore next */
     erase( aRect: Rect ): void {
         var iAbsoluteRect = this.toAbsoluteRect( aRect );
         this.toErase.push( iAbsoluteRect );
     }
 
+    /* istanbul ignore next */
     flushUpdates( aPainter: Painter ): void {
         this.toErase.forEach( function( aRect ) {
             aPainter.erase( aRect );

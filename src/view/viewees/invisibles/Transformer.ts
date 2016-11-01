@@ -27,6 +27,7 @@ class Transformer extends Invisible {
         this.erase();
     }
 
+    /* istanbul ignore next */
     getBoundingRect(): Rect {
         // TODO change to tactic
         return this.getParent().getBoundingRect();

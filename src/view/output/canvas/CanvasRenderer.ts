@@ -19,7 +19,7 @@ class CanvasRenderer extends ContextPainter {
         this.renderChildren( aViewee );
     }
 
-    renderChildren( aViewee: Viewee ): void {
+    private renderChildren( aViewee: Viewee ): void {
         if ( aViewee.isChildless() ) return;
 
         this.pushState();
@@ -37,14 +37,14 @@ class CanvasRenderer extends ContextPainter {
         this.popState();
     }
 
-    renderRectangle( aRactangle: Rectangle ): void {
+    private renderRectangle( aRactangle: Rectangle ): void {
         this.drawRectangle( aRactangle.getRect() );
     }
 
-    renderTransformer( aTransformer: Transformer ): void {
+    private renderTransformer( aTransformer: Transformer ): void {
     }
 
-    renderRoot( aRoot: Root ): void {
+    private renderRoot( aRoot: Root ): void {
     }
 
 }
