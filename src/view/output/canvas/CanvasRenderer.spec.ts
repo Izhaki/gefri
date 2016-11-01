@@ -9,7 +9,7 @@ function createCanvasRenderer(): CanvasRenderer {
     return new CanvasRenderer( new Context2DMock() );
 }
 
-describe( 'CanvasRenderer', () => {
+fdescribe( 'CanvasRenderer', () => {
 
     beforeEach( () => {
         this.createViewees = helpers.createViewees;
@@ -121,6 +121,23 @@ describe( 'CanvasRenderer', () => {
 
         expect( this.context ).toHaveRendered(`
             | Rectangle | 25, 25, 5, 5 |
+        `);
+    });
+
+    // TODO: Test makes no sense. Root is internal to rendering thus test boundery too low.
+    // Move test boundery higher up to exlude renderer and root.
+    it( 'should render root', () =>{
+        let { iRoot } = this.createViewees(`
+            | iRoot     | Root      |                   |
+            |   iSquare | Rectangle | 50, 50, 100, 100  |
+        `);
+
+        spyOn( iRoot.control, 'getBoundingRect' ).and.returnValue( new Rect( 0, 0, 100, 100 ) ) ;
+
+        this.renderer.render( iRoot );
+
+        expect( this.context ).toHaveRendered(`
+            | Rectangle | 50, 50, 50, 50 |
         `);
     });
 

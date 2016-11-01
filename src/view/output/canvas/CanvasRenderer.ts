@@ -1,8 +1,11 @@
 import { ContextPainter } from '../';
 import { Rect           } from '../../geometry';
+import { getClassName   } from '../../../core/Utils'
 import { Viewee         } from '../../viewees/Viewee';
 import { Rectangle      } from '../../viewees/shapes';
-import { getClassName   } from '../../../core/Utils'
+import { Transformer,
+         Root           } from '../../viewees/invisibles';
+
 
 export
 class CanvasRenderer extends ContextPainter {
@@ -38,7 +41,10 @@ class CanvasRenderer extends ContextPainter {
         this.drawRectangle( aRactangle.getRect() );
     }
 
-    renderTransformer( aRactangle: Rectangle ): void {
+    renderTransformer( aTransformer: Transformer ): void {
+    }
+
+    renderRoot( aRoot: Root ): void {
     }
 
 }
