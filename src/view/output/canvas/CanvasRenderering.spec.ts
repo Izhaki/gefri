@@ -1,12 +1,20 @@
 import { Context2DMock  } from '../../../../tests/mocks';
 import * as helpers from '../../../../tests/unit/helpers'
 
-import { CanvasRenderer } from './CanvasRenderer';
+import { Control        } from '../../Control';
 import { Rectangle      } from '../../viewees/shapes';
 import { Rect           } from '../../geometry';
 
-function createCanvasRenderer(): CanvasRenderer {
-    return new CanvasRenderer( new Context2DMock() );
+function createControl(): Control {
+
+    var iViewElement = document.getElementById( 'view' );
+
+    iViewElement.setAttribute( 'style', 'width:500px; height:400px;' );
+    iViewElement.innerHTML = '';
+
+    var iControl = new Control( iViewElement );
+
+    return iControl;
 }
 
 describe( 'CanvasRenderer', () => {
@@ -15,10 +23,9 @@ describe( 'CanvasRenderer', () => {
         this.createViewees = helpers.createViewees;
     });
 
-
     beforeEach( () => {
-        this.renderer = createCanvasRenderer();
-        this.context = this.renderer.context;
+        this.control  = createControl();
+        this.context  = this.control.context;
     });
 
     it( 'should render a rect', () => {
@@ -26,7 +33,7 @@ describe( 'CanvasRenderer', () => {
             | iRectangle | Rectangle | 10, 11, 12, 13 |
         `);
 
-        this.renderer.render( iRectangle );
+        this.control.setContents( iRectangle );
 
         expect( this.context ).toHaveRendered(`
             | Rectangle | 10, 11, 12, 13 |
@@ -40,7 +47,7 @@ describe( 'CanvasRenderer', () => {
             |     iChild   | Rectangle | 10, 10, 60,  60  |
         `);
 
-        this.renderer.render( iGrandparent );
+        this.control.setContents( iGrandparent );
 
         expect( this.context ).toHaveRendered(`
             | Rectangle | 10, 10, 100, 100 |
@@ -59,7 +66,7 @@ describe( 'CanvasRenderer', () => {
             |     iPupilR | Rectangle | 2,  2,  6,   6   |
         `);
 
-        this.renderer.render( iFace );
+        this.control.setContents( iFace );
 
         expect( this.context ).toHaveRendered(`
             | Rectangle | 10, 10, 100, 100 |
@@ -77,7 +84,7 @@ describe( 'CanvasRenderer', () => {
             |     iChild   | Rectangle | 10, 10, 80, 80 |
         `);
 
-        this.renderer.render( iGrandparent );
+        this.control.setContents( iGrandparent );
 
         expect( this.context ).toHaveRendered(`
             | Rectangle | 10, 10, 80, 80 |
@@ -96,7 +103,7 @@ describe( 'CanvasRenderer', () => {
         iGrandparent.isClipping = false;
         iParent.isClipping      = false;
 
-        this.renderer.render( iGrandparent );
+        this.control.setContents( iGrandparent );
 
         expect( this.context ).toHaveRendered(`
             | Rectangle | 10, 10, 80, 80 |
@@ -117,27 +124,10 @@ describe( 'CanvasRenderer', () => {
         iTransformer.setTranslate( -50, -50 );
         iTransformer.setScale( 0.5, 0.5 );
 
-        this.renderer.render( iTransformer );
+        this.control.setContents( iTransformer );
 
         expect( this.context ).toHaveRendered(`
             | Rectangle | 25, 25, 5, 5 |
-        `);
-    });
-
-    // TODO: Test makes no sense. Root is internal to rendering thus test boundery too low.
-    // Move test boundery higher up to exlude renderer and root.
-    it( 'should render root', () =>{
-        let { iRoot } = this.createViewees(`
-            | iRoot     | Root      |                   |
-            |   iSquare | Rectangle | 50, 50, 100, 100  |
-        `);
-
-        spyOn( iRoot.control, 'getBoundingRect' ).and.returnValue( new Rect( 0, 0, 100, 100 ) ) ;
-
-        this.renderer.render( iRoot );
-
-        expect( this.context ).toHaveRendered(`
-            | Rectangle | 50, 50, 50, 50 |
         `);
     });
 

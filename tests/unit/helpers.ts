@@ -2,12 +2,9 @@
 // overrides the `this` binding jasmine relies on. Rather, we simply import these helpers
 // functions when needed.
 
-import { Rect         } from '../../src/view/geometry';
-import { Rectangle    } from '../../src/view/viewees/shapes';
-import { Transformer,
-         Root         } from '../../src/view/viewees/invisibles';
-
-import { createRoot   } from '../../src/view/viewees/invisibles/Root.spec';
+import { Rect        } from '../../src/view/geometry';
+import { Rectangle   } from '../../src/view/viewees/shapes';
+import { Transformer } from '../../src/view/viewees/invisibles';
 
 export
 type Row = string[];
@@ -43,8 +40,6 @@ function createViewees( aTable: string ) {
                 return new Rectangle( iBounds );
             case 'Transformer':
                 return new Transformer();
-            case 'Root':
-                return createRoot();
             default:
                 throw new Error( `Could not find the requested viewee type (${ aType })` );
         }

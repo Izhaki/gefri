@@ -42,7 +42,6 @@ class Control {
         return this.bounds;
     }
 
-    /* istanbul ignore next */
     queueRefresh(): void {
         if ( !this.refreshIsQueued ) {
             this.refreshIsQueued = true;
