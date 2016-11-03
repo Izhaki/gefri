@@ -4,12 +4,8 @@ import { Invisible     } from './';
 export
 function InvisibleSpecs( createInvisible: () => Invisible ) {
 
-    describe( 'Invisible', () => {
-
-        describe( 'is a Viewee', () => {
-            VieweeSpecs.call( this, createInvisible );
-        });
-
+    describe( 'is a Viewee', () => {
+        VieweeSpecs.call( this, createInvisible );
     });
 
 }

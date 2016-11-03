@@ -8,16 +8,12 @@ import { Rect,
 export
 function VieweeSpecs(  createViewee: () => Viewee ) {
 
-    describe( 'Viewee', () => {
+    describe( 'is a Composite', () => {
+        CompositeSpecs.call( this, createViewee );
+    })
 
-        describe( 'is a Composite', () => {
-            CompositeSpecs.call( this, createViewee );
-        })
-
-        beforeEach( () => {
-            this.viewee  = createViewee();
-        });
-
+    beforeEach( () => {
+        this.viewee  = createViewee();
     });
 
 }
