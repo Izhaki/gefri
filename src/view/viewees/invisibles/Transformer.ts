@@ -1,10 +1,7 @@
 import { Invisible     } from './';
-import { Painter,
-         Updater,
-         Transformable } from '../../output';
+import { Transformable } from '../../output';
 import { Point,
          Rect          } from '../../geometry';
-import { summonUpdater } from '../tactics/children/summonUpdater'
 
 export
 class Transformer extends Invisible {
@@ -19,12 +16,12 @@ class Transformer extends Invisible {
 
     setTranslate( x: number, y: number ) {
         this.translation.set( x, y );
-        this.erase();
+        // TODO: update
     }
 
     setScale( x: number, y: number ) {
         this.scale.set( x, y );
-        this.erase();
+        // TODO: update
     }
 
     /* istanbul ignore next */
@@ -38,10 +35,5 @@ class Transformer extends Invisible {
         aTransformable.translate( this.translation.x, this.translation.y );
         aTransformable.scale( this.scale.x, this.scale.y );
     }
-
-    summonUpdater() : Updater {
-        return summonUpdater( this );
-    }
-
 
 }

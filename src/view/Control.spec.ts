@@ -60,15 +60,6 @@ describe( 'Control', () => {
             expect( this.control.root.children[ 0 ] ).toBe( this.rectangle );
         });
 
-        xit( 'should paint the root viewee', () => {
-            spyOn( this.control.root, 'paint' );
-
-            this.control.setContents( this.rectangle );
-            this.waitForFrame.flush();
-
-            expect( this.control.root.paint ).toHaveBeenCalled();
-        });
-
     });
 
 
@@ -81,19 +72,19 @@ describe( 'Control', () => {
     });
 
 
-    xdescribe( 'queueRefresh()', () => {
+    describe( 'queueRefresh()', () => {
         beforeEach( () => {
             this.root         = this.control.root,
             this.painter      = this.control.painter;
             this.waitForFrame = inject( 'waitForFrame' );
-            spyOn( this.root, 'refresh' );
+            spyOn( this.painter, 'render' );
         });
 
         it( 'should ask the root viewee to refresh before the next render' , () => {
             this.control.queueRefresh();
             this.waitForFrame.flush();
 
-            expect( this.root.refresh ).toHaveBeenCalledWith( this.painter );
+            expect( this.painter.render ).toHaveBeenCalledWith( this.root );
         });
 
         it( 'should not queue any new refresh requests until the previous one has been processed', () => {
@@ -107,7 +98,7 @@ describe( 'Control', () => {
             this.control.queueRefresh();
             this.waitForFrame.flush();
 
-            expect( this.root.refresh.calls.count() ).toBe( 2 );
+            expect( this.painter.render.calls.count() ).toBe( 2 );
 
         });
 

@@ -1,6 +1,5 @@
-import { Shape   } from './Shape';
-import { Rect    } from './../../geometry';
-import { Painter } from './../../output';
+import { Shape } from './Shape';
+import { Rect  } from './../../geometry';
 
 export
 class Rectangle extends Shape {
@@ -9,10 +8,6 @@ class Rectangle extends Shape {
     constructor( aRect: Rect ) {
         super();
         this.rect = aRect;
-    }
-
-    protected paintSelf( aPainter: Painter ): void {
-        aPainter.drawRectangle( this.rect );
     }
 
     getBoundingRect(): Rect {

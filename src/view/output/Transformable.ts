@@ -1,10 +1,10 @@
 import { Stateful         } from './';
-import { TransformMatrix, 
-         Rect, 
+import { TransformMatrix,
+         Rect,
          Point            } from '../geometry';
 
 export
-abstract class Transformable extends Stateful {
+class Transformable extends Stateful {
     protected matrix: TransformMatrix;
 
     constructor() {

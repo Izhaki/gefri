@@ -1,30 +1,13 @@
-import { VieweeSpecs } from '../Viewee.spec';
-import { Invisible   } from './';
-import { Painter     } from './../../output';
+import { VieweeSpecs   } from '../Viewee.spec';
+import { Invisible     } from './';
 
 export
-function InvisibleSpecs( createInvisible: () => Invisible, createPainter: () => Painter ) {
+function InvisibleSpecs( createInvisible: () => Invisible ) {
 
     describe( 'Invisible', () => {
 
         describe( 'is a Viewee', () => {
-            VieweeSpecs.call( this, createInvisible, createPainter );
-        });
-
-        beforeEach( () => {
-            this.invisible   = createInvisible();
-            this.painter = createPainter();
-        });
-
-        describe( 'paint()', () => {
-
-            it( 'should paint its children', () => {
-                spyOn( this.invisible, 'paintChildren' );
-
-                this.invisible.paint( this.painter );
-                expect( this.invisible.paintChildren ).toHaveBeenCalledWith( this.painter );
-            });
-
+            VieweeSpecs.call( this, createInvisible );
         });
 
     });

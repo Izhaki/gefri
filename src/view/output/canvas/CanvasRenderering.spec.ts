@@ -118,9 +118,6 @@ describe( 'CanvasRenderer', () => {
             |   iSquare    | Rectangle   | 100, 100, 10, 10  |
         `);
 
-        // TODO: Remove once moving updates out of viewees
-        spyOn( iTransformer, 'erase' );
-
         iTransformer.setTranslate( -50, -50 );
         iTransformer.setScale( 0.5, 0.5 );
 
