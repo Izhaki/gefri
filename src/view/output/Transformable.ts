@@ -1,5 +1,7 @@
 import { Stateful         } from './';
-import { TransformMatrix,
+import { Translation,
+         Scale,
+         TransformMatrix,
          Rect,
          Point            } from '../geometry';
 
@@ -12,12 +14,12 @@ class Transformable extends Stateful {
         this.matrix = new TransformMatrix();
     }
 
-    translate( x, y ): void {
-        this.matrix.translate( new Point( x, y ) )
+    translate( aTranslation: Translation ): void {
+        this.matrix.translate( aTranslation.x, aTranslation.y )
     }
 
-    scale( x, y ): void {
-        this.matrix.scale( new Point( x, y ) )
+    scale( aScale: Scale ): void {
+        this.matrix.scale( aScale.x, aScale.y )
     }
 
     toAbsoluteRect( aRect: Rect ): Rect {

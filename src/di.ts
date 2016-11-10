@@ -2,11 +2,11 @@ import { ReflectiveInjector,
          Provider            } from '@angular/core';
 import * as Rx                 from 'rxjs';
 
-const animationFrame = Rx.Scheduler.animationFrame;
+const cAnimationFrame = Rx.Scheduler.animationFrame;
 
 // Defualt providers for production
 var injector = ReflectiveInjector.resolveAndCreate([{
-    provide: 'waitForFrame', useValue: animationFrame
+    provide: 'waitForFrame', useValue: cAnimationFrame
 }]);
 
 // A way to override the default providers.

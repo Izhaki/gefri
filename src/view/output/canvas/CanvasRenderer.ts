@@ -1,10 +1,11 @@
-import { ContextPainter } from '../';
-import { Rect           } from '../../geometry';
-import { getClassName   } from '../../../core/Utils'
-import { Viewee         } from '../../viewees/Viewee';
-import { Rectangle      } from '../../viewees/shapes';
+import { ContextPainter  } from '../';
+import { Rect,
+         Transformations } from '../../geometry';
+import { getClassName    } from '../../../core/Utils'
+import { Viewee          } from '../../viewees/Viewee';
+import { Rectangle       } from '../../viewees/shapes';
 import { Transformer,
-         Root           } from '../../viewees/invisibles';
+         Root            } from '../../viewees/invisibles';
 
 
 export
@@ -28,13 +29,20 @@ class CanvasRenderer extends ContextPainter {
             this.intersectClipAreaWith( aViewee.getBoundingRect() );
         }
 
-        aViewee.applyTransformations( this );
+        this.applyTransformations( aViewee );
 
         aViewee.forEachChild( ( aChild ) => {
             this.render( aChild );
         });
 
         this.popState();
+    }
+
+    private applyTransformations( aViewee: Viewee ): void {
+        let iTransformations: Transformations = aViewee.getTransformations();
+
+        this.translate( iTransformations.translate );
+        this.scale( iTransformations.scale );
     }
 
     private renderRectangle( aRactangle: Rectangle ): void {

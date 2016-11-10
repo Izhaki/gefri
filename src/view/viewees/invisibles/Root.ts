@@ -1,6 +1,9 @@
-import { Invisible } from './';
-import { Control   } from '../../Control';
-import { Rect      } from '../../geometry';
+import { Invisible       } from './';
+import { Control         } from '../../Control';
+import { Rect,
+         cNoTranslate,
+         cNoScale,
+         Transformations } from '../../geometry';
 
 // An adapter between the viewee composition and the control.
 // There is only one root per viewee hierarchy, and it is created automatically
@@ -17,6 +20,13 @@ class Root extends Invisible {
     getBoundingRect(): Rect {
         // TODO change to tactic
         return this.control.getBoundingRect();
+    }
+
+    getTransformations(): Transformations {
+        return {
+            translate: cNoTranslate,
+            scale:     cNoScale
+        }
     }
 
 }

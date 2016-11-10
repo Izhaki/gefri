@@ -157,10 +157,10 @@ class Context2DMock implements CanvasRenderingContext2D {
     public currentTransform; //
     public rotate( angle: number ): void {}
     public scale( x: number, y: number ): void {
-        this.matrix.scale( new Point( x, y ) );
+        this.matrix.scale( x, y );
     }
     public translate( x: number, y: number ): void {
-        this.matrix.translate( new Point( x, y ) );
+        this.matrix.translate( x, y );
     }
     public transform( m11: number, m12: number, m21: number, m22: number, dx: number, dy: number ): void {}
     public setTransform( m11: number, m12: number, m21: number, m22: number, dx: number, dy: number ): void {}

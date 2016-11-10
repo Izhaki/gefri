@@ -1,13 +1,16 @@
-import { Invisible     } from './';
-import { Transformable } from '../../output';
-import { Point,
-         Rect          } from '../../geometry';
+import { Invisible       } from './';
+import { Rect,
+         Translation,
+         Scale,
+         cNoTranslate,
+         cNoScale,
+         Transformations } from '../../geometry';
 
 export
 class Transformer extends Invisible {
 
-    private translation: Point = new Point( 0, 0 );
-    private scale:       Point = new Point( 1, 1 );
+    private translation: Translation = cNoTranslate.clone();
+    private scale:       Scale       = cNoScale.clone();
 
     constructor() {
         super();
@@ -30,10 +33,11 @@ class Transformer extends Invisible {
         return this.getParent().getBoundingRect();
     }
 
-    applyTransformations( aTransformable: Transformable ): void {
-        super.applyTransformations( aTransformable );
-        aTransformable.translate( this.translation.x, this.translation.y );
-        aTransformable.scale( this.scale.x, this.scale.y );
+    getTransformations(): Transformations {
+        return {
+            translate: this.translation,
+            scale:     this.scale
+        }
     }
 
 }

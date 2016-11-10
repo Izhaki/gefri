@@ -1,6 +1,6 @@
 import { Composite     } from './../../core';
-import { Transformable } from './../output';
-import { Rect          } from '../geometry';
+import { Rect,
+         Transformations } from '../geometry';
 
 export
 abstract class Viewee extends Composite< Viewee > {
@@ -16,8 +16,6 @@ abstract class Viewee extends Composite< Viewee > {
         this.clipping = clipping;
     }
 
-    applyTransformations( aTransformable: Transformable ): void {
-        // Does nothing by default. Children will override.
-    }
+    abstract getTransformations(): Transformations;
 
 }

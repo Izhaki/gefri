@@ -8,6 +8,25 @@ import { Rect,
          Point } from './';
 
 export
+type Translation = Point;
+
+export
+type Scale = Point;
+
+export
+interface Transformations {
+    translate: Translation;
+    scale:     Scale;
+}
+
+export
+const cNoTranslate: Translation = new Point( 0, 0 );
+
+export
+const cNoScale: Scale = new Point( 1, 1 );
+
+
+export
 class TransformMatrix {
     scaleX    : number; // a
     scaleY    : number; // d
@@ -31,17 +50,17 @@ class TransformMatrix {
         return iClone;
     }
 
-    translate( aTranslation: Point ) {
-        this.translateX += aTranslation.x * this.scaleX;
-        this.translateY += aTranslation.y * this.scaleY;
+    translate( x: number, y: number ) {
+        this.translateX += x * this.scaleX;
+        this.translateY += y * this.scaleY;
     }
 
-    scale( aScale: Point ) {
-        this.translateX *= aScale.x;
-        this.translateY *= aScale.y;
+    scale( x: number, y: number ) {
+        this.translateX *= x;
+        this.translateY *= y;
 
-        this.scaleX     *= aScale.x;
-        this.scaleY     *= aScale.y;
+        this.scaleX     *= x;
+        this.scaleY     *= y;
     }
 
     transformPoint( aPoint: Point ) : Point {

@@ -1,4 +1,5 @@
-import { Point } from './';
+import { Point,
+         Translation } from './';
 
 export
 type Rects = Rect[];
@@ -62,9 +63,9 @@ class Rect {
         )
     }
 
-    translate( aOffest: Point ) {
-        this.x += aOffest.x;
-        this.y += aOffest.y;
+    translate( aTranslation: Translation ) {
+        this.x += aTranslation.x;
+        this.y += aTranslation.y;
     }
 
     expand( aPoints: number ): void {

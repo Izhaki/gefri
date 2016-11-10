@@ -1,7 +1,7 @@
 import { Context2DMock              } from '../../../tests/mocks';
 import { Rect                       } from '../geometry';
 import { ContextPainter,
-         ANTIALIASING_EXTRA_MARGINS } from './ContextPainter';
+         cAntialiasingExtraMargins } from './ContextPainter';
 import { Painter                    } from './';
 import { PainterSpecs               } from './Painter.spec';
 
@@ -19,33 +19,6 @@ describe( 'ContextPainter', () => {
         this.painter = createPainter();
         this.context = this.painter.context;
     });
-
-
-    describe( 'translate()', () => {
-
-        it( 'should call translate on the context provided', () => {
-            spyOn( this.context, 'translate' );
-
-            this.painter.translate( 10, 20 );
-
-            expect( this.context.translate ).toHaveBeenCalledWith( 10, 20 );
-        });
-
-    });
-
-
-    describe( 'scale()', () => {
-
-        it( 'should call scale on the context provided', () => {
-            spyOn( this.context, 'scale' );
-
-            this.painter.scale( 2, 4 );
-
-            expect( this.context.scale ).toHaveBeenCalledWith( 2, 4 );
-        });
-
-    });
-
 
     describe( 'drawRectangle()', () => {
 
@@ -69,7 +42,7 @@ describe( 'ContextPainter', () => {
             this.painter.erase( iRect );
 
             let iExpected = iRect.clone();
-            iExpected.expand( ANTIALIASING_EXTRA_MARGINS );
+            iExpected.expand( cAntialiasingExtraMargins );
 
             expect( this.context.clearRect ).toHaveBeenCalledWith( iExpected.x, iExpected.y, iExpected.w, iExpected.h );
         });

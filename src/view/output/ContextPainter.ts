@@ -1,8 +1,10 @@
 import { Painter } from './';
-import { Rect    } from '../geometry';
+import { Rect,
+         Translation,
+         Scale        } from '../geometry';
 
 export
-const ANTIALIASING_EXTRA_MARGINS = 1
+const cAntialiasingExtraMargins = 1
 
 export
 class ContextPainter extends Painter {
@@ -24,26 +26,26 @@ class ContextPainter extends Painter {
 
     erase( aRect: Rect ): void {
         let iExpandedRect = aRect.clone();
-        iExpandedRect.expand( ANTIALIASING_EXTRA_MARGINS );
+        iExpandedRect.expand( cAntialiasingExtraMargins );
 
         this.context.clearRect( iExpandedRect.x, iExpandedRect.y, iExpandedRect.w, iExpandedRect.h );
     };
 
-    translate( x, y ): void {
-        super.translate( x, y );
-        this.context.translate( x, y );
+    translate( aTranslation: Translation ): void {
+        super.translate( aTranslation );
+        this.context.translate( aTranslation.x, aTranslation.y );
     }
 
-    scale( x, y ): void {
-        super.scale( x, y );
-        this.context.scale( x, y );
+    scale( aScale: Scale ): void {
+        super.scale( aScale );
+        this.context.scale( aScale.x, aScale.y );
     }
 
     intersectClipAreaWith( aRect: Rect ): void {
         super.intersectClipAreaWith( aRect );
 
         var iRect = aRect.clone();
-        iRect.expand( ANTIALIASING_EXTRA_MARGINS );
+        iRect.expand( cAntialiasingExtraMargins );
 
         this.context.beginPath();
 
