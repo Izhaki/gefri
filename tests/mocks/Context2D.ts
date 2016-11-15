@@ -42,7 +42,7 @@ class Context2DMock implements CanvasRenderingContext2D {
     public clearRect( x: number, y: number, w: number, h: number ): void {
         let iRect = new Rect( x, y, w, h );
         this.rendered.push({
-            type: 'erase',
+            type: 'Erase',
             bounds: iRect
         })
     }
@@ -100,7 +100,7 @@ class Context2DMock implements CanvasRenderingContext2D {
         if ( this.clipArea ) {
             var lastRender = this.rendered[ this.rendered.length - 1 ];
 
-            if ( lastRender.type !== 'rect' ) {
+            if ( lastRender.type !== 'Rectangle' ) {
                 throw new Error( 'closePath() was called but not with rect' )
             }
 
@@ -124,7 +124,7 @@ class Context2DMock implements CanvasRenderingContext2D {
 
         this.log( 'rect()', 'pushed to rendered', iTransformedRect )
         this.rendered.push({
-            type: 'rect',
+            type: 'Rectangle',
             bounds: iTransformedRect
         })
     } //
@@ -138,7 +138,7 @@ class Context2DMock implements CanvasRenderingContext2D {
     public clip( fillRule?: string ): void {
         var lastRender = this.rendered.pop();
 
-        if ( lastRender.type !== 'rect' ) {
+        if ( lastRender.type !== 'Rectangle' ) {
             throw new Error( 'clip() was called but not with rect' )
         }
 
