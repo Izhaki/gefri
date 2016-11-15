@@ -29,12 +29,18 @@ function getRectMismatchMessage( aActual, aExpected ): string {
     return `Expected ${ iExpectedRect } to be ${ iActualRect }`;
 }
 
-function rectMatch( aActual, aExpected ): jasmine.CustomMatcherResult {
-    let isMatch = isRectMatch( aActual, aExpected );
-    return {
-        pass:    isMatch,
-        message: isMatch ? '' : getRectMismatchMessage( aActual, aExpected )
+function assertRectMatch( aActual, aExpected ): void {
+    if ( isRectMismatch( aActual, aExpected ) ) {
+        throw new Error( getRectMismatchMessage( aActual, aExpected ) )
     }
+}
+
+function match(): jasmine.CustomMatcherResult {
+    return { pass: true, message: '' };
+}
+
+function mismatch( aMessage: string ): jasmine.CustomMatcherResult {
+    return { pass: false, message: aMessage };
 }
 
 beforeEach( () => {
@@ -47,7 +53,13 @@ beforeEach( () => {
                     let [ x, y, w, h ]  = aExpected,
                         iExpected: Rect = new Rect( x, y, w, h );
 
-                    return rectMatch( aActual, iExpected );
+                    try {
+                        assertRectMatch( aActual, iExpected )
+                        return match()
+                    } catch ( exception ) {
+                        return mismatch( exception.message );
+                    }
+
                 }
             }
         },
@@ -56,55 +68,57 @@ beforeEach( () => {
             return {
                 compare: function( context: any, expected: string ): jasmine.CustomMatcherResult {
                     waitForFrame.flush();
-                    let iResult: jasmine.CustomMatcherResult = { pass: true, message: '' };
 
                     let iRows = getRows( expected );
 
-                    if ( !lengthMatch( context.rendered, iRows ) ) {
-                        throw new Error( `Expected and actual render operations differ ( ${ context.rendered.length } vs ${ iRows.length } )` )
+                    try {
+                        assertLengthMatch( context.rendered, iRows );
+
+                        iRows.forEach( ( aRow ) => {
+                            let iRendered = context.rendered.shift();
+                            assertRowMatch( iRendered, aRow );
+                        });
+
+                        return match();
+                    } catch ( exception ) {
+                        return mismatch( exception.message );
                     }
-
-                    iRows.forEach( ( aRow ) => {
-                        let iRendered = context.rendered.shift(),
-                            iRowMatch = rowMatch( iRendered, aRow );
-
-                        if ( !iRowMatch.pass ) {
-                            iResult.pass = false;
-                            iResult.message += iRowMatch.message +'\n';
-                        }
-                    });
-
-                    return iResult;
                 }
             }
 
-            function rowMatch( aRendered, aRow ): jasmine.CustomMatcherResult {
-                let [ iAction, iParams ] = aRow.map( removeWhitespace );
+            function assertRowMatch( aRendered, aRow ): void {
+                let [ iExpectedType, iParams ] = aRow.map( removeWhitespace );
 
-                let iTypeMismatch = aRendered.type != iAction;
+                assertTypeMatch( aRendered.type, iExpectedType );
+                assertParamsMatch( aRendered, iExpectedType, iParams );
+            }
 
-                if ( iTypeMismatch ) {
-                    return {
-                        pass:    false,
-                        message: `Expected a ${ iAction }, but ${ aRendered.type } was rendered instead`
-                    }
+            function assertLengthMatch( aActual: any[], aExpected: any[] ): void {
+                if ( aActual.length != aExpected.length ) {
+                    throw new Error( `Expected and actual render operations differ ( ${ aActual.length } vs ${ aExpected.length } )` );
                 }
+            }
 
-                switch ( iAction ) {
+            function assertTypeMatch( aActualType: string, aExpectedType: string ): void {
+                if ( aActualType != aExpectedType ) {
+                    throw new Error( `Expected a ${ aExpectedType }, but ${ aActualType } was rendered instead` )
+                }
+            }
+
+            function assertParamsMatch( aRendered, aExpectedType, aParams ): void {
+                switch ( aExpectedType ) {
                     case 'Rectangle':
                     case 'Erase':
-                        let iExpectedBounds = rectFromString( iParams ),
+                        let iExpectedBounds = rectFromString( aParams ),
                             iActualBounds   = aRendered.bounds;
 
-                        return rectMatch( iActualBounds, iExpectedBounds )
+                        assertRectMatch( iActualBounds, iExpectedBounds )
+                        break;
                     default:
                         throw new Error( "Could not find the requested render action" )
                 }
             }
 
-            function lengthMatch( aActual: any[], aExpected: any[] ) : boolean {
-                return aActual.length == aExpected.length;
-            }
 
         }
     });
