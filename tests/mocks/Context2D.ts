@@ -39,7 +39,13 @@ class Context2DMock implements CanvasRenderingContext2D {
 
     // Drawing rectangles
 
-    public clearRect( x: number, y: number, w: number, h: number ): void {}
+    public clearRect( x: number, y: number, w: number, h: number ): void {
+        let iRect = new Rect( x, y, w, h );
+        this.rendered.push({
+            type: 'erase',
+            bounds: iRect
+        })
+    }
     public fillRect( x: number, y: number, w: number, h: number ): void {}
     public strokeRect( x: number, y: number, w: number, h: number ): void {}
 

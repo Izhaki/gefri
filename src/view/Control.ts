@@ -1,30 +1,39 @@
 import { Viewee         } from './viewees/Viewee';
-import { CanvasRenderer } from './output/canvas';
-import { Rect           } from './geometry';
+import { CanvasRenderer,
+         CanvasUpdater  } from './output/canvas';
+import { Rect,
+         Rects          } from './geometry';
 import { Root           } from './viewees/invisibles';
 import { inject         } from '../di';
+import { Stream         } from './../core';
 
 export
 class Control {
     private container:       HTMLElement;
     private canvas:          HTMLCanvasElement;
     private context:         CanvasRenderingContext2D;
-    private painter:         CanvasRenderer;
+    private renderer:         CanvasRenderer;
     private bounds:          Rect;
     private contents:        Viewee  = null;
     private root:            Root;
     private refreshIsQueued: boolean = false;
     private waitForFrame:    any;
+    private updatesStream:   Stream;
+    private updater:         CanvasUpdater;
+    private damagedRects:    Rects = [];
 
     constructor( aContainer: HTMLElement ) {
-        this.container    = aContainer;
-        this.bounds       = new Rect( 0, 0, aContainer.offsetWidth, aContainer.offsetHeight );
-        this.canvas       = this.createCanvas( aContainer );
-        this.context      = this.getContext( this.canvas );
-        this.painter      = new CanvasRenderer( this.context );
-        this.waitForFrame = inject( 'waitForFrame' );
+        this.container     = aContainer;
+        this.bounds        = new Rect( 0, 0, aContainer.offsetWidth, aContainer.offsetHeight );
+        this.canvas        = this.createCanvas( aContainer );
+        this.context       = this.getContext( this.canvas );
+        this.renderer      = new CanvasRenderer( this.context );
+        this.waitForFrame  = inject( 'waitForFrame' );
+        this.updatesStream = new Stream();
 
-        this.root         = new Root( this );
+        this.root          = new Root( this );
+
+        this.updater       = new CanvasUpdater( this.updatesStream, this.damagedRects );
     }
 
     setContents( aViewee: Viewee ): void {
@@ -34,6 +43,9 @@ class Control {
 
         this.contents = aViewee;
         this.root.addChild( aViewee );
+        this.root.attach( this.updatesStream );
+
+        this.updatesStream.subscribe( () => this.queueRefresh() )
 
         this.queueRefresh();
     }
@@ -54,7 +66,7 @@ class Control {
             // For more: https://blog.risingstack.com/writing-a-javascript-framework-execution-timing-beyond-settimeout/
             this.waitForFrame.schedule( () => {
                 this.refreshIsQueued = false;
-                this.painter.render( this.root );
+                this.renderer.refresh( this.root, this.damagedRects );
             });
         }
     }

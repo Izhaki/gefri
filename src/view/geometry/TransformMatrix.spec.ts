@@ -1,4 +1,5 @@
 import { TransformMatrix,
+         Transformations,
          Rect,
          Point            } from './';
 
@@ -33,6 +34,22 @@ describe( 'TransformMatrix', () => {
 
     });
 
+    describe( 'transform()', () => {
+
+        it( 'should apply the transformations', () => {
+            let iTransformations = {
+                translate: new Point( 10, 15 ),
+                scale:     new Point( 0.5, 2 )
+            }
+            this.transformMatrix.transform( iTransformations );
+
+            expect( this.transformMatrix.translateX ).toBe( 5 );
+            expect( this.transformMatrix.translateY ).toBe( 30 );
+            expect( this.transformMatrix.scaleX ).toBe( 0.5 );
+            expect( this.transformMatrix.scaleY ).toBe( 2 );
+        });
+
+    });
 
     describe( 'translate()', () => {
 

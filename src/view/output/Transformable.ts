@@ -1,5 +1,6 @@
 import { Stateful         } from './';
-import { Translation,
+import { Transformations,
+         Translation,
          Scale,
          TransformMatrix,
          Rect,
@@ -12,6 +13,11 @@ class Transformable extends Stateful {
     constructor() {
         super();
         this.matrix = new TransformMatrix();
+    }
+
+    transform( aTransformations: Transformations ): void {
+        this.translate( aTransformations.translate );
+        this.scale( aTransformations.scale )
     }
 
     translate( aTranslation: Translation ): void {

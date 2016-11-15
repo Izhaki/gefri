@@ -50,6 +50,23 @@ class Composite< T > {
         return this.parent;
     }
 
+    // Returns parents in top-down order
+    getParents(): Composite<T>[] {
+        let iParents,
+            iCurrentParent,
+            iCurrent;
+
+        iParents = []
+        iCurrent = this;
+        while ( iCurrent.hasParent() ) {
+            iCurrentParent = iCurrent.getParent();
+            iParents.unshift( iCurrentParent );
+            iCurrent = iCurrentParent;
+        }
+
+        return iParents;
+    }
+
     /****************************************************************************
      * Utility
      ***************************************************************************/
@@ -58,6 +75,15 @@ class Composite< T > {
         for ( var i = 0; i < this.children.length; i++ ) {
             aCallback( this.children[i], i );
         }
+    }
+
+    forEachParent( aCallback ): void {
+        let iParents: Composite<T>[];
+
+        iParents = this.getParents();
+        iParents.forEach( aParent => {
+            aCallback( aParent )
+        })
     }
 
     isChildless(): boolean {

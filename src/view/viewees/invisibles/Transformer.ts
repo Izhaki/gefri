@@ -19,12 +19,12 @@ class Transformer extends Invisible {
 
     setTranslate( x: number, y: number ) {
         this.translation.set( x, y );
-        // TODO: update
+        this.notifyUpdate()
     }
 
     setScale( x: number, y: number ) {
         this.scale.set( x, y );
-        // TODO: update
+        this.notifyUpdate()
     }
 
     /* istanbul ignore next */

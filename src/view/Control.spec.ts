@@ -75,16 +75,16 @@ describe( 'Control', () => {
     describe( 'queueRefresh()', () => {
         beforeEach( () => {
             this.root         = this.control.root,
-            this.painter      = this.control.painter;
+            this.renderer     = this.control.renderer;
             this.waitForFrame = inject( 'waitForFrame' );
-            spyOn( this.painter, 'render' );
+            spyOn( this.renderer, 'render' );
         });
 
         it( 'should ask the root viewee to refresh before the next render' , () => {
             this.control.queueRefresh();
             this.waitForFrame.flush();
 
-            expect( this.painter.render ).toHaveBeenCalledWith( this.root );
+            expect( this.renderer.render ).toHaveBeenCalledWith( this.root );
         });
 
         it( 'should not queue any new refresh requests until the previous one has been processed', () => {
@@ -98,7 +98,7 @@ describe( 'Control', () => {
             this.control.queueRefresh();
             this.waitForFrame.flush();
 
-            expect( this.painter.render.calls.count() ).toBe( 2 );
+            expect( this.renderer.render.calls.count() ).toBe( 2 );
 
         });
 

@@ -84,6 +84,8 @@ beforeEach( () => {
                 switch ( iAction ) {
                     case 'Rectangle':
                         return renderedRectangleMatch( aRendered, iParams );
+                    case 'Erase':
+                        return renderedEraseMatch( aRendered, iParams );
                     default:
                         throw new Error( "Could not find the requested render action" )
                 }
@@ -100,6 +102,22 @@ beforeEach( () => {
                     return {
                         pass:    false,
                         message: `Expected a Rectangle to be rendered, but ${ aRendered.type } was rendered instead`
+                    }
+                } else {
+                    let iExpectedBounds = rectFromString( aParams ),
+                        iActualBounds   = aRendered.bounds;
+
+                    return rectMatch( iActualBounds, iExpectedBounds )
+                }
+            }
+
+            function renderedEraseMatch( aRendered, aParams ): jasmine.CustomMatcherResult {
+                let iTypeMismatch   = aRendered.type != 'erase';
+
+                if ( iTypeMismatch ) {
+                    return {
+                        pass:    false,
+                        message: `Expected an Erase, but ${ aRendered.type } was rendered instead`
                     }
                 } else {
                     let iExpectedBounds = rectFromString( aParams ),

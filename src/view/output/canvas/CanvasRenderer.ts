@@ -1,15 +1,22 @@
 import { ContextPainter  } from '../';
 import { Rect,
+         Rects,
          Transformations } from '../../geometry';
-import { getClassName    } from '../../../core/Utils'
+import { getClassName    } from '../../../core/Utils';
 import { Viewee          } from '../../viewees/Viewee';
 import { Rectangle       } from '../../viewees/shapes';
+
 import { Transformer,
          Root            } from '../../viewees/invisibles';
 
-
 export
 class CanvasRenderer extends ContextPainter {
+
+    refresh( aViewee: Viewee, damagedRects: Rects ): void {
+        this.eraseDamagedRects( damagedRects );
+        this.render( aViewee );
+        this.clearDamagedRects( damagedRects );
+    }
 
     render( aViewee: Viewee ): void {
         let iVieweeClass = getClassName( aViewee ),
@@ -18,6 +25,18 @@ class CanvasRenderer extends ContextPainter {
         this[ iMethodName ]( aViewee );
 
         this.renderChildren( aViewee );
+    }
+
+    private eraseDamagedRects( aRects: Rects ): void {
+        aRects.forEach( aRect => {
+            this.context.clearRect( aRect.x, aRect.y, aRect.w, aRect.h );
+        });
+    }
+
+    private clearDamagedRects( aRects: Rects ): void {
+        while ( aRects.length > 0 ) {
+            aRects.pop();
+        }
     }
 
     private renderChildren( aViewee: Viewee ): void {
@@ -39,10 +58,10 @@ class CanvasRenderer extends ContextPainter {
     }
 
     private applyTransformations( aViewee: Viewee ): void {
-        let iTransformations: Transformations = aViewee.getTransformations();
+        let iTransformations: Transformations;
 
-        this.translate( iTransformations.translate );
-        this.scale( iTransformations.scale );
+        iTransformations = aViewee.getTransformations();
+        this.transform( iTransformations );
     }
 
     private renderRectangle( aRactangle: Rectangle ): void {

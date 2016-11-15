@@ -50,6 +50,11 @@ class TransformMatrix {
         return iClone;
     }
 
+    transform( transformations: Transformations ) {
+        this.translate( transformations.translate.x, transformations.translate.y );
+        this.scale( transformations.scale.x, transformations.scale.y );
+    }
+
     translate( x: number, y: number ) {
         this.translateX += x * this.scaleX;
         this.translateY += y * this.scaleY;

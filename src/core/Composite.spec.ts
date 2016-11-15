@@ -30,7 +30,7 @@ function CompositeSpecs( createComposite: () => Composite< any > ) {
     describe( 'addChildren()', () => {
 
         it( 'should add a child', () => {
-            var iAnotherChild = new Composite();
+            var iAnotherChild = createComposite();
 
             this.parent.addChildren( this.child, iAnotherChild );
 
@@ -49,7 +49,21 @@ function CompositeSpecs( createComposite: () => Composite< any > ) {
 
     });
 
+    describe( 'getParents()', () => {
 
+        it( 'should return all the child parents in top-down order', () => {
+            this.parent.addChildren( this.child  );
+
+            this.grandparent = createComposite();
+            this.grandparent.addChildren( this.parent );
+
+            this.grandgrandparent = createComposite();
+            this.grandgrandparent.addChildren( this.grandparent );
+
+            expect( this.child.getParents() ).toEqual( [ this.grandgrandparent, this.grandparent, this.parent ] );
+        });
+
+    });
 
     describe( 'deleteChild()', () => {
 
@@ -67,7 +81,7 @@ function CompositeSpecs( createComposite: () => Composite< any > ) {
         });
 
         it( 'should raise an execption if the child was not found', () => {
-            var iAnotherChild  = new Composite();
+            var iAnotherChild  = createComposite();
 
             var functionCall = () => {
                 this.parent.removeChild( iAnotherChild );
@@ -80,12 +94,11 @@ function CompositeSpecs( createComposite: () => Composite< any > ) {
 
 
     describe( 'forEachChild()', () => {
-        var iAnotherChild;
 
         beforeEach( () => {
-            iAnotherChild = new Composite();
+            this.anotherChild = createComposite();
 
-            this.parent.addChildren( this.child, iAnotherChild );
+            this.parent.addChildren( this.child, this.anotherChild );
         });
 
         it( 'should iterate each child', () => {
@@ -94,11 +107,34 @@ function CompositeSpecs( createComposite: () => Composite< any > ) {
             this.parent.forEachChild( iCallback );
 
             expect( iCallback.calls.argsFor(0) ).toEqual([ this.child, 0 ]);
-            expect( iCallback.calls.argsFor(1) ).toEqual([ iAnotherChild, 1 ]);
+            expect( iCallback.calls.argsFor(1) ).toEqual([ this.anotherChild, 1 ]);
         });
 
     });
 
+    describe( 'forEachParent()', () => {
+
+        beforeEach( () => {
+            this.parent.addChildren( this.child  );
+
+            this.grandparent = createComposite();
+            this.grandparent.addChildren( this.parent );
+
+            this.grandgrandparent = createComposite();
+            this.grandgrandparent.addChildren( this.grandparent );
+        });
+
+        it( 'should iterate each parent', () => {
+            var iCallback = jasmine.createSpy('iCallback');
+
+            this.child.forEachParent( iCallback );
+
+            expect( iCallback.calls.argsFor(0) ).toEqual([ this.grandgrandparent ]);
+            expect( iCallback.calls.argsFor(1) ).toEqual([ this.grandparent ]);
+            expect( iCallback.calls.argsFor(2) ).toEqual([ this.parent ]);
+        });
+
+    });
 
     describe( 'isChildless()', () => {
 

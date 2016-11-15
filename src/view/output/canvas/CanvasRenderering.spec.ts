@@ -5,6 +5,10 @@ import { Control        } from '../../Control';
 import { Rectangle      } from '../../viewees/shapes';
 import { Rect           } from '../../geometry';
 
+import { inject         } from '../../../di';
+
+let waitForFrame = inject( 'waitForFrame' );
+
 function createControl(): Control {
 
     var iViewElement = document.getElementById( 'view' );
@@ -17,7 +21,7 @@ function createControl(): Control {
     return iControl;
 }
 
-describe( 'CanvasRenderer', () => {
+describe( 'Canvas Renderering', () => {
 
     beforeEach( () => {
         this.createViewees = helpers.createViewees;
@@ -112,7 +116,7 @@ describe( 'CanvasRenderer', () => {
         `);
     });
 
-    it( 'should transform and scale child viewees', () =>{
+    it( 'should transform and scale child viewees', () => {
         let { iTransformer } = this.createViewees(`
             | iTransformer | Transformer |                   |
             |   iSquare    | Rectangle   | 100, 100, 10, 10  |
@@ -127,5 +131,42 @@ describe( 'CanvasRenderer', () => {
             | Rectangle | 25, 25, 5, 5 |
         `);
     });
+
+    it( 'should refresh the canvas when the scale of a transformer changes', () => {
+        let { iTransformer } = this.createViewees(`
+            | iTransformer | Transformer |                   |
+            |   iSquare    | Rectangle   | 100, 100, 10, 10  |
+        `);
+
+        this.control.setContents( iTransformer );
+        waitForFrame.flush();
+        this.context.reset();
+
+        iTransformer.setScale( 0.5, 0.5 );
+
+        expect( this.context ).toHaveRendered(`
+            | Erase     | 0,  0,  500, 400 |
+            | Rectangle | 50, 50, 5,   5   |
+        `);
+    });
+
+    it( 'should refresh the canvas when the translate of a transformer changes', () => {
+        let { iTransformer } = this.createViewees(`
+            | iTransformer | Transformer |                   |
+            |   iSquare    | Rectangle   | 100, 100, 10, 10  |
+        `);
+
+        this.control.setContents( iTransformer );
+        waitForFrame.flush();
+        this.context.reset();
+
+        iTransformer.setTranslate( 100, 100 );
+
+        expect( this.context ).toHaveRendered(`
+            | Erase     | 0,   0,   500, 400 |
+            | Rectangle | 200, 200, 10,  10  |
+        `);
+    });
+
 
 });
