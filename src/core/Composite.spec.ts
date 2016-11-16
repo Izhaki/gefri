@@ -55,9 +55,9 @@ function CompositeSpecs( createComposite: () => Composite< any > ) {
 
     });
 
-    describe( 'getParents()', () => {
+    describe( 'getAncestors()', () => {
 
-        it( 'should return all the child parents in top-down order', () => {
+        it( 'should return all the child ancestors in top-down order', () => {
             this.parent.addChildren( this.child  );
 
             this.grandparent = createComposite();
@@ -66,7 +66,7 @@ function CompositeSpecs( createComposite: () => Composite< any > ) {
             this.grandgrandparent = createComposite();
             this.grandgrandparent.addChildren( this.grandparent );
 
-            expect( this.child.getParents() ).toEqual( [ this.grandgrandparent, this.grandparent, this.parent ] );
+            expect( this.child.getAncestors() ).toEqual( [ this.grandgrandparent, this.grandparent, this.parent ] );
         });
 
     });
@@ -118,7 +118,7 @@ function CompositeSpecs( createComposite: () => Composite< any > ) {
 
     });
 
-    describe( 'forEachParent()', () => {
+    describe( 'forEachAncestor()', () => {
 
         beforeEach( () => {
             this.parent.addChildren( this.child  );
@@ -133,7 +133,7 @@ function CompositeSpecs( createComposite: () => Composite< any > ) {
         it( 'should iterate each parent', () => {
             var iCallback = jasmine.createSpy('iCallback');
 
-            this.child.forEachParent( iCallback );
+            this.child.forEachAncestor( iCallback );
 
             expect( iCallback.calls.argsFor(0) ).toEqual([ this.grandgrandparent ]);
             expect( iCallback.calls.argsFor(1) ).toEqual([ this.grandparent ]);

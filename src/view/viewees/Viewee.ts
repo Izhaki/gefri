@@ -36,8 +36,8 @@ abstract class Viewee extends Composite< Viewee > {
         let iMatrix:           TransformMatrix = new TransformMatrix(),
             iTransformations : Transformations;
 
-        this.forEachParent( ( aParent: Viewee )  => {
-            iTransformations = aParent.getTransformations();
+        this.forEachAncestor( ( aAncestor: Viewee )  => {
+            iTransformations = aAncestor.getTransformations();
             iMatrix.transform( iTransformations );
         });
 

@@ -53,21 +53,21 @@ class Composite< T > {
         return this.parent;
     }
 
-    // Returns parents in top-down order
-    getParents(): Composite<T>[] {
-        let iParents,
+    // Returns ancestors in top-down order
+    getAncestors(): Composite<T>[] {
+        let iAncestors,
             iCurrentParent,
             iCurrent;
 
-        iParents = []
+        iAncestors = []
         iCurrent = this;
         while ( iCurrent.hasParent() ) {
             iCurrentParent = iCurrent.getParent();
-            iParents.unshift( iCurrentParent );
+            iAncestors.unshift( iCurrentParent );
             iCurrent = iCurrentParent;
         }
 
-        return iParents;
+        return iAncestors;
     }
 
     /****************************************************************************
@@ -80,12 +80,12 @@ class Composite< T > {
         }
     }
 
-    forEachParent( aCallback ): void {
-        let iParents: Composite<T>[];
+    forEachAncestor( aCallback ): void {
+        let iAncestors: Composite<T>[];
 
-        iParents = this.getParents();
-        iParents.forEach( aParent => {
-            aCallback( aParent )
+        iAncestors = this.getAncestors();
+        iAncestors.forEach( aAncestor => {
+            aCallback( aAncestor )
         })
     }
 
@@ -94,8 +94,8 @@ class Composite< T > {
     }
 
     private isChildAnAncestor( aChild ): boolean {
-        let iParents = this.getParents();
-        return iParents.indexOf( aChild ) != -1;
+        let iAncestors = this.getAncestors();
+        return iAncestors.indexOf( aChild ) != -1;
     }
 
 }
