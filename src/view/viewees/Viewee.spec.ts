@@ -10,7 +10,7 @@ function VieweeSpecs(  createViewee: () => Viewee ) {
 
     describe( 'is a Composite', () => {
         CompositeSpecs.call( this, createViewee );
-    })
+    });
 
     beforeEach( () => {
         this.viewee  = createViewee();

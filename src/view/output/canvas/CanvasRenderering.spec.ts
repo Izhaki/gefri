@@ -1,38 +1,12 @@
-import { Context2DMock  } from '../../../../tests/mocks';
-import * as helpers from '../../../../tests/unit/helpers'
-
-import { Control        } from '../../Control';
+import { setup          } from './CanvasHelpers.spec';
 import { Rectangle      } from '../../viewees/shapes';
 import { Rect           } from '../../geometry';
 
-import { inject         } from '../../../di';
+describe( 'The canvas should', () => {
 
-let waitForFrame = inject( 'waitForFrame' );
+    setup.call( this );
 
-function createControl(): Control {
-
-    var iViewElement = document.getElementById( 'view' );
-
-    iViewElement.setAttribute( 'style', 'width:500px; height:400px;' );
-    iViewElement.innerHTML = '';
-
-    var iControl = new Control( iViewElement );
-
-    return iControl;
-}
-
-describe( 'Canvas Renderering', () => {
-
-    beforeEach( () => {
-        this.createViewees = helpers.createViewees;
-    });
-
-    beforeEach( () => {
-        this.control  = createControl();
-        this.context  = this.control.context;
-    });
-
-    it( 'should render a rect', () => {
+    it( 'render a rect', () => {
         let { iRectangle } = this.createViewees(`
             | iRectangle | Rectangle | 10, 11, 12, 13 |
         `);
@@ -44,7 +18,7 @@ describe( 'Canvas Renderering', () => {
         `);
     });
 
-    it( 'should render children in relative coordinates', () => {
+    it( 'render children in relative coordinates', () => {
         let { iGrandparent } = this.createViewees(`
             | iGrandparent | Rectangle | 10, 10, 100, 100 |
             |   iParent    | Rectangle | 10, 10, 80,  80  |
@@ -61,7 +35,7 @@ describe( 'Canvas Renderering', () => {
     });
 
     // Without state restoration (for transforms), this wouldn't work.
-    it( 'should render siblings in relative coordinates', () => {
+    it( 'render siblings in relative coordinates', () => {
         let { iFace } = this.createViewees(`
             | iFace       | Rectangle | 10, 10, 100, 100 |
             |   iEyeL     | Rectangle | 10, 10, 10,  10  |
@@ -81,7 +55,7 @@ describe( 'Canvas Renderering', () => {
         `);
     });
 
-    it( 'should clip children if the viewee is clipping its children', () => {
+    it( 'clip children if the viewee is clipping its children', () => {
         let { iGrandparent } = this.createViewees(`
             | iGrandparent | Rectangle | 10, 10, 80, 80 |
             |   iParent    | Rectangle | 10, 10, 80, 60 |
@@ -97,7 +71,7 @@ describe( 'Canvas Renderering', () => {
         `);
     });
 
-    it( 'should not clip children if the viewee is not clipping its children', () => {
+    it( 'not clip children if the viewee is not clipping its children', () => {
         let { iGrandparent, iParent } = this.createViewees(`
             | iGrandparent | Rectangle | 10, 10, 80, 80 |
             |   iParent    | Rectangle | 10, 10, 80, 60 |
@@ -116,7 +90,7 @@ describe( 'Canvas Renderering', () => {
         `);
     });
 
-    it( 'should transform and scale child viewees', () => {
+    it( 'transform and scale child viewees', () => {
         let { iTransformer } = this.createViewees(`
             | iTransformer | Transformer |                   |
             |   iSquare    | Rectangle   | 100, 100, 10, 10  |
@@ -131,42 +105,5 @@ describe( 'Canvas Renderering', () => {
             | Rectangle | 25, 25, 5, 5 |
         `);
     });
-
-    it( 'should refresh the canvas when the scale of a transformer changes', () => {
-        let { iTransformer } = this.createViewees(`
-            | iTransformer | Transformer |                   |
-            |   iSquare    | Rectangle   | 100, 100, 10, 10  |
-        `);
-
-        this.control.setContents( iTransformer );
-        waitForFrame.flush();
-        this.context.reset();
-
-        iTransformer.setScale( 0.5, 0.5 );
-
-        expect( this.context ).toHaveRendered(`
-            | Erase     | 0,  0,  500, 400 |
-            | Rectangle | 50, 50, 5,   5   |
-        `);
-    });
-
-    it( 'should refresh the canvas when the translate of a transformer changes', () => {
-        let { iTransformer } = this.createViewees(`
-            | iTransformer | Transformer |                   |
-            |   iSquare    | Rectangle   | 100, 100, 10, 10  |
-        `);
-
-        this.control.setContents( iTransformer );
-        waitForFrame.flush();
-        this.context.reset();
-
-        iTransformer.setTranslate( 100, 100 );
-
-        expect( this.context ).toHaveRendered(`
-            | Erase     | 0,   0,   500, 400 |
-            | Rectangle | 200, 200, 10,  10  |
-        `);
-    });
-
 
 });
