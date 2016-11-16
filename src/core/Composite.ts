@@ -13,6 +13,9 @@ class Composite< T > {
      ***************************************************************************/
 
     addChild( aChild: Composite<T> ): void {
+        if ( this.isChildAnAncestor( aChild ) ) {
+            throw new Error( "Added child is an ancestor. Circular composition is prohibited." )
+        }
         this.children.push( aChild );
         aChild.setParent( this );
     }
@@ -88,6 +91,11 @@ class Composite< T > {
 
     isChildless(): boolean {
         return this.children.length === 0;
+    }
+
+    private isChildAnAncestor( aChild ): boolean {
+        let iParents = this.getParents();
+        return iParents.indexOf( aChild ) != -1;
     }
 
 }

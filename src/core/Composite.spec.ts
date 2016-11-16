@@ -24,6 +24,12 @@ function CompositeSpecs( createComposite: () => Composite< any > ) {
             expect( this.child.parent ).toBe( this.parent );
         });
 
+        it( 'should throw if the child added is an ancestor', () => {
+            let addParentToChild = () => this.child.addChild( this.parent );
+
+            expect( addParentToChild ).toThrow();
+        });
+
     });
 
 
