@@ -1,6 +1,6 @@
 import { ShapeSpecs         } from './Shape.spec';
 import { Rectangle          } from './';
-import { Rect               } from '../../geometry';
+import { Rect               } from '../../../geometry';
 
 function createRectangle(): Rectangle {
     return new Rectangle( new Rect( 10, 10, 20, 20 ) );

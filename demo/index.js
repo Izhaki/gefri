@@ -19,8 +19,12 @@ iControl.setContents( iTransformer );
 
 
 
-$( '#erase-button' ).click( function() {
-    iEyeL.erase();
+$( '#hide-button' ).click( function() {
+    iEyeL.hide();
+});
+
+$( '#show-button' ).click( function() {
+    iEyeL.show();
 });
 
 var zoomSlider = $( '#zoom-slider' );

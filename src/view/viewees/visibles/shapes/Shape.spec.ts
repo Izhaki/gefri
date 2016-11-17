@@ -1,4 +1,4 @@
-import { VieweeSpecs } from '../Viewee.spec';
+import { VieweeSpecs } from '../../Viewee.spec';
 import { Shape       } from './';
 
 export

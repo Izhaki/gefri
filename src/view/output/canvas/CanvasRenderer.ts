@@ -4,7 +4,8 @@ import { Rect,
          Transformations } from '../../geometry';
 import { getClassName    } from '../../../core/Utils';
 import { Viewee          } from '../../viewees/Viewee';
-import { Rectangle       } from '../../viewees/shapes';
+import { Visible         } from '../../viewees/visibles/Visible';
+import { Rectangle, Shape       } from '../../viewees/visibles/shapes';
 
 import { Transformer,
          Root            } from '../../viewees/invisibles';
@@ -15,16 +16,18 @@ class CanvasRenderer extends ContextPainter {
     refresh( aViewee: Viewee, damagedRects: Rects ): void {
         this.eraseDamagedRects( damagedRects );
         this.render( aViewee );
-        this.clearDamagedRects( damagedRects );
+        this.emptyDamagedRects( damagedRects );
     }
 
     render( aViewee: Viewee ): void {
-        let iVieweeClass = getClassName( aViewee ),
-            iMethodName  = 'render' + iVieweeClass;
+        if ( this.needsRendering( aViewee ) ) {
+            let iVieweeClass = getClassName( aViewee ),
+                iMethodName  = 'render' + iVieweeClass;
 
-        this[ iMethodName ]( aViewee );
+            this[ iMethodName ]( aViewee );
 
-        this.renderChildren( aViewee );
+            this.renderChildren( aViewee );
+        }
     }
 
     private eraseDamagedRects( aRects: Rects ): void {
@@ -33,9 +36,18 @@ class CanvasRenderer extends ContextPainter {
         });
     }
 
-    private clearDamagedRects( aRects: Rects ): void {
+    private emptyDamagedRects( aRects: Rects ): void {
         while ( aRects.length > 0 ) {
             aRects.pop();
+        }
+    }
+
+    private needsRendering( aViewee: Viewee ): boolean {
+        if ( aViewee instanceof Visible ) {
+            let isVisble = (<Visible>aViewee).isVisible();
+            return isVisble;
+        } else {
+            return true;
         }
     }
 

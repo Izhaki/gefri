@@ -1,5 +1,5 @@
 import { Shape } from './Shape';
-import { Rect  } from './../../geometry';
+import { Rect  } from './../../../geometry';
 
 export
 class Rectangle extends Shape {

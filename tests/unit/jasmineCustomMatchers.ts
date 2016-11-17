@@ -23,8 +23,8 @@ function isRectMismatch( a, b ): boolean {
 }
 
 function getRectMismatchMessage( aActual, aExpected ): string {
-    let iExpectedRect = getRectString( aActual ),
-        iActualRect   = getRectString( aExpected );
+    let iActualRect   = getRectString( aActual ),
+        iExpectedRect = getRectString( aExpected );
 
     return `Expected ${ iExpectedRect } to be ${ iActualRect }`;
 }
@@ -95,7 +95,7 @@ beforeEach( () => {
 
             function assertLengthMatch( aActual: any[], aExpected: any[] ): void {
                 if ( aActual.length != aExpected.length ) {
-                    throw new Error( `Expected and actual render operations differ ( ${ aActual.length } vs ${ aExpected.length } )` );
+                    throw new Error( `Expected and actual render operations differ ( ${ aExpected.length } vs ${ aActual.length } )` );
                 }
             }
 

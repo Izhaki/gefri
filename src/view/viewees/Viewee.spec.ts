@@ -1,5 +1,5 @@
 import { Viewee         } from './Viewee';
-import { Rectangle      } from './shapes';
+import { Rectangle      } from './visibles/shapes';
 import { CompositeSpecs } from '../../core/Composite.spec';
 import { createControl  } from '../Control.spec';
 import { Rect,

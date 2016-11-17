@@ -1,5 +1,5 @@
 import { setup          } from './CanvasHelpers.spec';
-import { Rectangle      } from '../../viewees/shapes';
+import { Rectangle      } from '../../viewees/visibles/shapes';
 import { Rect           } from '../../geometry';
 
 describe( 'The canvas should', () => {

@@ -3,7 +3,7 @@
 // functions when needed.
 
 import { Rect        } from '../../src/view/geometry';
-import { Rectangle   } from '../../src/view/viewees/shapes';
+import { Rectangle   } from '../../src/view/viewees/visibles/shapes';
 import { Transformer } from '../../src/view/viewees/invisibles';
 
 export

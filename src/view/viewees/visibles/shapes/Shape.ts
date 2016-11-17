@@ -1,10 +1,10 @@
-import { Viewee           } from './../Viewee';
+import { Visible          } from './../Visible';
 import { Rect,
          Transformations,
-         cNoScale,        } from './../../geometry';
+         cNoScale,        } from './../../../geometry';
 
 export
-abstract class Shape extends Viewee {
+abstract class Shape extends Visible {
 
     getTransformations(): Transformations {
         let iBounds: Rect = this.getBoundingRect();
