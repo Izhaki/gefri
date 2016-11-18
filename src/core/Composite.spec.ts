@@ -12,6 +12,8 @@ function CompositeSpecs( createComposite: () => Composite< any > ) {
     describe( 'addChild()', () => {
 
         beforeEach( () => {
+            spyOn( this.parent, 'onAfterChildAdded' );
+            spyOn( this.child,  'onAfterAdd' );
             this.parent.addChild( this.child );
         });
 
@@ -29,6 +31,15 @@ function CompositeSpecs( createComposite: () => Composite< any > ) {
 
             expect( addParentToChild ).toThrow();
         });
+
+        it( 'should notify the parent that a child has been added', () => {
+            expect( this.parent.onAfterChildAdded ).toHaveBeenCalledWith( this.child );
+        });
+
+        it( 'should notify the child after it has been added', () => {
+            expect( this.child.onAfterAdd ).toHaveBeenCalled();
+        });
+
 
     });
 
@@ -71,9 +82,11 @@ function CompositeSpecs( createComposite: () => Composite< any > ) {
 
     });
 
-    describe( 'deleteChild()', () => {
+    describe( 'removeChild()', () => {
 
         beforeEach( () => {
+            spyOn( this.child,  'onBeforeRemove' );
+            spyOn( this.parent, 'onAfterChildRemoved' );
             this.parent.addChild( this.child );
             this.parent.removeChild( this.child );
         });
@@ -94,6 +107,14 @@ function CompositeSpecs( createComposite: () => Composite< any > ) {
             }
 
             expect( functionCall ).toThrow();
+        });
+
+        it( 'should notify the child before its removal', () => {
+            expect( this.child.onBeforeRemove ).toHaveBeenCalled();
+        });
+
+        it( 'should notify the parent that a child has been removed', () => {
+            expect( this.parent.onAfterChildRemoved ).toHaveBeenCalledWith( this.child );
         });
 
     });

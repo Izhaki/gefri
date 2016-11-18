@@ -44,6 +44,17 @@ abstract class Viewee extends Composite< Viewee > {
         return iMatrix;
     }
 
+    protected onAfterAdd() {
+        this.updatesStream = this.getParent().updatesStream;
+        super.onAfterAdd();
+        this.notifyUpdate();
+    }
+
+    protected onBeforeRemove() {
+        super.onBeforeRemove();
+        this.notifyUpdate();
+    }
+
     protected notifyUpdate(): void {
         this.updatesStream.notify( this );
     }

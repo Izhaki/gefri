@@ -11,6 +11,13 @@ describe( 'The canvas should refresh when', () => {
 
     setup.call( this );
 
+    beforeEach( () => {
+        this.clearRenderedLog = () => {
+            waitForFrame.flush();
+            this.context.reset();
+        }
+    });
+
     describe( 'a transformer', () => {
 
         beforeEach( () => {
@@ -21,8 +28,7 @@ describe( 'The canvas should refresh when', () => {
             this.transformer = iTransformer;
 
             this.control.setContents( this.transformer );
-            waitForFrame.flush();
-            this.context.reset();
+            this.clearRenderedLog();
         });
 
         it( 'scale changes', () => {
@@ -54,9 +60,34 @@ describe( 'The canvas should refresh when', () => {
             this.rectangle = iRectangle;
 
             this.control.setContents( this.rectangle );
-            waitForFrame.flush();
-            this.context.reset();
+            this.clearRenderedLog();
         });
+
+        it( 'is added to a parent', () => {
+            this.child = new Rectangle( new Rect( 2, 2, 6, 6 ) );
+            this.rectangle.addChild( this.child );
+
+            expect( this.context ).toHaveRendered(`
+                | Erase     | 102,  102, 6,  6  |
+                | Rectangle | 100,  100, 10, 10 |
+                | Rectangle | 102,  102, 6,  6  |
+            `);
+        });
+
+        it( 'is removed from its parent', () => {
+            this.child = new Rectangle( new Rect( 2, 2, 6, 6 ) );
+            this.rectangle.addChild( this.child );
+
+            this.clearRenderedLog();
+
+            this.rectangle.removeChild( this.child );
+
+            expect( this.context ).toHaveRendered(`
+                | Erase     | 102,  102, 6,  6  |
+                | Rectangle | 100,  100, 10, 10 |
+            `);
+        });
+
 
         it( 'is hidden', () => {
             this.rectangle.hide();

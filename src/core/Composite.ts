@@ -18,6 +18,8 @@ class Composite< T > {
         }
         this.children.push( aChild );
         aChild.setParent( this );
+        aChild.onAfterAdd();
+        this.onAfterChildAdded( aChild );
     }
 
     addChildren( ...args: T[] ): void {
@@ -32,8 +34,10 @@ class Composite< T > {
         if ( iChildIndex === -1 ) {
             throw "Could not find requested child"
         } else {
+            aChild.onBeforeRemove();
             aChild.parent = null;
             this.children.splice( iChildIndex, 1 );
+            this.onAfterChildRemoved( aChild );
         }
     }
 
@@ -68,6 +72,26 @@ class Composite< T > {
         }
 
         return iAncestors;
+    }
+
+    /****************************************************************************
+     * Events
+     ***************************************************************************/
+
+    protected onAfterAdd() {
+        // Does nothing by default, descendants will override.
+    }
+
+    protected onBeforeRemove() {
+        // Does nothing by default, descendants will override.
+    }
+
+    protected onAfterChildAdded( aChild ) {
+        // Does nothing by default, descendants will override.
+    }
+
+    protected onAfterChildRemoved( aChild ) {
+        // Does nothing by default, descendants will override.
     }
 
     /****************************************************************************

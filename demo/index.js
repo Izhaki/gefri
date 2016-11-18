@@ -7,6 +7,7 @@ var iEyeL        = new gefri.view.Rectangle( new gefri.view.geometry.Rect( 10, 1
 var iPupilL      = new gefri.view.Rectangle( new gefri.view.geometry.Rect( 5, 5, 10, 10 ) );
 var iEyeR        = new gefri.view.Rectangle( new gefri.view.geometry.Rect( 70, 10, 20, 20 ) );
 var iPupilR      = new gefri.view.Rectangle( new gefri.view.geometry.Rect( 5, 5, 10, 10 ) );
+var iMouth       = new gefri.view.Rectangle( new gefri.view.geometry.Rect( 45, 70, 10, 10 ) );
 
 iEyeR.addChildren( iPupilR );
 iEyeL.addChildren( iPupilL );
@@ -26,6 +27,15 @@ $( '#hide-button' ).click( function() {
 $( '#show-button' ).click( function() {
     iEyeL.show();
 });
+
+$( '#add-button' ).click( function() {
+    iFace.addChild( iMouth );
+});
+
+$( '#remove-button' ).click( function() {
+    iFace.removeChild( iMouth );
+});
+
 
 var zoomSlider = $( '#zoom-slider' );
 function getZoomValue() { return zoomSlider.val(); }
