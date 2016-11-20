@@ -1,2 +1,3 @@
-export { Renderer } from './Renderer';
-export { Updater  } from './Updater';
+export { Contextual } from './Contextual';
+export { Renderer   } from './Renderer';
+export { Updater    } from './Updater';

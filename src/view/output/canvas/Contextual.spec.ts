@@ -1,23 +1,23 @@
-import { Context2DMock              } from '../../../tests/mocks';
-import { Rect                       } from '../geometry';
-import { ContextPainter,
-         cAntialiasingExtraMargins } from './ContextPainter';
-import { Painter                    } from './';
-import { PainterSpecs               } from './Painter.spec';
+import { Context2DMock              } from '../../../../tests/mocks';
+import { Rect                       } from '../../geometry';
+import { Contextual,
+         cAntialiasingExtraMargins  } from './Contextual';
+import { Clipped                    } from './../';
+import { ClippedSpecs               } from './../Clipped.spec';
 
-function createPainter(): Painter {
-    return new ContextPainter( new Context2DMock() );
+function createContextual(): Clipped {
+    return new Contextual( new Context2DMock() );
 }
 
-describe( 'ContextPainter', () => {
+describe( 'Contextual', () => {
 
-    describe( 'is a Painter', () => {
-        PainterSpecs.call( this, createPainter );
+    describe( 'is a Clipped', () => {
+        ClippedSpecs.call( this, createContextual );
     })
 
     beforeEach( () => {
-        this.painter = createPainter();
-        this.context = this.painter.context;
+        this.contextual = createContextual();
+        this.context = this.contextual.context;
     });
 
     describe( 'drawRectangle()', () => {
@@ -26,7 +26,7 @@ describe( 'ContextPainter', () => {
             spyOn( this.context, 'rect' );
 
             var iRect = new Rect( 10, 10, 20, 20 );
-            this.painter.drawRectangle( iRect );
+            this.contextual.drawRectangle( iRect );
 
             expect( this.context.rect ).toHaveBeenCalledWith( 10, 10, 20, 20 );
         });
@@ -39,7 +39,7 @@ describe( 'ContextPainter', () => {
             spyOn( this.context, 'clearRect' );
 
             var iRect = new Rect( 10, 10, 20, 20 );
-            this.painter.erase( iRect );
+            this.contextual.erase( iRect );
 
             let iExpected = iRect.clone();
             iExpected.expand( cAntialiasingExtraMargins );
@@ -54,7 +54,7 @@ describe( 'ContextPainter', () => {
         it( 'should clip the context', () => {
             spyOn( this.context, 'rect' );
             spyOn( this.context, 'clip' );
-            this.painter.intersectClipAreaWith( new Rect( 10, 10, 20, 20 ) );
+            this.contextual.intersectClipAreaWith( new Rect( 10, 10, 20, 20 ) );
             expect( this.context.rect ).toHaveBeenCalledWith( 9, 9, 22, 22 );
             expect( this.context.clip ).toHaveBeenCalled();
         });
@@ -67,7 +67,7 @@ describe( 'ContextPainter', () => {
         it( 'should store the canvas state', () => {
             spyOn( this.context, 'save' );
 
-            this.painter.pushState();
+            this.contextual.pushState();
 
             expect( this.context.save ).toHaveBeenCalled();
         });
@@ -79,8 +79,8 @@ describe( 'ContextPainter', () => {
 
         it( 'should restore the canvas state', () => {
             spyOn( this.context, 'restore' );
-            this.painter.pushState();
-            this.painter.popState();
+            this.contextual.pushState();
+            this.contextual.popState();
 
             expect( this.context.restore ).toHaveBeenCalled();
         });

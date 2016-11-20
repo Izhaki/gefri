@@ -35,7 +35,7 @@ describe( 'The canvas should refresh when', () => {
             this.transformer.setScale( 0.5, 0.5 );
 
             expect( this.context ).toHaveRendered(`
-                | Erase     | 0,  0,  500, 400 |
+                | Erase     | -1, -1, 502, 402 |
                 | Rectangle | 50, 50, 5,   5   |
             `);
         });
@@ -44,7 +44,7 @@ describe( 'The canvas should refresh when', () => {
             this.transformer.setTranslate( 100, 100 );
 
             expect( this.context ).toHaveRendered(`
-                | Erase     | 0,   0,   500, 400 |
+                | Erase     | -1,  -1,  502, 402 |
                 | Rectangle | 200, 200, 10,  10  |
             `);
         });
@@ -68,9 +68,9 @@ describe( 'The canvas should refresh when', () => {
             this.rectangle.addChild( this.child );
 
             expect( this.context ).toHaveRendered(`
-                | Erase     | 102,  102, 6,  6  |
-                | Rectangle | 100,  100, 10, 10 |
-                | Rectangle | 102,  102, 6,  6  |
+                | Erase     | 101, 101, 8,  8  |
+                | Rectangle | 100, 100, 10, 10 |
+                | Rectangle | 102, 102, 6,  6  |
             `);
         });
 
@@ -83,8 +83,8 @@ describe( 'The canvas should refresh when', () => {
             this.rectangle.removeChild( this.child );
 
             expect( this.context ).toHaveRendered(`
-                | Erase     | 102,  102, 6,  6  |
-                | Rectangle | 100,  100, 10, 10 |
+                | Erase     | 101, 101, 8,  8  |
+                | Rectangle | 100, 100, 10, 10 |
             `);
         });
 
@@ -93,7 +93,7 @@ describe( 'The canvas should refresh when', () => {
             this.rectangle.hide();
 
             expect( this.context ).toHaveRendered(`
-                | Erase | 100,  100, 10, 10 |
+                | Erase | 99, 99, 12, 12 |
             `);
         });
 
@@ -101,8 +101,8 @@ describe( 'The canvas should refresh when', () => {
             this.rectangle.show();
 
             expect( this.context ).toHaveRendered(`
-                | Erase     | 100,  100, 10, 10 |
-                | Rectangle | 100,  100, 10, 10 |
+                | Erase     | 99,  99,  12, 12 |
+                | Rectangle | 100, 100, 10, 10 |
             `);
         });
 

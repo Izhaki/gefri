@@ -1,4 +1,4 @@
-import { ContextPainter  } from '../';
+import { Contextual      } from './';
 import { Rect,
          Rects,
          Transformations } from '../../geometry';
@@ -11,7 +11,7 @@ import { Transformer,
          Root            } from '../../viewees/invisibles';
 
 export
-class Renderer extends ContextPainter {
+class Renderer extends Contextual {
 
     refresh( aViewee: Viewee, damagedRects: Rects ): void {
         this.eraseDamagedRects( damagedRects );
@@ -32,7 +32,7 @@ class Renderer extends ContextPainter {
 
     private eraseDamagedRects( aRects: Rects ): void {
         aRects.forEach( aRect => {
-            this.context.clearRect( aRect.x, aRect.y, aRect.w, aRect.h );
+            this.erase( aRect );
         });
     }
 

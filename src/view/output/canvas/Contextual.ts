@@ -1,13 +1,13 @@
-import { Painter } from './';
+import { Clipped      } from './../';
 import { Rect,
          Translation,
-         Scale        } from '../geometry';
+         Scale        } from '../../geometry';
 
 export
 const cAntialiasingExtraMargins = 1
 
 export
-class ContextPainter extends Painter {
+class Contextual extends Clipped {
     protected context:  CanvasRenderingContext2D;
 
     constructor( aContext: CanvasRenderingContext2D ) {

@@ -1,13 +1,10 @@
 import { Transformable } from './';
-import { Rect, 
+import { Rect,
          Point         } from '../geometry';
 
 export
-abstract class Painter extends Transformable {
+abstract class Clipped extends Transformable {
     protected clipArea: Rect;
-
-    abstract drawRectangle( aRect: Rect ): void;
-    abstract erase( aRect: Rect ): void;
 
     intersectClipAreaWith( aRect: Rect ): void {
         // Our clipArea is in absolute coordinates, so we convert the rect
