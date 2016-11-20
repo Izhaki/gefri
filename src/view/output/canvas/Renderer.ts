@@ -11,7 +11,7 @@ import { Transformer,
          Root            } from '../../viewees/invisibles';
 
 export
-class CanvasRenderer extends ContextPainter {
+class Renderer extends ContextPainter {
 
     refresh( aViewee: Viewee, damagedRects: Rects ): void {
         this.eraseDamagedRects( damagedRects );

@@ -1,2 +1,2 @@
-export { CanvasRenderer } from './CanvasRenderer';
-export { CanvasUpdater  } from './CanvasUpdater';
+export { Renderer } from './Renderer';
+export { Updater  } from './Updater';

@@ -5,7 +5,7 @@ import { Rect,
          TransformMatrix } from '../../geometry';
 
 export
-class CanvasUpdater {
+class Updater {
     private damagedRects;
 
     constructor( aUpdateStream: Stream, aDamagedRects: Rects ) {

@@ -1,5 +1,5 @@
 import { Context2DMock  } from '../../../../tests/mocks';
-import { setup          } from './CanvasHelpers.spec';
+import { setup          } from './Helpers.spec';
 import { Rectangle      } from '../../viewees/visibles/shapes';
 import { Rect           } from '../../geometry';
 
