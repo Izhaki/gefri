@@ -5,7 +5,7 @@ import { Rect,
 import { getClassName    } from '../../../core/Utils';
 import { Viewee          } from '../../viewees/Viewee';
 import { Visible         } from '../../viewees/visibles/Visible';
-import { Rectangle, Shape       } from '../../viewees/visibles/shapes';
+import { Rectangle       } from '../../viewees/visibles/shapes';
 
 import { Transformer,
          Root            } from '../../viewees/invisibles';

@@ -2,7 +2,8 @@
     "compilerOptions": {
         "target":             "es5",
         "removeComments":     false,
-        "preserveConstEnums": true
+        "preserveConstEnums": true,
+        "forceConsistentCasingInFileNames": true
     },
     "exclude": [
         "node_modules",
