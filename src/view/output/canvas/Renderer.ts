@@ -2,7 +2,8 @@ import { Contextual      } from './';
 import { Rect,
          Rects,
          Transformations } from '../../geometry';
-import { getClassName    } from '../../../core/Utils';
+import { getClassName,
+         emptyArray      } from '../../../core/Utils';
 import { Viewee          } from '../../viewees/Viewee';
 import { Visible         } from '../../viewees/visibles/Visible';
 import { Rectangle       } from '../../viewees/visibles/shapes';
@@ -37,9 +38,7 @@ class Renderer extends Contextual {
     }
 
     private emptyDamagedRects( aRects: Rects ): void {
-        while ( aRects.length > 0 ) {
-            aRects.pop();
-        }
+        emptyArray( aRects );
     }
 
     private needsRendering( aViewee: Viewee ): boolean {

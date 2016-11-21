@@ -1,11 +1,11 @@
-import { Viewee         } from './viewees/Viewee';
+import { Viewee      } from './viewees/Viewee';
 import { Renderer,
-         Updater        } from './output/canvas';
+         Updater     } from './output/canvas';
 import { Rect,
-         Rects          } from './geometry';
-import { Root           } from './viewees/invisibles';
-import { inject         } from '../di';
-import { Stream         } from './../core';
+         Rects       } from './geometry';
+import { Root        } from './viewees/invisibles';
+import { Stream      } from './../core';
+import { onNextFrame } from './onNextFrame'
 
 export
 class Control {
@@ -16,8 +16,6 @@ class Control {
     private bounds:          Rect;
     private contents:        Viewee  = null;
     private root:            Root;
-    private refreshIsQueued: boolean = false;
-    private waitForFrame:    any;
     private updatesStream:   Stream;
     private updater:         Updater;
     private damagedRects:    Rects = [];
@@ -28,7 +26,6 @@ class Control {
         this.canvas        = this.createCanvas( aContainer );
         this.context       = this.getContext( this.canvas );
         this.renderer      = new Renderer( this.context );
-        this.waitForFrame  = inject( 'waitForFrame' );
         this.updatesStream = new Stream();
 
         this.root          = new Root( this );
@@ -54,21 +51,14 @@ class Control {
         return this.bounds;
     }
 
-    queueRefresh(): void {
-        if ( !this.refreshIsQueued ) {
-            this.refreshIsQueued = true;
+    // As a callback, refresh is an instance method so we always get the same reference for it per instance
+    // (required for correct operation of onNextFrame).
+    private refresh = () => {
+        this.renderer.refresh( this.root, this.damagedRects );
+    }
 
-            // waitForFrame will call the callback before the next render.
-            // Using requestAnimationFrame also mean this will happen after
-            // current tasks in the even loop has been fully processed, which
-            // may be a user action that triggered many changes to the viewee
-            // composition.
-            // For more: https://blog.risingstack.com/writing-a-javascript-framework-execution-timing-beyond-settimeout/
-            this.waitForFrame.schedule( () => {
-                this.refreshIsQueued = false;
-                this.renderer.refresh( this.root, this.damagedRects );
-            });
-        }
+    queueRefresh(): void {
+        onNextFrame( this.refresh );
     }
 
     getRoot(): Root {

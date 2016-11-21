@@ -1,11 +1,8 @@
-import { Context2DMock  } from '../../../../tests/mocks';
-import { setup          } from './Helpers.spec';
-import { Rectangle      } from '../../viewees/visibles/shapes';
-import { Rect           } from '../../geometry';
-
-import { inject         } from '../../../di';
-
-let waitForFrame = inject( 'waitForFrame' );
+import { Context2DMock    } from '../../../../tests/mocks';
+import { setup            } from './Helpers.spec';
+import { Rectangle        } from '../../viewees/visibles/shapes';
+import { Rect             } from '../../geometry';
+import { triggerNextFrame } from '../../onNextFrame'
 
 describe( 'The canvas should refresh when', () => {
 
@@ -13,7 +10,7 @@ describe( 'The canvas should refresh when', () => {
 
     beforeEach( () => {
         this.clearRenderedLog = () => {
-            waitForFrame.flush();
+            triggerNextFrame();
             this.context.reset();
         }
     });

@@ -1,7 +1,7 @@
-import { Control }   from './Control';
-import { Rectangle } from './viewees/visibles/shapes';
-import { Rect }      from './geometry';
-import { inject }    from '../di';
+import { Control          } from './Control';
+import { Rectangle        } from './viewees/visibles/shapes';
+import { Rect             } from './geometry';
+import { triggerNextFrame } from './onNextFrame'
 
 export
 function createControl(): Control {
@@ -42,7 +42,6 @@ describe( 'Control', () => {
 
         beforeEach( () => {
             this.rectangle    = new Rectangle( new Rect( 10, 10, 20, 20 ) );
-            this.waitForFrame = inject( 'waitForFrame' );
         });
 
         it( 'should remove the previous contents from the root', () => {
@@ -76,13 +75,12 @@ describe( 'Control', () => {
         beforeEach( () => {
             this.root         = this.control.root,
             this.renderer     = this.control.renderer;
-            this.waitForFrame = inject( 'waitForFrame' );
             spyOn( this.renderer, 'render' );
         });
 
         it( 'should ask the root viewee to refresh before the next render' , () => {
             this.control.queueRefresh();
-            this.waitForFrame.flush();
+            triggerNextFrame();
 
             expect( this.renderer.render ).toHaveBeenCalledWith( this.root );
         });
@@ -92,14 +90,13 @@ describe( 'Control', () => {
             this.control.queueRefresh();
             this.control.queueRefresh();
             this.control.queueRefresh();
-            this.waitForFrame.flush();
+            triggerNextFrame();
 
             this.control.queueRefresh();
             this.control.queueRefresh();
-            this.waitForFrame.flush();
+            triggerNextFrame();
 
             expect( this.renderer.render.calls.count() ).toBe( 2 );
-
         });
 
     });

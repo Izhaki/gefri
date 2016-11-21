@@ -3,9 +3,7 @@ import { Row,
          getRows,
          removeWhitespace,
          rectFromString    } from './helpers';
-import { inject            } from '../../src/di';
-
-let waitForFrame = inject( 'waitForFrame' );
+import { triggerNextFrame  } from '../../src/view/onNextFrame'
 
 function getRectString( aBounds ): string {
     return `( ${ aBounds.x }, ${ aBounds.y }, ${ aBounds.w }, ${ aBounds.h } )`;
@@ -67,7 +65,7 @@ beforeEach( () => {
         toHaveRendered: function( util: jasmine.MatchersUtil, customEqualityTesters: Array<jasmine.CustomEqualityTester>): jasmine.CustomMatcher {
             return {
                 compare: function( context: any, expected: string ): jasmine.CustomMatcherResult {
-                    waitForFrame.flush();
+                    triggerNextFrame();
 
                     let iRows = getRows( expected );
 
