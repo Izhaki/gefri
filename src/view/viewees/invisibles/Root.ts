@@ -1,5 +1,5 @@
 import { Invisible       } from './';
-import { Control         } from '../../Control';
+import { ElementLayer    } from '../../output';
 import { Rect,
          cNoTranslate,
          cNoScale,
@@ -10,16 +10,16 @@ import { Rect,
 // by the control.
 export
 class Root extends Invisible {
-    private control: Control;
+    private layer: ElementLayer;
 
-    constructor( aControl: Control ) {
+    constructor( aElementLayer: ElementLayer ) {
         super();
-        this.control = aControl;
+        this.layer = aElementLayer;
     }
 
     getBoundingRect(): Rect {
         // TODO change to tactic
-        return this.control.getBoundingRect();
+        return this.layer.getBoundingRect();
     }
 
     getTransformations(): Transformations {

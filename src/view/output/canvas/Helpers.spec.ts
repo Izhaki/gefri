@@ -1,17 +1,6 @@
-import { Control }  from '../../Control';
+import { Control       }  from '../../Control';
+import { createControl } from '../../Control.spec'
 import * as helpers from '../../../../tests/unit/helpers';
-
-function createControl(): Control {
-
-    var iViewElement = document.getElementById( 'view' );
-
-    iViewElement.setAttribute( 'style', 'width:500px; height:400px;' );
-    iViewElement.innerHTML = '';
-
-    var iControl = new Control( iViewElement );
-
-    return iControl;
-}
 
 export
 function setup(): void {
@@ -22,7 +11,7 @@ function setup(): void {
 
     beforeEach( () => {
         this.control  = createControl();
-        this.context  = this.control.context;
+        this.context  = this.control.getLayer().context;
     });
 
 }

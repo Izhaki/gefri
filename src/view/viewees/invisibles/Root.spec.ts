@@ -5,7 +5,7 @@ import { Root           } from './'
 export
 function createRoot(): Root {
     let iControl = createControl();
-    return iControl.getRoot();
+    return iControl.getLayer().getRoot();
 }
 
 describe( 'Root', () => {

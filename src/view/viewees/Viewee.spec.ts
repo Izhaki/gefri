@@ -1,9 +1,5 @@
 import { Viewee         } from './Viewee';
-import { Rectangle      } from './visibles/shapes';
 import { CompositeSpecs } from '../../core/Composite.spec';
-import { createControl  } from '../Control.spec';
-import { Rect,
-         Point          } from '../geometry';
 
 export
 function VieweeSpecs(  createViewee: () => Viewee ) {
