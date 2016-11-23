@@ -1,7 +1,7 @@
 import { setup            } from './Helpers.spec';
-import { createLayer      } from './Layer.spec'
-import { Rectangle        } from '../../viewees/visibles/shapes';
-import { Rect             } from '../../geometry';
+import { createLayer      } from '../Layer.spec'
+import { Rectangle        } from '../../../viewees/visibles/shapes';
+import { Rect             } from '../../../geometry';
 
 describe( 'Layers: ', () => {
 

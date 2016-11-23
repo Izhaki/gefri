@@ -1,6 +1,6 @@
 import { setup            } from './Helpers.spec';
-import { Rectangle        } from '../../viewees/visibles/shapes';
-import { Rect             } from '../../geometry';
+import { Rectangle        } from '../../../viewees/visibles/shapes';
+import { Rect             } from '../../../geometry';
 
 describe( 'The canvas should refresh when', () => {
 

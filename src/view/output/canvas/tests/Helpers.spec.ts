@@ -1,8 +1,7 @@
-import { Control          }  from '../../Control';
-import { createControl    } from '../../Control.spec'
-import { createLayer      } from './Layer.spec'
-import { triggerNextFrame } from '../../onNextFrame'
-import * as helpers from '../../../../tests/unit/helpers';
+import { createControl    } from '../../../Control.spec'
+import { createLayer      } from '../Layer.spec'
+import { triggerNextFrame } from '../../../onNextFrame'
+import * as helpers from '../../../../../tests/unit/helpers';
 
 export
 function setup(): void {
