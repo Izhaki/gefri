@@ -20,10 +20,7 @@ class Layer extends ElementLayer {
 
         this.context  = this.getContext( this.getCanvas() );
         this.renderer = new Renderer( this.context );
-        // TODO: Having damagedRects owned by the layer, updated by the updater and
-        // indirectly used upon refresh is quite some invisible mapping. Should live
-        // on the updater.
-        this.updater  = new Updater( this.updatesStream, this.damagedRects );
+        this.updater  = new Updater( this.updatesStream );
     }
 
     setContents( aViewee: Viewee ): void {
@@ -37,7 +34,8 @@ class Layer extends ElementLayer {
     // As a callback, refresh is an instance method so we always get the same reference for it per instance
     // (required for correct operation of onNextFrame).
     private refresh = () => {
-        this.renderer.refresh( this.root, this.damagedRects );
+        let damagedRects = this.updater.getDamagedRects();
+        this.renderer.refresh( this.root, damagedRects );
     }
 
     queueRefresh(): void {

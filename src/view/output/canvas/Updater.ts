@@ -6,16 +6,19 @@ import { Rect,
 
 export
 class Updater {
-    private damagedRects;
+    private damagedRects: Rects = [];
 
-    constructor( aUpdateStream: Stream, aDamagedRects: Rects ) {
+    constructor( aUpdateStream: Stream ) {
         aUpdateStream.subscribe( aViewee => this.onUpdate( aViewee ) )
-        this.damagedRects = aDamagedRects;
     }
 
     onUpdate( aViewee: Viewee ): void {
         let iDamagedRect = this.getVieweeAbsoluteBoundingRect( aViewee );
         this.damagedRects.push( iDamagedRect );
+    }
+
+    getDamagedRects(): Rects {
+        return this.damagedRects;
     }
 
     private getVieweeAbsoluteBoundingRect( aViewee: Viewee ): Rect {
