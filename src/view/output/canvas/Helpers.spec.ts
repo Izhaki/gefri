@@ -1,5 +1,7 @@
-import { Control       }  from '../../Control';
-import { createControl } from '../../Control.spec'
+import { Control          }  from '../../Control';
+import { createControl    } from '../../Control.spec'
+import { createLayer      } from './Layer.spec'
+import { triggerNextFrame } from '../../onNextFrame'
 import * as helpers from '../../../../tests/unit/helpers';
 
 export
@@ -11,7 +13,21 @@ function setup(): void {
 
     beforeEach( () => {
         this.control  = createControl();
-        this.context  = this.control.getLayer().context;
+        this.layer    = createLayer();
+        this.control.addLayer( this.layer );
+
+        this.context  = this.layer.context;
+    });
+
+    beforeEach( () => {
+        this.clearRenderedLog = () => {
+            triggerNextFrame();
+            this.context.reset();
+        }
+    });
+
+    beforeEach( () => {
+        this.clearRenderedLog();
     });
 
 }

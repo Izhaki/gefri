@@ -1,22 +1,23 @@
 import { Layer             } from './'
+import { createControl     } from '../../Control.spec'
 import { ElementLayerSpecs } from '../ElementLayer.spec'
 import { triggerNextFrame  } from '../../onNextFrame'
-import { createControl     } from '../../Control.spec'
+
 export
 function createLayer(): Layer {
-    var iControl = createControl();
-
-    return iControl.getLayer() as Layer;
+    return new Layer();
 }
 
-describe( 'Canvas Layer', () => {
-
-    describe( 'is an ElementLayer', () => {
-        ElementLayerSpecs.call( this, createLayer );
-    });
+describe( 'Canvas Layer:', () => {
 
     beforeEach( () => {
+        this.control = createControl();
         this.layer = createLayer();
+        this.control.addLayer( this.layer );
+    });
+
+    describe( 'is an ElementLayer', () => {
+        ElementLayerSpecs.call( this );
     });
 
     describe( 'queueRefresh()', () => {

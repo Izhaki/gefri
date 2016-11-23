@@ -1,12 +1,15 @@
 class waitForFrameMock {
-    private callback;
+    private callback = undefined;
 
     schedule( aCallback ) {
         this.callback = aCallback;
     }
 
     flush() {
-        this.callback();
+        if ( this.callback != undefined ) {
+            this.callback();
+        }
+
     }
 }
 

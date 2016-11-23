@@ -1,32 +1,40 @@
-import { Viewee } from '../viewees/Viewee';
-import { Root   } from '../viewees/invisibles';
-import { Stream } from '../../core';
-import { Rect   } from '../geometry';
+import { Control } from '../Control';
+import { Viewee  } from '../viewees/Viewee';
+import { Root    } from '../viewees/invisibles';
+import { Stream  } from '../../core';
+import { Rect    } from '../geometry';
 
 export
-class ElementLayer {
-    protected container:     HTMLElement;
-    protected bounds:        Rect;
-    protected contents:      Viewee  = null;
-    protected root:          Root;
-    protected updatesStream: Stream;
+abstract class ElementLayer {
+    private   element:              HTMLElement;
+    private   hasBeenAddedToTheDOM: boolean = false;
+    protected control:              Control
 
-    constructor( aContainer: HTMLElement ) {
-        this.container     = aContainer;
-        this.bounds        = new Rect( 0, 0, aContainer.offsetWidth, aContainer.offsetHeight );
+    protected contents:             Viewee  = null;
+    protected root:                 Root;
+    protected updatesStream:        Stream;
+
+    constructor() {
         this.updatesStream = new Stream();
         this.root          = new Root( this );
+        this.element       = this.createElement();
+    }
+
+    onAfterAdded( aControl: Control ): void {
+        this.control              = aControl;
+        this.hasBeenAddedToTheDOM = true;
     }
 
     getBoundingRect(): Rect {
-        return this.bounds;
+        return this.control.getBoundingRect();
     }
 
     setContents( aViewee: Viewee ): void {
-        if ( this.contents !== null ) {
-            this.root.removeChild( this.contents );
+        if ( !this.hasBeenAddedToTheDOM ) {
+            throw new Error( 'Setting contents of cavnas layer before it has been added to the DOM' );
         }
 
+        this.removeCurrentContents();
         this.contents = aViewee;
         this.root.addChild( aViewee );
         this.root.attach( this.updatesStream );
@@ -34,6 +42,18 @@ class ElementLayer {
 
     getRoot(): Root {
         return this.root;
+    }
+
+    getElement(): HTMLElement {
+        return this.element;
+    }
+
+    protected abstract createElement(): HTMLElement;
+
+    private removeCurrentContents() {
+        if ( this.contents !== null ) {
+            this.root.removeChild( this.contents );
+        }
     }
 
 }

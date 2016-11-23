@@ -1,5 +1,8 @@
 var iViewElement = document.getElementById( 'view' );
+
 var iControl = new gefri.view.Control( iViewElement );
+var iCanvasLayer = new gefri.view.CanvasLayer();
+iControl.addLayer( iCanvasLayer );
 
 var iTransformer = new gefri.view.Transformer();
 var iFace        = new gefri.view.Rectangle( new gefri.view.geometry.Rect( 200, 200, 100, 100 ) );
@@ -16,8 +19,12 @@ iTransformer.addChildren( iFace );
 
 //iTransformer.setScale( 0.5, 0.5 );
 
-iControl.setContents( iTransformer );
+iCanvasLayer.setContents( iTransformer );
 
+var iOverlay = new gefri.view.CanvasLayer();
+var iMask    = new gefri.view.Rectangle( new gefri.view.geometry.Rect( 10, 10, 100, 100 ) );
+iControl.addLayer( iOverlay );
+iOverlay.setContents( iMask );
 
 
 $( '#hide-button' ).click( function() {

@@ -1,11 +1,14 @@
 import { InvisibleSpecs } from './Invisible.spec';
 import { createControl  } from '../../Control.spec';
+import { createLayer    } from '../../output/canvas/Layer.spec';
 import { Root           } from './'
 
 export
 function createRoot(): Root {
     let iControl = createControl();
-    return iControl.getLayer().getRoot();
+    let iLayer   = createLayer();
+    iControl.addLayer( iLayer );
+    return iLayer.getRoot();
 }
 
 describe( 'Root', () => {

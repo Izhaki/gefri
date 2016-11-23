@@ -3,11 +3,7 @@ import { Rectangle    } from '../viewees/visibles/shapes';
 import { Rect         } from '../geometry';
 
 export
-function ElementLayerSpecs( createElementLayer: () => ElementLayer ) {
-
-    beforeEach( () => {
-        this.layer = createElementLayer();
-    });
+function ElementLayerSpecs() {
 
     describe( 'setContents()', () => {
 

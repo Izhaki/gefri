@@ -1,3 +1,4 @@
+import { Control      } from '../../Control';
 import { Viewee       } from '../../viewees/Viewee';
 import { Renderer,
          Updater      } from './';
@@ -7,17 +8,21 @@ import { onNextFrame  } from '../../onNextFrame'
 
 export
 class Layer extends ElementLayer {
-    private canvas:          HTMLCanvasElement;
-    private context:         CanvasRenderingContext2D;
-    private renderer:        Renderer;
-    private updater:         Updater;
-    private damagedRects:    Rects = [];
+    private context:      CanvasRenderingContext2D;
+    private renderer:     Renderer;
+    private updater:      Updater;
+    private damagedRects: Rects = [];
 
-    constructor( aContainer: HTMLElement ) {
-        super( aContainer );
-        this.canvas   = this.createCanvas( aContainer );
-        this.context  = this.getContext( this.canvas );
+    // Called after the layer element has been added to the DOM, which is
+    // required in order to retrive the actual context.
+    onAfterAdded(  aControl: Control ): void {
+        super.onAfterAdded( aControl );
+
+        this.context  = this.getContext( this.getCanvas() );
         this.renderer = new Renderer( this.context );
+        // TODO: Having damagedRects owned by the layer, updated by the updater and
+        // indirectly used upon refresh is quite some invisible mapping. Should live
+        // on the updater.
         this.updater  = new Updater( this.updatesStream, this.damagedRects );
     }
 
@@ -39,16 +44,16 @@ class Layer extends ElementLayer {
         onNextFrame( this.refresh );
     }
 
-    private createCanvas( aContainer: HTMLElement ) : HTMLCanvasElement {
-        var iCanvas: HTMLCanvasElement = <HTMLCanvasElement>document.createElement( 'CANVAS' );
-        iCanvas.setAttribute( 'width',  aContainer.offsetWidth.toString()  );
-        iCanvas.setAttribute( 'height', aContainer.offsetHeight.toString() );
-        aContainer.appendChild( iCanvas );
-        return iCanvas;
+    protected  createElement(): HTMLElement {
+        return document.createElement( 'CANVAS' );
+    };
+
+    private getCanvas(): HTMLCanvasElement {
+        return this.getElement() as HTMLCanvasElement;
     }
 
     private getContext( aCanvas: HTMLCanvasElement ): CanvasRenderingContext2D {
-        var context: CanvasRenderingContext2D = this.canvas.getContext( '2d' );
+        let context: CanvasRenderingContext2D = aCanvas.getContext( '2d' );
         // context.translate( 0.5, 0.5 ); // Prevents antialiasing effect.
         context.fillStyle = '#1ABC9C';
         context.lineWidth = 1;

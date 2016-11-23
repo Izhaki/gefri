@@ -13,20 +13,19 @@ class Context2DMock implements CanvasRenderingContext2D {
     // Mock helpers
 
     matrix:     TransformMatrix;
-    stateStack: any[];
-    rendered:   any[];
+    stateStack: any[] = [];
+    rendered:   any[] = [];
     clipArea:   Rect;
 
     public showLog: boolean = false;
 
     constructor() {
         this.matrix = new TransformMatrix()
-        this.reset();
     }
 
     public reset(): void {
-        this.rendered   = [];
-        this.stateStack = [];
+        this.rendered.length   = 0;
+        this.stateStack.length = 0;
     }
 
     private log( ...args: any[] ) {

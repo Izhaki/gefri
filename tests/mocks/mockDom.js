@@ -35,14 +35,12 @@ var mockDom = function( aScriptFiles, aDoneCallback ) {
     }
 
     function mockContext( aDocument ) {
-        iMockContext = new Context2DMock();
-
         var originalCreateElement = aDocument.createElement;
         aDocument.createElement = function( tagName ) {
             var element = originalCreateElement.call( aDocument, tagName );
             if ( tagName.toLowerCase() === 'canvas' ) {
                 element.getContext = function() {
-                    return iMockContext;
+                    return new Context2DMock();
                 }
             }
             return element;

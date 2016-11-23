@@ -11,7 +11,7 @@ describe( 'The canvas should', () => {
             | iRectangle | Rectangle | 10, 11, 12, 13 |
         `);
 
-        this.control.setContents( iRectangle );
+        this.layer.setContents( iRectangle );
 
         expect( this.context ).toHaveRendered(`
             | Rectangle | 10, 11, 12, 13 |
@@ -25,7 +25,7 @@ describe( 'The canvas should', () => {
             |     iChild   | Rectangle | 10, 10, 60,  60  |
         `);
 
-        this.control.setContents( iGrandparent );
+        this.layer.setContents( iGrandparent );
 
         expect( this.context ).toHaveRendered(`
             | Rectangle | 10, 10, 100, 100 |
@@ -44,7 +44,7 @@ describe( 'The canvas should', () => {
             |     iPupilR | Rectangle | 2,  2,  6,   6   |
         `);
 
-        this.control.setContents( iFace );
+        this.layer.setContents( iFace );
 
         expect( this.context ).toHaveRendered(`
             | Rectangle | 10, 10, 100, 100 |
@@ -62,7 +62,7 @@ describe( 'The canvas should', () => {
             |     iChild   | Rectangle | 10, 10, 80, 80 |
         `);
 
-        this.control.setContents( iGrandparent );
+        this.layer.setContents( iGrandparent );
 
         expect( this.context ).toHaveRendered(`
             | Rectangle | 10, 10, 80, 80 |
@@ -81,7 +81,7 @@ describe( 'The canvas should', () => {
         iGrandparent.isClipping = false;
         iParent.isClipping      = false;
 
-        this.control.setContents( iGrandparent );
+        this.layer.setContents( iGrandparent );
 
         expect( this.context ).toHaveRendered(`
             | Rectangle | 10, 10, 80, 80 |
@@ -99,7 +99,7 @@ describe( 'The canvas should', () => {
         iTransformer.setTranslate( -50, -50 );
         iTransformer.setScale( 0.5, 0.5 );
 
-        this.control.setContents( iTransformer );
+        this.layer.setContents( iTransformer );
 
         expect( this.context ).toHaveRendered(`
             | Rectangle | 25, 25, 5, 5 |

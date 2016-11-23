@@ -1,19 +1,10 @@
-import { Context2DMock    } from '../../../../tests/mocks';
 import { setup            } from './Helpers.spec';
 import { Rectangle        } from '../../viewees/visibles/shapes';
 import { Rect             } from '../../geometry';
-import { triggerNextFrame } from '../../onNextFrame'
 
 describe( 'The canvas should refresh when', () => {
 
     setup.call( this );
-
-    beforeEach( () => {
-        this.clearRenderedLog = () => {
-            triggerNextFrame();
-            this.context.reset();
-        }
-    });
 
     describe( 'a transformer', () => {
 
@@ -24,7 +15,7 @@ describe( 'The canvas should refresh when', () => {
             `);
             this.transformer = iTransformer;
 
-            this.control.setContents( this.transformer );
+            this.layer.setContents( this.transformer );
             this.clearRenderedLog();
         });
 
@@ -56,7 +47,7 @@ describe( 'The canvas should refresh when', () => {
             `);
             this.rectangle = iRectangle;
 
-            this.control.setContents( this.rectangle );
+            this.layer.setContents( this.rectangle );
             this.clearRenderedLog();
         });
 
