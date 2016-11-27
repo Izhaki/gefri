@@ -6,12 +6,12 @@ abstract class Stateful {
         this.stateStack = [];
     }
 
-    pushState() {
+    protected pushState() {
         var iState = this.getState();
         this.stateStack.push( iState );
     }
 
-    popState() {
+    protected popState() {
         var iState = this.stateStack.pop();
         this.restoreState( iState );
     }

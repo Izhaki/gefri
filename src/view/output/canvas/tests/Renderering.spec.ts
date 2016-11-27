@@ -88,20 +88,4 @@ describe( 'The canvas should', () => {
         `);
     });
 
-    it( 'transform and scale child viewees', () => {
-        let { iTransformer } = this.createViewees(`
-            | iTransformer | Transformer |                   |
-            |   iSquare    | Rectangle   | 100, 100, 10, 10  |
-        `);
-
-        iTransformer.setTranslate( -50, -50 );
-        iTransformer.setScale( 0.5, 0.5 );
-
-        this.layer.setContents( iTransformer );
-
-        expect( this.context ).toHaveRendered(`
-            | Rectangle | 25, 25, 5, 5 |
-        `);
-    });
-
 });

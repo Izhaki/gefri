@@ -1,7 +1,5 @@
-import { Contextual      } from './';
-import { Rect,
-         Rects,
-         Transformations } from '../../geometry';
+import { Transforming    } from './';
+import { Rects           } from '../../geometry';
 import { getClassName,
          emptyArray      } from '../../../core/Utils';
 import { Viewee          } from '../../viewees/Viewee';
@@ -12,7 +10,7 @@ import { Transformer,
          Root            } from '../../viewees/invisibles';
 
 export
-class Renderer extends Contextual {
+class Renderer extends Transforming {
 
     refresh( aViewee: Viewee, damagedRects: Rects ): void {
         this.eraseDamagedRects( damagedRects );
@@ -66,13 +64,6 @@ class Renderer extends Contextual {
         });
 
         this.popState();
-    }
-
-    private applyTransformations( aViewee: Viewee ): void {
-        let iTransformations: Transformations;
-
-        iTransformations = aViewee.getTransformations();
-        this.transform( iTransformations );
     }
 
     private renderRectangle( aRactangle: Rectangle ): void {

@@ -15,8 +15,8 @@ class Contextual extends Clipped {
         this.context = aContext;
     }
 
-    drawRectangle( aRect: Rect ): void {
-        var context = this.context;
+    protected drawRectangle( aRect: Rect ): void {
+        let context = this.context;
         context.beginPath();
         context.rect( aRect.x, aRect.y, aRect.w, aRect.h );
         context.fill();
@@ -24,24 +24,14 @@ class Contextual extends Clipped {
         context.closePath();
     }
 
-    erase( aRect: Rect ): void {
+    protected erase( aRect: Rect ): void {
         let iExpandedRect = aRect.clone();
         iExpandedRect.expand( cAntialiasingExtraMargins );
 
         this.context.clearRect( iExpandedRect.x, iExpandedRect.y, iExpandedRect.w, iExpandedRect.h );
     };
 
-    translate( aTranslation: Translation ): void {
-        super.translate( aTranslation );
-        this.context.translate( aTranslation.x, aTranslation.y );
-    }
-
-    scale( aScale: Scale ): void {
-        super.scale( aScale );
-        this.context.scale( aScale.x, aScale.y );
-    }
-
-    intersectClipAreaWith( aRect: Rect ): void {
+    protected intersectClipAreaWith( aRect: Rect ): void {
         super.intersectClipAreaWith( aRect );
 
         var iRect = aRect.clone();
@@ -59,7 +49,7 @@ class Contextual extends Clipped {
         this.context.clip();
     }
 
-    pushState(): void {
+    protected pushState(): void {
         super.pushState();
         this.context.save();
     }

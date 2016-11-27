@@ -1,5 +1,4 @@
 import { TransformMatrix,
-         Transformations,
          Rect,
          Point            } from './';
 
@@ -30,23 +29,6 @@ describe( 'TransformMatrix', () => {
         it( 'should return an indentical state', () => {
             var iClone = this.transformMatrix.clone();
             expect( iClone ).toEqual( this.transformMatrix );
-        });
-
-    });
-
-    describe( 'transform()', () => {
-
-        it( 'should apply the transformations', () => {
-            let iTransformations = {
-                translate: new Point( 10, 15 ),
-                scale:     new Point( 0.5, 2 )
-            }
-            this.transformMatrix.transform( iTransformations );
-
-            expect( this.transformMatrix.translateX ).toBe( 5 );
-            expect( this.transformMatrix.translateY ).toBe( 30 );
-            expect( this.transformMatrix.scaleX ).toBe( 0.5 );
-            expect( this.transformMatrix.scaleY ).toBe( 2 );
         });
 
     });
@@ -179,6 +161,39 @@ describe( 'TransformMatrix', () => {
 
 
     });
+
+    describe( 'detransformPoint()', () => {
+
+        it( 'should undo what transformPoint did', () => {
+            var iPoint = new Point ( 10, 20 );
+
+            this.transformMatrix.translate( -10, 20 );
+            this.transformMatrix.scale( 2, 4 );
+            var iTransformedPoint = this.transformMatrix.transformPoint( iPoint );
+            var idetransformedPoint = this.transformMatrix.detransformPoint( iTransformedPoint );
+
+            expect( idetransformedPoint.x ).toBe( 10 );
+            expect( idetransformedPoint.y ).toBe( 20 );
+        });
+
+    });
+
+    describe( 'detransformRect()', () => {
+
+        it( 'should undo what transformRect did', () => {
+            var iRect = new Rect ( 10, 20, 30, 40 );
+
+            this.transformMatrix.translate( -10, 20 );
+            this.transformMatrix.scale( 2, 4 );
+            var iTransformedRect = this.transformMatrix.transformRect( iRect );
+            var idetransformedRect = this.transformMatrix.detransformRect( iTransformedRect );
+
+            expect( idetransformedRect ).toEqualRect( 10, 20, 30, 40 );
+
+        });
+
+    });
+
 
 
 });

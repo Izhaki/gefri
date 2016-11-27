@@ -17,15 +17,26 @@ iEyeL.addChildren( iPupilL );
 iFace.addChildren( iEyeL, iEyeR );
 iTransformer.addChildren( iFace );
 
-//iTransformer.setScale( 0.5, 0.5 );
+// var iGrandparent = new gefri.view.Rectangle( new gefri.view.geometry.Rect( 10, 10, 80, 80 ) );
+// var iParent      = new gefri.view.Rectangle( new gefri.view.geometry.Rect( 10, 10, 80, 60 ) );
+// var iChild       = new gefri.view.Rectangle( new gefri.view.geometry.Rect( 10, 10, 80, 80 ) );
+
+// iGrandparent.addChild( iParent );
+// iParent.addChild( iChild );
+// iTransformer.addChildren( iGrandparent );
+
+// iTransformer.setTranslate( -100, -100 );
+// iTransformer.setScale( 0.5, 0.5 );
+// iTransformer.setZoom( 4, 4 );
 
 iCanvasLayer.setContents( iTransformer );
 
+/*
 var iOverlay = new gefri.view.CanvasLayer();
 var iMask    = new gefri.view.Rectangle( new gefri.view.geometry.Rect( 10, 10, 100, 100 ) );
 iControl.addLayer( iOverlay );
 iOverlay.setContents( iMask );
-
+*/
 
 $( '#hide-button' ).click( function() {
     iEyeL.hide();
@@ -44,10 +55,11 @@ $( '#remove-button' ).click( function() {
 });
 
 
+function toRatio( val ) { return Math.pow( 1.1, val ); }
+
 var zoomSlider = $( '#zoom-slider' );
 function getZoomValue() { return zoomSlider.val(); }
-function toRatio( val ) { return Math.pow( 1.1, val ); }
-function setZoom( val ) { iTransformer.setScale( val, val ); }
+function setZoom( val ) { iTransformer.setZoom( val, val ); }
 
 Rx.Observable
     .fromEvent( zoomSlider, 'change mousemove' )
@@ -55,6 +67,17 @@ Rx.Observable
     .distinctUntilChanged()
     .map( toRatio )
     .subscribe( setZoom );
+
+var scaleSlider = $( '#scale-slider' );
+function getScaleValue() { return scaleSlider.val(); }
+function setScale( val ) { iTransformer.setScale( val, val ); }
+
+Rx.Observable
+    .fromEvent( scaleSlider, 'change mousemove' )
+    .map( getScaleValue )
+    .distinctUntilChanged()
+    .map( toRatio )
+    .subscribe( setScale );
 
 var scrollSlider = $( '#scroll-slider' );
 function getScrollValue() { return scrollSlider.val(); }

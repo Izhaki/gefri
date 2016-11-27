@@ -1,7 +1,7 @@
 import { Visible          } from './../Visible';
 import { Rect,
-         Transformations,
          cNoScale,        } from './../../../geometry';
+import { Transformations  } from './../../../output';
 
 export
 abstract class Shape extends Visible {
@@ -11,6 +11,7 @@ abstract class Shape extends Visible {
 
         return {
             translate: iBounds.getLeftTop(),
+            zoom:      cNoScale,
             scale:     cNoScale
         }
     }

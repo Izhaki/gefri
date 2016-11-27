@@ -3,13 +3,14 @@ import { Rect,
          Translation,
          Scale,
          cNoTranslate,
-         cNoScale,
-         Transformations } from '../../geometry';
+         cNoScale        } from '../../geometry';
+import { Transformations } from '../../output';
 
 export
 class Transformer extends Invisible {
 
     private translation: Translation = cNoTranslate.clone();
+    private zoom:        Scale       = cNoScale.clone();
     private scale:       Scale       = cNoScale.clone();
 
     constructor() {
@@ -19,6 +20,11 @@ class Transformer extends Invisible {
 
     setTranslate( x: number, y: number ) {
         this.translation.set( x, y );
+        this.notifyUpdate()
+    }
+
+    setZoom( x: number, y: number ) {
+        this.zoom.set( x, y );
         this.notifyUpdate()
     }
 
@@ -36,6 +42,7 @@ class Transformer extends Invisible {
     getTransformations(): Transformations {
         return {
             translate: this.translation,
+            zoom:      this.zoom,
             scale:     this.scale
         }
     }

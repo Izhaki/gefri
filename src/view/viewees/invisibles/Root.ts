@@ -2,8 +2,8 @@ import { Invisible       } from './';
 import { ElementLayer    } from '../../output';
 import { Rect,
          cNoTranslate,
-         cNoScale,
-         Transformations } from '../../geometry';
+         cNoScale        } from '../../geometry';
+import { Transformations } from '../../output';
 
 // An adapter between the viewee composition and the control.
 // There is only one root per viewee hierarchy, and it is created automatically
@@ -25,6 +25,7 @@ class Root extends Invisible {
     getTransformations(): Transformations {
         return {
             translate: cNoTranslate,
+            zoom:      cNoScale,
             scale:     cNoScale
         }
     }

@@ -142,7 +142,12 @@ class Context2DMock implements CanvasRenderingContext2D {
         }
 
         var iRect = lastRender.bounds.clone();
-        iRect.contract( 1 );
+
+        // Undo antialiasing
+        var dRect = this.matrix.detransformRect( iRect );
+        dRect.contract( 1 );
+        iRect = this.matrix.transformRect( dRect );
+
         this.log( 'clip()', 'before intersection:', this.clipArea, iRect );
 
         if ( this.clipArea ) {

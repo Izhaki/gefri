@@ -28,6 +28,15 @@ describe( 'The canvas should refresh when', () => {
             `);
         });
 
+        it( 'scale changes', () => {
+            this.transformer.setZoom( 0.5, 0.5 );
+
+            expect( this.context ).toHaveRendered(`
+                | Erase     | -1, -1, 502, 402 |
+                | Rectangle | 50, 50, 5,   5   |
+            `);
+        });
+
         it( 'translate changes', () => {
             this.transformer.setTranslate( 100, 100 );
 

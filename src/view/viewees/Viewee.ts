@@ -1,8 +1,8 @@
 import { Composite,
          Stream           } from './../../core';
-import { Transformable    } from './../output';
+import { Transformable,
+         Transformations  } from './../output';
 import { Rect,
-         Transformations,
          TransformMatrix  } from '../geometry';
 
 export
@@ -30,18 +30,6 @@ abstract class Viewee extends Composite< Viewee > {
         this.forEachChild( aChild => {
             aChild.attach( aStream );
         });
-    }
-
-    getAppliedTransformMatrix(): TransformMatrix {
-        let iMatrix:           TransformMatrix = new TransformMatrix(),
-            iTransformations : Transformations;
-
-        this.forEachAncestor( ( aAncestor: Viewee )  => {
-            iTransformations = aAncestor.getTransformations();
-            iMatrix.transform( iTransformations );
-        });
-
-        return iMatrix;
     }
 
     protected onAfterAdd() {

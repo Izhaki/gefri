@@ -14,17 +14,10 @@ export
 type Scale = Point;
 
 export
-interface Transformations {
-    translate: Translation;
-    scale:     Scale;
-}
-
-export
 const cNoTranslate: Translation = new Point( 0, 0 );
 
 export
 const cNoScale: Scale = new Point( 1, 1 );
-
 
 export
 class TransformMatrix {
@@ -48,11 +41,6 @@ class TransformMatrix {
         iClone.scaleY = this.scaleY;
 
         return iClone;
-    }
-
-    transform( transformations: Transformations ) {
-        this.translate( transformations.translate.x, transformations.translate.y );
-        this.scale( transformations.scale.x, transformations.scale.y );
     }
 
     translate( x: number, y: number ) {
@@ -86,6 +74,27 @@ class TransformMatrix {
                 iTransformedLeftTop.y,
                 aRect.w * this.scaleX,
                 aRect.h * this.scaleY
+            );
+
+        return iTransformedRect;
+    }
+
+    detransformPoint( aPoint: Point ) : Point {
+        return new Point(
+            ( aPoint.x - this.translateX ) / this.scaleX,
+            ( aPoint.y - this.translateY ) / this.scaleY
+        );
+    }
+
+    detransformRect( aRect: Rect ) : Rect {
+        var iLeftTop            = aRect.getLeftTop(),
+            iTransformedLeftTop = this.detransformPoint( iLeftTop ),
+
+            iTransformedRect = new Rect(
+                iTransformedLeftTop.x,
+                iTransformedLeftTop.y,
+                aRect.w / this.scaleX,
+                aRect.h / this.scaleY
             );
 
         return iTransformedRect;
