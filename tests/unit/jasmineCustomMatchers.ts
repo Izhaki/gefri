@@ -1,9 +1,36 @@
-import { Rect              } from '../../src/view/geometry';
+import { Point,
+         Rect              } from '../../src/view/geometry';
 import { Row,
          getRows,
          removeWhitespace,
          rectFromString    } from './helpers';
 import { triggerNextFrame  } from '../../src/view/onNextFrame'
+
+function getPointString( aPoint ): string {
+    return `( ${ aPoint.x }, ${ aPoint.y } )`;
+}
+
+function isPointMatch( a, b ): boolean {
+    return ( a.x == b.x ) &&
+           ( a.y == b.y );
+}
+
+function isPointMismatch( a, b ): boolean {
+    return !isPointMatch( a, b );
+}
+
+function getPointMismatchMessage( aActual, aExpected ): string {
+    let iActualPoint   = getPointString( aActual ),
+        iExpectedPoint = getPointString( aExpected );
+
+    return `Expected ${ iExpectedPoint } to be ${ iActualPoint }`;
+}
+
+function assertPointMatch( aActual, aExpected ): void {
+    if ( isPointMismatch( aActual, aExpected ) ) {
+        throw new Error( getPointMismatchMessage( aActual, aExpected ) )
+    }
+}
 
 function getRectString( aBounds ): string {
     return `( ${ aBounds.x }, ${ aBounds.y }, ${ aBounds.w }, ${ aBounds.h } )`;
@@ -44,6 +71,23 @@ function mismatch( aMessage: string ): jasmine.CustomMatcherResult {
 beforeEach( () => {
 
     jasmine.addMatchers({
+
+        toEqualPoint: function( util: jasmine.MatchersUtil, customEqualityTesters: Array<jasmine.CustomEqualityTester>): jasmine.CustomMatcher {
+            return {
+                compare: function( aActual: any, ...aExpected: any[] ): jasmine.CustomMatcherResult {
+                    let [ x, y ]  = aExpected,
+                        iExpected: Point = new Point( x, y );
+
+                    try {
+                        assertPointMatch( aActual, iExpected )
+                        return match()
+                    } catch ( exception ) {
+                        return mismatch( exception.message );
+                    }
+
+                }
+            }
+        },
 
         toEqualRect: function( util: jasmine.MatchersUtil, customEqualityTesters: Array<jasmine.CustomEqualityTester>): jasmine.CustomMatcher {
             return {
