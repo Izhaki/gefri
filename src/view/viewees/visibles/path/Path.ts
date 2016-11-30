@@ -1,6 +1,7 @@
 import { Visible          } from './../Visible';
 import { PathSegments,
-         LineSegment      } from './PathSegments'
+         LineSegment,
+         QuadSegment      } from './PathSegments'
 import { Point,
          Rect,
          cNoScale,        } from './../../../geometry';
@@ -18,6 +19,12 @@ class Path extends Visible {
 
     lineTo( aEnd: Point ): Path {
         let iSegment = new LineSegment( aEnd );
+        this.segments.push( iSegment );
+        return this;
+    }
+
+    quadTo( aControl: Point, aEnd: Point ): Path {
+        let iSegment = new QuadSegment( aControl, aEnd );
         this.segments.push( iSegment );
         return this;
     }

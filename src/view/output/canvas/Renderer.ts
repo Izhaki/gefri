@@ -1,11 +1,13 @@
-import { Transforming    } from './';
-import { Rects           } from '../../geometry';
+import { Transforming  } from './';
+import { Rects         } from '../../geometry';
 import { getClassName,
-         emptyArray      } from '../../../core/Utils';
-import { Viewee          } from '../../viewees/Viewee';
-import { Visible         } from '../../viewees/visibles/Visible';
-import { Rectangle       } from '../../viewees/visibles/shapes';
-import { Path            } from '../../viewees/visibles/path';
+         emptyArray    } from '../../../core/Utils';
+import { Viewee        } from '../../viewees/Viewee';
+import { Visible       } from '../../viewees/visibles/Visible';
+import { Rectangle     } from '../../viewees/visibles/shapes';
+import { Path,
+         LineSegment,
+         QuadSegment   } from '../../viewees/visibles/path';
 
 import { Transformer,
          Root            } from '../../viewees/invisibles';
@@ -21,13 +23,16 @@ class Renderer extends Transforming {
 
     render( aViewee: Viewee ): void {
         if ( this.needsRendering( aViewee ) ) {
-            let iVieweeClass = getClassName( aViewee ),
-                iMethodName  = 'render' + iVieweeClass;
-
-            this[ iMethodName ]( aViewee );
-
+            this.routeToRenderMethod( aViewee );
             this.renderChildren( aViewee );
         }
+    }
+
+    private routeToRenderMethod( aObject: any ) {
+        let iObjectClass = getClassName( aObject ),
+            iMethodName  = 'render' + iObjectClass;
+
+        this[ iMethodName ]( aObject );
     }
 
     private eraseDamagedRects( aRects: Rects ): void {
@@ -75,10 +80,18 @@ class Renderer extends Transforming {
         this.moveTo( aPath.getStart() );
 
         aPath.forEachSegment( ( aSegment ) => {
-            this.lineTo( aSegment.getEnd() );
+            this.routeToRenderMethod( aSegment );
         });
 
         this.strokePath();
+    }
+
+    private renderLineSegment( aSegment: LineSegment ) {
+        this.lineTo( aSegment.getEnd() );
+    }
+
+    private renderQuadSegment( aSegment: QuadSegment ) {
+        this.quadTo( aSegment.getControl(), aSegment.getEnd() );
     }
 
     private renderTransformer( aTransformer: Transformer ): void {

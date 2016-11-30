@@ -34,6 +34,10 @@ class Contextual extends Clipped {
         this.context.lineTo( aPoint.x, aPoint.y )
     }
 
+    protected quadTo( aControl: Point, aPoint: Point ): void {
+        this.context.quadraticCurveTo( aControl.x, aControl.y, aPoint.x, aPoint.y )
+    }
+
     protected strokePath(): void {
         this.context.stroke();
     }

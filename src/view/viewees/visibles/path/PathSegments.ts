@@ -19,3 +19,19 @@ type PathSegments = PathSegment[];
 export
 class LineSegment extends PathSegment {
 }
+
+export
+class QuadSegment extends PathSegment {
+
+    private control: Point;
+
+    constructor( aControl: Point, aEnd: Point ) {
+        super( aEnd );
+        this.control = aControl;
+    }
+
+    getControl(): Point {
+        return this.control;
+    }
+
+}

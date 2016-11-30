@@ -50,4 +50,11 @@ class Transforming extends Contextual {
         super.lineTo( iPoint );
     }
 
+    protected quadTo( aControl: Point, aPoint: Point ): void {
+        let iControl = this.preTransformPoint( aControl ),
+            iPoint   = this.preTransformPoint( aPoint );
+        super.quadTo( iControl, iPoint );
+    }
+
+
 }

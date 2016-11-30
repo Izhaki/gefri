@@ -130,7 +130,8 @@ beforeEach( () => {
             }
 
             function assertRowMatch( aRendered, aRow ): void {
-                let [ iExpectedType, iParams ] = aRow.map( removeWhitespace );
+                let iParams       = aRow.map( removeWhitespace ),
+                    iExpectedType = iParams.shift();
 
                 assertTypeMatch( aRendered.type, iExpectedType );
                 assertParamsMatch( aRendered, iExpectedType, iParams );
@@ -152,17 +153,15 @@ beforeEach( () => {
                 switch ( aExpectedType ) {
                     case 'Rectangle':
                     case 'Erase':
-                        let iExpectedBounds = rectFromString( aParams ),
-                            iActualBounds   = aRendered.bounds;
-
-                        assertRectMatch( iActualBounds, iExpectedBounds );
+                        assertRectMatch( aRendered.bounds, rectFromString( aParams[ 0 ] ) );
                         break;
                     case 'PathStart':
                     case 'LineTo':
-                        let iExpectedPoint = pointFromString( aParams ),
-                            iActualPoint   = aRendered.point;
-
-                        assertPointMatch( iActualPoint, iExpectedPoint );
+                        assertPointMatch( aRendered.point, pointFromString( aParams[ 0 ] ) );
+                        break;
+                    case 'QuadTo':
+                        assertPointMatch( aRendered.control, pointFromString( aParams[ 0 ] ) );
+                        assertPointMatch( aRendered.point,   pointFromString( aParams[ 1 ] ) );
                         break;
                     case 'PathEnd':
                         // PathEnd has no params
@@ -171,7 +170,6 @@ beforeEach( () => {
                         throw new Error( "Could not find the requested render action" )
                 }
             }
-
 
         }
     });

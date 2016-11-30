@@ -1,1 +1,3 @@
-export { Path } from './Path';
+export { Path        } from './Path';
+export { LineSegment,
+         QuadSegment } from './PathSegments'

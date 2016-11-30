@@ -40,6 +40,20 @@ describe( 'The canvas should', () => {
             `);
         });
 
+        it( 'with quadratic Bézier segments', () => {
+
+            this.path
+                .quadTo( new Point( 20, 20 ), new Point ( 10, 30 ) );
+
+            this.layer.setContents( this.path );
+
+            expect( this.context ).toHaveRendered(`
+                | PathStart | 10, 10 |        |
+                | QuadTo    | 20, 20 | 10, 30 |
+                | PathEnd   |        |        |
+            `);
+        });
+
     });
 
     it( 'render children in relative coordinates', () => {

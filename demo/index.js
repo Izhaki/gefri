@@ -38,10 +38,15 @@ iTransformer.addChildren( iFace );
 // iTransformer.setScale( 0.5, 0.5 );
 // iTransformer.setZoom( 4, 4 );
 
-var iPath = new Path( new Point( 250, 20 ) );
-iPath.lineTo( new Point( 270, 40 ) );
-iPath.lineTo( new Point( 250, 60 ) );
-iTransformer.addChildren( iPath );
+var iLine = new Path( new Point( 250, 20 ) );
+iLine.lineTo( new Point( 270, 40 ) );
+iLine.lineTo( new Point( 250, 60 ) );
+iTransformer.addChildren( iLine );
+
+var iQuad = new Path( new Point( 240, 20 ) );
+iQuad.quadTo( new Point( 220, 40 ), new Point( 240, 60 ) );
+iTransformer.addChildren( iQuad );
+
 
 iCanvasLayer.setContents( iTransformer );
 

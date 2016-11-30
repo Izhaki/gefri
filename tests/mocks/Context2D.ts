@@ -44,6 +44,11 @@ class Context2DMock implements CanvasRenderingContext2D {
         return this.rendered[ this.rendered.length - 1 ];
     }
 
+    private transformPoint( x, y ): Point {
+        let iPoint = new Point( x, y );
+        return this.matrix.transformPoint( iPoint );
+    }
+
     // Drawing rectangles
 
     public clearRect( x: number, y: number, w: number, h: number ): void {
@@ -117,25 +122,29 @@ class Context2DMock implements CanvasRenderingContext2D {
     } //
 
     public moveTo( x, y ) {
-        let iPoint = new Point( x, y );
-        let iTransformedPoint = this.matrix.transformPoint( iPoint );
         this.rendered.push({
-            type: 'PathStart',
-            point: iTransformedPoint
+            type:  'PathStart',
+            point: this.transformPoint( x, y )
         });
     } //
 
     public lineTo( x, y ) {
-        let iPoint = new Point( x, y );
-        let iTransformedPoint = this.matrix.transformPoint( iPoint );
         this.rendered.push({
-            type: 'LineTo',
-            point: iTransformedPoint
+            type:  'LineTo',
+            point: this.transformPoint( x, y )
         });
     } //
 
     public bezierCurveTo() {} //
-    public quadraticCurveTo() {} //
+
+    public quadraticCurveTo( cpx, cpy, x, y ) {
+        this.rendered.push({
+            type:    'QuadTo',
+            control: this.transformPoint( cpx, cpy ),
+            point:   this.transformPoint( x, y )
+        });
+    } //
+
     public arc() {} //
     public arcTo() {} //
     public ellipse() {} //
