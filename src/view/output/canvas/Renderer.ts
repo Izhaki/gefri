@@ -5,6 +5,7 @@ import { getClassName,
 import { Viewee          } from '../../viewees/Viewee';
 import { Visible         } from '../../viewees/visibles/Visible';
 import { Rectangle       } from '../../viewees/visibles/shapes';
+import { Path            } from '../../viewees/visibles/path';
 
 import { Transformer,
          Root            } from '../../viewees/invisibles';
@@ -68,6 +69,16 @@ class Renderer extends Transforming {
 
     private renderRectangle( aRactangle: Rectangle ): void {
         this.drawRectangle( aRactangle.getRect() );
+    }
+
+    private renderPath( aPath: Path ): void {
+        this.moveTo( aPath.getStart() );
+
+        aPath.forEachSegment( ( aSegment ) => {
+            this.lineTo( aSegment.getEnd() );
+        });
+
+        this.strokePath();
     }
 
     private renderTransformer( aTransformer: Transformer ): void {

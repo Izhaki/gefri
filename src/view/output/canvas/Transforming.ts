@@ -1,5 +1,6 @@
 import { Contextual      } from './';
-import { Rect            } from '../../geometry';
+import { Point,
+         Rect            } from '../../geometry';
 import { Transformations } from '../../output';
 
 /*
@@ -24,10 +25,11 @@ class Transforming extends Contextual {
         this.context.scale( aTransformations.zoom.x, aTransformations.zoom.y );
     }
 
+    // For all the following:
+    // Zoom has already been applied on the canvas (in transform above),
+    // so we only need to apply the post-matrix here.
 
     protected intersectClipAreaWith( aRect: Rect ): void {
-        // Zoom has already been applied on the canvas (in transform above),
-        // so we only need to apply the post-matrix here.
         super.intersectClipAreaWith( this.preTransformRect( aRect ) );
     }
 
@@ -36,6 +38,16 @@ class Transforming extends Contextual {
         // so we only need to apply the post-matrix here.
         let iRect = this.preTransformRect( aRect );
         super.drawRectangle( iRect );
+    }
+
+    protected moveTo( aPoint: Point ): void {
+        let iPoint = this.preTransformPoint( aPoint );
+        super.moveTo( iPoint );
+    }
+
+    protected lineTo( aPoint: Point ): void {
+        let iPoint = this.preTransformPoint( aPoint );
+        super.lineTo( iPoint );
     }
 
 }

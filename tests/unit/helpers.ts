@@ -2,7 +2,8 @@
 // overrides the `this` binding jasmine relies on. Rather, we simply import these helpers
 // functions when needed.
 
-import { Rect        } from '../../src/view/geometry';
+import { Point,
+         Rect        } from '../../src/view/geometry';
 import { Rectangle   } from '../../src/view/viewees/visibles/shapes';
 import { Transformer } from '../../src/view/viewees/invisibles';
 
@@ -102,6 +103,13 @@ function rectFromString( aString: string ): Rect {
     let iArguments = aString.split( ',' );
     let [ x, y, w, h ] = iArguments.map( toInt );
     return new Rect( x, y, w, h );
+}
+
+export
+function pointFromString( aString: string ): Point {
+    let iArguments = aString.split( ',' );
+    let [ x, y ] = iArguments.map( toInt );
+    return new Point( x, y );
 }
 
 function toInt( aString ): number {

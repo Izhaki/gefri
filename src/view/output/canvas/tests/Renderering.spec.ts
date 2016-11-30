@@ -1,4 +1,6 @@
 import { setup } from './Helpers.spec';
+import { Point } from '../../../geometry';
+import { Path  } from '../../../viewees/visibles/path'
 
 describe( 'The canvas should', () => {
 
@@ -14,6 +16,30 @@ describe( 'The canvas should', () => {
         expect( this.context ).toHaveRendered(`
             | Rectangle | 10, 11, 12, 13 |
         `);
+    });
+
+    describe( 'render a path', () => {
+
+        beforeEach( () => {
+            this.path = new Path( new Point( 10, 10 ) );
+        });
+
+        it( 'with line segments', () => {
+
+            this.path
+                .lineTo( new Point ( 20, 20 ) )
+                .lineTo( new Point ( 10, 30 ) );
+
+            this.layer.setContents( this.path );
+
+            expect( this.context ).toHaveRendered(`
+                | PathStart | 10, 10 |
+                | LineTo    | 20, 20 |
+                | LineTo    | 10, 30 |
+                | PathEnd   |        |
+            `);
+        });
+
     });
 
     it( 'render children in relative coordinates', () => {

@@ -29,6 +29,11 @@ iTransformer.addChildren( iFace );
 // iTransformer.setScale( 0.5, 0.5 );
 // iTransformer.setZoom( 4, 4 );
 
+var iPath = new gefri.view.Path( new gefri.view.geometry.Point( 250, 20 ) );
+iPath.lineTo( new gefri.view.geometry.Point( 270, 40 ) );
+iPath.lineTo( new gefri.view.geometry.Point( 250, 60 ) );
+iTransformer.addChildren( iPath );
+
 iCanvasLayer.setContents( iTransformer );
 
 /*

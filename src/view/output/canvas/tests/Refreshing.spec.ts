@@ -28,7 +28,7 @@ describe( 'The canvas should refresh when', () => {
             `);
         });
 
-        it( 'scale changes', () => {
+        it( 'zoom changes', () => {
             this.transformer.setZoom( 0.5, 0.5 );
 
             expect( this.context ).toHaveRendered(`

@@ -36,6 +36,14 @@ class Context2DMock implements CanvasRenderingContext2D {
         }
     }
 
+    private hasRendered(): boolean {
+        return this.rendered.length > 0;
+    }
+
+    private getLastRendered() {
+        return this.rendered[ this.rendered.length - 1 ];
+    }
+
     // Drawing rectangles
 
     public clearRect( x: number, y: number, w: number, h: number ): void {
@@ -97,7 +105,7 @@ class Context2DMock implements CanvasRenderingContext2D {
         // closePath() means we have drawn the rect (rather than use it for clipping),
         // so intersect it with the clip area if exists
         if ( this.clipArea ) {
-            var lastRender = this.rendered[ this.rendered.length - 1 ];
+            var lastRender = this.getLastRendered();
 
             if ( lastRender.type !== 'Rectangle' ) {
                 throw new Error( 'closePath() was called but not with rect' )
@@ -107,8 +115,25 @@ class Context2DMock implements CanvasRenderingContext2D {
             this.log( 'closePath()', 'intersected last rect with clip area', lastRender.bounds )
         }
     } //
-    public moveTo() {} //
-    public lineTo() {} //
+
+    public moveTo( x, y ) {
+        let iPoint = new Point( x, y );
+        let iTransformedPoint = this.matrix.transformPoint( iPoint );
+        this.rendered.push({
+            type: 'PathStart',
+            point: iTransformedPoint
+        });
+    } //
+
+    public lineTo( x, y ) {
+        let iPoint = new Point( x, y );
+        let iTransformedPoint = this.matrix.transformPoint( iPoint );
+        this.rendered.push({
+            type: 'LineTo',
+            point: iTransformedPoint
+        });
+    } //
+
     public bezierCurveTo() {} //
     public quadraticCurveTo() {} //
     public arc() {} //
@@ -131,7 +156,19 @@ class Context2DMock implements CanvasRenderingContext2D {
     // Drawing paths
 
     public fill( fillRule?: string ): void {}
-    public stroke(): void {}
+    public stroke(): void {
+
+        if ( this.hasRendered() ) {
+            var lastRender = this.getLastRendered();
+
+            if ( lastRender.type !== 'Rectangle' ) {
+                this.rendered.push({
+                    type: 'PathEnd'
+                })
+            }
+        }
+
+    }
     public drawFocusIfNeeded() {} //
     public scrollPathIntoView() {} //
     public clip( fillRule?: string ): void {

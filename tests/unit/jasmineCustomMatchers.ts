@@ -3,6 +3,7 @@ import { Point,
 import { Row,
          getRows,
          removeWhitespace,
+         pointFromString,
          rectFromString    } from './helpers';
 import { triggerNextFrame  } from '../../src/view/onNextFrame'
 
@@ -154,7 +155,17 @@ beforeEach( () => {
                         let iExpectedBounds = rectFromString( aParams ),
                             iActualBounds   = aRendered.bounds;
 
-                        assertRectMatch( iActualBounds, iExpectedBounds )
+                        assertRectMatch( iActualBounds, iExpectedBounds );
+                        break;
+                    case 'PathStart':
+                    case 'LineTo':
+                        let iExpectedPoint = pointFromString( aParams ),
+                            iActualPoint   = aRendered.point;
+
+                        assertPointMatch( iActualPoint, iExpectedPoint );
+                        break;
+                    case 'PathEnd':
+                        // PathEnd has no params
                         break;
                     default:
                         throw new Error( "Could not find the requested render action" )

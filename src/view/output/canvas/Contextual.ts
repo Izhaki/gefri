@@ -1,5 +1,6 @@
 import { Clipped      } from './../';
-import { Rect,
+import { Point,
+         Rect,
          Translation,
          Scale        } from '../../geometry';
 
@@ -22,6 +23,19 @@ class Contextual extends Clipped {
         context.fill();
         context.stroke();
         context.closePath();
+    }
+
+    protected moveTo( aPoint: Point ): void {
+        this.context.beginPath();
+        this.context.moveTo( aPoint.x, aPoint.y )
+    }
+
+    protected lineTo( aPoint: Point ): void {
+        this.context.lineTo( aPoint.x, aPoint.y )
+    }
+
+    protected strokePath(): void {
+        this.context.stroke();
     }
 
     protected erase( aRect: Rect ): void {

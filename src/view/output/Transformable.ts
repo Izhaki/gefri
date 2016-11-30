@@ -48,6 +48,10 @@ class Transformable extends Stateful {
         this.postMatrix.scale( aZoom.x, aZoom.y );
     }
 
+    protected preTransformPoint( aPoint: Point ): Point {
+        return this.preMatrix.transformPoint( aPoint );
+    }
+
     protected preTransformRect( aRect: Rect ): Rect {
         return this.preMatrix.transformRect( aRect );
     }
