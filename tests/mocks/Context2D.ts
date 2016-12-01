@@ -1,7 +1,6 @@
 // Based on:
 // - https://developer.mozilla.org/en/docs/Web/API/CanvasRenderingContext2D
 // - https://github.com/Microsoft/TypeScript/blob/ddadb472a6241bd14a267b915f5c4669bd094a28/src/lib/dom.generated.d.ts
-// '//' postfix signify no typings for member/method
 
 import { TransformMatrix,
          Rect,
@@ -82,7 +81,7 @@ class Context2DMock implements CanvasRenderingContext2D {
     public font: string;
     public textAlign: string;
     public textBaseline: string;
-    public direction; //
+    public direction;
 
     // Fill and stroke styles
 
@@ -119,21 +118,21 @@ class Context2DMock implements CanvasRenderingContext2D {
             lastRender.bounds.intersect( this.clipArea );
             this.log( 'closePath()', 'intersected last rect with clip area', lastRender.bounds )
         }
-    } //
+    }
 
     public moveTo( x, y ) {
         this.rendered.push({
             type:  'PathStart',
             point: this.transformPoint( x, y )
         });
-    } //
+    }
 
     public lineTo( x, y ) {
         this.rendered.push({
             type:  'LineTo',
             point: this.transformPoint( x, y )
         });
-    } //
+    }
 
     public bezierCurveTo( cp1x, cp1y, cp2x, cp2y, x, y ) {
         this.rendered.push({
@@ -142,7 +141,7 @@ class Context2DMock implements CanvasRenderingContext2D {
             control2: this.transformPoint( cp2x, cp2y ),
             point:    this.transformPoint( x, y )
         });
-    } //
+    }
 
     public quadraticCurveTo( cpx, cpy, x, y ) {
         this.rendered.push({
@@ -150,11 +149,11 @@ class Context2DMock implements CanvasRenderingContext2D {
             control: this.transformPoint( cpx, cpy ),
             point:   this.transformPoint( x, y )
         });
-    } //
+    }
 
-    public arc() {} //
-    public arcTo() {} //
-    public ellipse() {} //
+    public arc() {}
+    public arcTo() {}
+    public ellipse() {}
     public rect( x, y, width, height ) {
 
         var iRect = new Rect( x, y, width, height );
@@ -167,7 +166,7 @@ class Context2DMock implements CanvasRenderingContext2D {
             type: 'Rectangle',
             bounds: iTransformedRect
         })
-    } //
+    }
 
     // Drawing paths
 
@@ -185,8 +184,8 @@ class Context2DMock implements CanvasRenderingContext2D {
         }
 
     }
-    public drawFocusIfNeeded() {} //
-    public scrollPathIntoView() {} //
+    public drawFocusIfNeeded() {}
+    public scrollPathIntoView() {}
     public clip( fillRule?: string ): void {
         var lastRender = this.rendered.pop();
 
@@ -213,11 +212,11 @@ class Context2DMock implements CanvasRenderingContext2D {
 
     }
     public isPointInPath( x: number, y: number, fillRule?: string ): boolean { return true }
-    public isPointInStroke() {} //
+    public isPointInStroke() {}
 
     // Transformations
 
-    public currentTransform; //
+    public currentTransform;
     public rotate( angle: number ): void {}
     public scale( x: number, y: number ): void {
         this.matrix.scale( x, y );
@@ -227,7 +226,7 @@ class Context2DMock implements CanvasRenderingContext2D {
     }
     public transform( m11: number, m12: number, m21: number, m22: number, dx: number, dy: number ): void {}
     public setTransform( m11: number, m12: number, m21: number, m22: number, dx: number, dy: number ): void {}
-    public resetTransform() {} //
+    public resetTransform() {}
 
     // Compositing
 
@@ -246,7 +245,7 @@ class Context2DMock implements CanvasRenderingContext2D {
 
     // Image Smoothing
 
-    public imageSmoothingEnabled; //
+    public imageSmoothingEnabled;
 
     // The canvas state
 
@@ -268,9 +267,9 @@ class Context2DMock implements CanvasRenderingContext2D {
 
     // Hit regions
 
-    public addHitRegion() {} //
-    public removeHitRegion() {} //
-    public clearHitRegion() {} //
+    public addHitRegion() {}
+    public removeHitRegion() {}
+    public clearHitRegion() {}
 
     // Some odd ones
 
