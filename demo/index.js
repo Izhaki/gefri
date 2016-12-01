@@ -47,6 +47,9 @@ var iQuad = new Path( new Point( 240, 20 ) );
 iQuad.quadTo( new Point( 220, 40 ), new Point( 240, 60 ) );
 iTransformer.addChildren( iQuad );
 
+var iCubic = new Path( new Point( 300, 20 ) );
+iCubic.cubicTo( new Point( 320, 30 ), new Point( 280, 50 ), new Point( 300, 60 ) );
+iTransformer.addChildren( iCubic );
 
 iCanvasLayer.setContents( iTransformer );
 

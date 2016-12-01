@@ -7,7 +7,8 @@ import { Visible       } from '../../viewees/visibles/Visible';
 import { Rectangle     } from '../../viewees/visibles/shapes';
 import { Path,
          LineSegment,
-         QuadSegment   } from '../../viewees/visibles/path';
+         QuadSegment,
+         CubicSegment  } from '../../viewees/visibles/path';
 
 import { Transformer,
          Root            } from '../../viewees/invisibles';
@@ -92,6 +93,10 @@ class Renderer extends Transforming {
 
     private renderQuadSegment( aSegment: QuadSegment ) {
         this.quadTo( aSegment.getControl(), aSegment.getEnd() );
+    }
+
+    private renderCubicSegment( aSegment: CubicSegment ) {
+        this.cubicTo( aSegment.getControl1(), aSegment.getControl2(), aSegment.getEnd() );
     }
 
     private renderTransformer( aTransformer: Transformer ): void {

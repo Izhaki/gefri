@@ -56,5 +56,12 @@ class Transforming extends Contextual {
         super.quadTo( iControl, iPoint );
     }
 
+    protected cubicTo( aControl1: Point, aControl2: Point, aPoint: Point ): void {
+        let iControl1 = this.preTransformPoint( aControl1 ),
+            iControl2 = this.preTransformPoint( aControl2 ),
+            iPoint    = this.preTransformPoint( aPoint );
+
+        super.cubicTo( iControl1, iControl2, iPoint );
+    }
 
 }

@@ -135,7 +135,14 @@ class Context2DMock implements CanvasRenderingContext2D {
         });
     } //
 
-    public bezierCurveTo() {} //
+    public bezierCurveTo( cp1x, cp1y, cp2x, cp2y, x, y ) {
+        this.rendered.push({
+            type:     'CubicTo',
+            control1: this.transformPoint( cp1x, cp1y ),
+            control2: this.transformPoint( cp2x, cp2y ),
+            point:    this.transformPoint( x, y )
+        });
+    } //
 
     public quadraticCurveTo( cpx, cpy, x, y ) {
         this.rendered.push({

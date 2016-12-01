@@ -163,6 +163,11 @@ beforeEach( () => {
                         assertPointMatch( aRendered.control, pointFromString( aParams[ 0 ] ) );
                         assertPointMatch( aRendered.point,   pointFromString( aParams[ 1 ] ) );
                         break;
+                    case 'CubicTo':
+                        assertPointMatch( aRendered.control1, pointFromString( aParams[ 0 ] ) );
+                        assertPointMatch( aRendered.control2, pointFromString( aParams[ 1 ] ) );
+                        assertPointMatch( aRendered.point,    pointFromString( aParams[ 2 ] ) );
+                        break;
                     case 'PathEnd':
                         // PathEnd has no params
                         break;

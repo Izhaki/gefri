@@ -33,5 +33,26 @@ class QuadSegment extends PathSegment {
     getControl(): Point {
         return this.control;
     }
+}
+
+export
+class CubicSegment extends PathSegment {
+
+    private control1: Point;
+    private control2: Point;
+
+    constructor( aControl1: Point, aControl2: Point, aEnd: Point ) {
+        super( aEnd );
+        this.control1 = aControl1;
+        this.control2 = aControl2;
+    }
+
+    getControl1(): Point {
+        return this.control1;
+    }
+
+    getControl2(): Point {
+        return this.control2;
+    }
 
 }

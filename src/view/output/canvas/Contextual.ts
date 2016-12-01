@@ -38,6 +38,10 @@ class Contextual extends Clipped {
         this.context.quadraticCurveTo( aControl.x, aControl.y, aPoint.x, aPoint.y )
     }
 
+    protected cubicTo( aControl1: Point, aControl2: Point, aPoint: Point ): void {
+        this.context.bezierCurveTo( aControl1.x, aControl1.y, aControl2.x, aControl2.y, aPoint.x, aPoint.y )
+    }
+
     protected strokePath(): void {
         this.context.stroke();
     }

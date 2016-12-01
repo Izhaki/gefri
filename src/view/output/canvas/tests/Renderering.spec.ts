@@ -54,6 +54,20 @@ describe( 'The canvas should', () => {
             `);
         });
 
+        it( 'with cubic Bézier segments', () => {
+
+            this.path
+                .cubicTo( new Point( 20, 20 ), new Point ( 20, 30 ), new Point ( 10, 40 ) );
+
+            this.layer.setContents( this.path );
+
+            expect( this.context ).toHaveRendered(`
+                | PathStart | 10, 10 |        |        |
+                | CubicTo   | 20, 20 | 20, 30 | 10, 40 |
+                | PathEnd   |        |        |        |
+            `);
+        });
+
     });
 
     it( 'render children in relative coordinates', () => {
