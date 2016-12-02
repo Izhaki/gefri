@@ -36,6 +36,16 @@ class Path extends Visible {
         return this;
     }
 
+    setStart( aPoint: Point ): void {
+        this.start = aPoint;
+        this.notifyUpdate();
+    }
+
+    setEnd( aSegmentIndex: number, aPoint: Point ): void {
+        this.segments[ aSegmentIndex ].setEnd( aPoint );
+        this.notifyUpdate();
+    }
+
     getStart(): Point {
         return this.start;
     }
@@ -46,7 +56,14 @@ class Path extends Visible {
 
     // TODO
     getBoundingRect(): Rect {
-        return new Rect( 0, 0, 0, 0 );
+        let iBoundingRect: Rect = new Rect( 0, 0, 0, 0 );
+
+        this.forEachSegment( ( aSegment ) => {
+            let iSegmentBoundingRect: Rect = aSegment.getBoundingRect( this.getStart() );
+            iBoundingRect = iSegmentBoundingRect;
+        });
+
+        return iBoundingRect;
     }
 
     getTransformations(): Transformations {

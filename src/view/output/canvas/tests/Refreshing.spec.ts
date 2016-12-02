@@ -1,6 +1,8 @@
 import { setup            } from './Helpers.spec';
 import { Rectangle        } from '../../../viewees/visibles/shapes';
-import { Rect             } from '../../../geometry';
+import { Point,
+         Rect             } from '../../../geometry';
+import { Path             } from '../../../viewees/visibles/path'
 
 describe( 'The canvas should refresh when', () => {
 
@@ -101,6 +103,48 @@ describe( 'The canvas should refresh when', () => {
                 | Erase     | 99,  99,  12, 12 |
                 | Rectangle | 100, 100, 10, 10 |
             `);
+        });
+
+    });
+
+    describe( 'a path', () => {
+
+        beforeEach( () => {
+            this.path = new Path( new Point( 20, 20 ) );
+        });
+
+        describe( 'with a line segment', () => {
+
+            beforeEach( () => {
+                this.path.lineTo( new Point ( 10, 30 ) );
+
+                this.layer.setContents( this.path );
+                this.clearRenderedLog();
+            });
+
+            it( 'start point changes', () => {
+
+                this.path.setStart( new Point( 30, 20 ) );
+
+                expect( this.context ).toHaveRendered(`
+                    | Erase     | 31, 19, -22, 12 |
+                    | PathStart | 30, 20          |
+                    | LineTo    | 10, 30          |
+                    | PathEnd   |                 |
+                `);
+            });
+
+            it( 'end point changes', () => {
+                this.path.setEnd( 0, new Point( 40, 40 ) );
+
+                expect( this.context ).toHaveRendered(`
+                    | Erase     | 19, 19, 22, 22 |
+                    | PathStart | 20, 20         |
+                    | LineTo    | 40, 40         |
+                    | PathEnd   |                |
+                `);
+            });
+
         });
 
     });

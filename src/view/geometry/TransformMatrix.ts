@@ -66,12 +66,12 @@ class TransformMatrix {
     // A temporal hack. Rects should really be represented as a polygon to
     // support rotate, but this will do for now.
     transformRect( aRect: Rect ) : Rect {
-        var iLeftTop            = aRect.getLeftTop(),
-            iTransformedLeftTop = this.transformPoint( iLeftTop ),
+        var iOrigin            = aRect.getOrigin(),
+            iTransformedOrigin = this.transformPoint( iOrigin ),
 
             iTransformedRect = new Rect(
-                iTransformedLeftTop.x,
-                iTransformedLeftTop.y,
+                iTransformedOrigin.x,
+                iTransformedOrigin.y,
                 aRect.w * this.scaleX,
                 aRect.h * this.scaleY
             );

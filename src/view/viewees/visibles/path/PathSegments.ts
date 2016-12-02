@@ -1,16 +1,23 @@
-import { Point } from './../../../geometry';
+import { Point,
+         Rect  } from './../../../geometry';
 
 export
-class PathSegment {
+abstract class PathSegment {
     private end: Point;
 
     constructor( aEnd: Point ) {
         this.end = aEnd;
     }
 
+    setEnd( aEnd: Point ) {
+        this.end = aEnd;
+    }
+
     getEnd(): Point {
         return this.end;
     }
+
+    abstract getBoundingRect( aStart: Point ): Rect;
 }
 
 export
@@ -18,6 +25,11 @@ type PathSegments = PathSegment[];
 
 export
 class LineSegment extends PathSegment {
+
+    getBoundingRect( aStart: Point ): Rect {
+        return new Rect( aStart, this.getEnd() );
+    };
+
 }
 
 export
@@ -33,6 +45,11 @@ class QuadSegment extends PathSegment {
     getControl(): Point {
         return this.control;
     }
+
+    getBoundingRect( aStart: Point ): Rect {
+        return new Rect( 0,0,20,20); // TODO
+    };
+
 }
 
 export
@@ -54,5 +71,9 @@ class CubicSegment extends PathSegment {
     getControl2(): Point {
         return this.control2;
     }
+
+    getBoundingRect( aStart: Point ): Rect {
+        return new Rect( 0,0,20,20); // TODO
+    };
 
 }

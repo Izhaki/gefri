@@ -11,15 +11,35 @@ class Rect {
     w: number;
     h: number;
 
-    constructor( aX: number, aY: number, aW: number, aH: number ) {
-        this.x = aX;
-        this.y = aY;
-        this.w = aW;
-        this.h = aH;
+    constructor( ...args: any[] ) {
+        if ( isXYWH( args ) ){
+            // new Rect( x, y, w, h )
+            [ this.x, this.y, this.w, this.h ] = args;
+        } else if ( isTwoPoints( args ) ) {
+            // new Rect( leftTop, bottomRight  )
+            let [ iLeftTop, iRightBottom ] = args;
+            [ this.x, this.y, this.w, this.h ] = [ iLeftTop.x, iLeftTop.y, iRightBottom.x - iLeftTop.x, iRightBottom.y - iLeftTop.y ]
+        }
+
+        function isXYWH( args ) {
+            return ( args.length == 4          ) &&
+                   (typeof args[0] === 'number');
+        }
+
+        function isTwoPoints( args ) {
+            return ( args.length == 2        ) &&
+                   ( args[0].x !== undefined ) &&
+                   ( args[1].x !== undefined );
+        }
+
     }
 
     clone(): Rect {
         return new Rect( this.x, this.y, this.w, this.h );
+    }
+
+    getOrigin(): Point {
+        return new Point( this.x, this.y );
     }
 
     getLeft(): number {
@@ -80,6 +100,21 @@ class Rect {
 
     contract( aPoints: number ): void {
         this.expand( -aPoints );
+    }
+
+    // Turns negative width or height into positive ones.
+    normalise(): void {
+
+        if ( this.w < 0 ) {
+            this.x = this.x + this.w;
+            this.w = -this.w;
+        }
+
+        if ( this.h < 0 ) {
+            this.y = this.y + this.h;
+            this.h = -this.h;
+        }
+
     }
 
 }

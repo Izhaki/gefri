@@ -4,19 +4,6 @@ import { Point } from './';
 describe( 'Rect', () => {
 
 
-    describe( 'constructor()', () => {
-
-        it( 'Should keep the given coordinates and dimensions', () => {
-            var iRect = new Rect( 10, 20, 30, 40 );
-            expect( iRect.x ).toBe( 10 );
-            expect( iRect.y ).toBe( 20 );
-            expect( iRect.w ).toBe( 30 );
-            expect( iRect.h ).toBe( 40 );
-        });
-
-    });
-
-
     describe( 'clone()', () => {
 
         it( 'Should return a new rect with the same geometry', () => {
@@ -28,6 +15,15 @@ describe( 'Rect', () => {
 
     });
 
+
+    describe( 'getOrigin()', () => {
+
+        it( 'should return the x and y coordinates of the rect', () => {
+            var iRect = new Rect( 20, 30, -100, -100 );
+            expect( iRect.getOrigin() ).toEqualPoint( 20, 30 );
+        });
+
+    });
 
     describe( 'getLeft()', () => {
 
@@ -333,6 +329,23 @@ describe( 'Rect', () => {
         });
 
     });
+
+    describe( 'normalise()', () => {
+
+        it( 'should turn a rect with negative width to one with positive one', () => {
+            var iRect = new Rect( 100, 100, -20, 20 );
+            iRect.normalise();
+            expect( iRect ).toEqualRect( 80, 100, 20, 20 );
+        });
+
+        it( 'should turn a rect with negative height to one with positive one', () => {
+            var iRect = new Rect( 100, 100, 20, -20 );
+            iRect.normalise();
+            expect( iRect ).toEqualRect( 100, 80, 20, 20 );
+        });
+
+    });
+
 
 
 });
