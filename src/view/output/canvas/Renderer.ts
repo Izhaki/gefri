@@ -1,11 +1,13 @@
 import { Transforming  } from './';
-import { Rects         } from '../../geometry';
+import { Point,
+         Rects         } from '../../geometry';
 import { getClassName,
          emptyArray    } from '../../../core/Utils';
 import { Viewee        } from '../../viewees/Viewee';
 import { Visible       } from '../../viewees/visibles/Visible';
 import { Rectangle     } from '../../viewees/visibles/shapes';
 import { Path,
+         PathSegment,
          LineSegment,
          QuadSegment,
          CubicSegment  } from '../../viewees/visibles/path';
@@ -78,9 +80,14 @@ class Renderer extends Transforming {
     }
 
     private renderPath( aPath: Path ): void {
+        // aPath.forEachSegment( ( aSegment: PathSegment, aStart: Point ) => {
+        //     let iBox = aSegment.getBoundingRect( aStart );
+        //     this.drawRectangle( iBox );
+        // });
+
         this.moveTo( aPath.getStart() );
 
-        aPath.forEachSegment( ( aSegment ) => {
+        aPath.forEachSegment( ( aSegment: PathSegment ) => {
             this.routeToRenderMethod( aSegment );
         });
 

@@ -1,5 +1,6 @@
 import { Visible          } from './../Visible';
-import { PathSegments,
+import { PathSegment,
+         PathSegments,
          LineSegment,
          QuadSegment,
          CubicSegment     } from './PathSegments'
@@ -37,12 +38,21 @@ class Path extends Visible {
     }
 
     setStart( aPoint: Point ): void {
+        this.notifyUpdate();
         this.start = aPoint;
         this.notifyUpdate();
     }
 
     setEnd( aSegmentIndex: number, aPoint: Point ): void {
+        this.notifyUpdate();
         this.segments[ aSegmentIndex ].setEnd( aPoint );
+        this.notifyUpdate();
+    }
+
+    setControl( aSegmentIndex: number, aPoint: Point ): void {
+        this.notifyUpdate();
+        let iSegment: QuadSegment = this.segments[ aSegmentIndex ] as QuadSegment;
+        iSegment.setControl( aPoint );
         this.notifyUpdate();
     }
 
@@ -51,7 +61,11 @@ class Path extends Visible {
     }
 
     forEachSegment( aCallback ): void {
-        this.segments.forEach( aCallback );
+        this.segments.forEach( ( aSegment: PathSegment, aIndex: number ) => {
+            let isFirstSegment = aIndex == 0;
+            let aSegmentStart: Point = isFirstSegment ? this.start : this.segments[ aIndex - 1 ].getEnd();
+            aCallback( aSegment, aSegmentStart );
+        });
     }
 
     // TODO

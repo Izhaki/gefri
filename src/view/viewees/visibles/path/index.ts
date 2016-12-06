@@ -1,4 +1,5 @@
 export { Path         } from './Path';
-export { LineSegment,
+export { PathSegment,
+         LineSegment,
          QuadSegment,
          CubicSegment } from './PathSegments'

@@ -1,6 +1,8 @@
 import { Point,
          Rect  } from './../../../geometry';
 
+import Bezier = require('bezier-js');
+
 export
 abstract class PathSegment {
     private end: Point;
@@ -18,6 +20,17 @@ abstract class PathSegment {
     }
 
     abstract getBoundingRect( aStart: Point ): Rect;
+
+    protected getBezierBoundingRect( aBezier: Bezier ): Rect {
+        let iBox = aBezier.bbox();
+
+        return new Rect (
+            iBox.x.min,
+            iBox.y.min,
+            iBox.x.size,
+            iBox.y.size
+        );
+    }
 }
 
 export
@@ -46,8 +59,22 @@ class QuadSegment extends PathSegment {
         return this.control;
     }
 
+    setControl( aControl ) {
+        this.control = aControl;
+    }
+
     getBoundingRect( aStart: Point ): Rect {
-        return new Rect( 0,0,20,20); // TODO
+        let iStart = aStart,
+            iCtrl  = this.getControl(),
+            iEnd   = this.getEnd();
+
+        let iBezier = new Bezier(
+            iStart.x, iStart.y,
+            iCtrl.x,  iCtrl.y,
+            iEnd.x,   iEnd.y
+        );
+
+        return this.getBezierBoundingRect( iBezier ) ;
     };
 
 }

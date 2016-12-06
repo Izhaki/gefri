@@ -39,6 +39,7 @@
     "@angular/core": "^2.0.1",
     "@types/es6-shim": "^0.31.32",
     "@types/jasmine": "^2.5.35",
+    "bezier-js": "^2.2.1",
     "browserify": "^13.0.1",
     "chokidar-cli": "^1.2.0",
     "figlet-cli": "^0.1.0",

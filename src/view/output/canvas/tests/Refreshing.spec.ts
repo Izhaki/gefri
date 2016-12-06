@@ -127,6 +127,7 @@ describe( 'The canvas should refresh when', () => {
                 this.path.setStart( new Point( 30, 20 ) );
 
                 expect( this.context ).toHaveRendered(`
+                    | Erase     | 21, 19, -12, 12 |
                     | Erase     | 31, 19, -22, 12 |
                     | PathStart | 30, 20          |
                     | LineTo    | 10, 30          |
@@ -138,10 +139,60 @@ describe( 'The canvas should refresh when', () => {
                 this.path.setEnd( 0, new Point( 40, 40 ) );
 
                 expect( this.context ).toHaveRendered(`
-                    | Erase     | 19, 19, 22, 22 |
-                    | PathStart | 20, 20         |
-                    | LineTo    | 40, 40         |
-                    | PathEnd   |                |
+                    | Erase     | 21, 19, -12, 12 |
+                    | Erase     | 19, 19,  22, 22 |
+                    | PathStart | 20, 20          |
+                    | LineTo    | 40, 40          |
+                    | PathEnd   |                 |
+                `);
+            });
+
+        });
+
+        describe( 'with a quadratic Bézier segment', () => {
+
+            beforeEach( () => {
+                this.path.quadTo( new Point( 30, 30 ), new Point ( 10, 40 ) );
+
+                this.layer.setContents( this.path );
+                this.clearRenderedLog();
+            });
+
+            it( 'start point changes', () => {
+
+                this.path.setStart( new Point( 10, 20 ) );
+
+                expect( this.context ).toHaveRendered(`
+                    | Erase     | 9,  19, 15.33, 22  |        |
+                    | Erase     | 9,  19, 12,    22  |        |
+                    | PathStart | 10, 20             |        |
+                    | QuadTo    | 30, 30             | 10, 40 |
+                    | PathEnd   |                    |        |
+                `);
+            });
+
+            it( 'control point changes', () => {
+
+                this.path.setControl( 0, new Point( 10, 20 ) );
+
+                expect( this.context ).toHaveRendered(`
+                    | Erase     | 9,  19, 15.33, 22  |        |
+                    | Erase     | 9,  19, 12,    22  |        |
+                    | PathStart | 20, 20             |        |
+                    | QuadTo    | 10, 20             | 10, 40 |
+                    | PathEnd   |                    |        |
+                `);
+            });
+
+            it( 'end point changes', () => {
+                this.path.setEnd( 0, new Point( 40, 40 ) );
+
+                expect( this.context ).toHaveRendered(`
+                    | Erase     | 9,  19, 15.33, 22  |        |
+                    | Erase     | 19, 19, 22,    22  |        |
+                    | PathStart | 20, 20             |        |
+                    | QuadTo    | 30, 30             | 40, 40 |
+                    | PathEnd   |                    |        |
                 `);
             });
 

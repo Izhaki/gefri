@@ -101,17 +101,13 @@ function removeWhitespace( aString: string ): string {
 export
 function rectFromString( aString: string ): Rect {
     let iArguments = aString.split( ',' );
-    let [ x, y, w, h ] = iArguments.map( toInt );
+    let [ x, y, w, h ] = iArguments.map( parseFloat );
     return new Rect( x, y, w, h );
 }
 
 export
 function pointFromString( aString: string ): Point {
     let iArguments = aString.split( ',' );
-    let [ x, y ] = iArguments.map( toInt );
+    let [ x, y ] = iArguments.map( parseFloat );
     return new Point( x, y );
-}
-
-function toInt( aString ): number {
-    return parseInt( aString, 10 );
 }

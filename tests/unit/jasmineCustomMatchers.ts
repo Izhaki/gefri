@@ -7,6 +7,11 @@ import { Row,
          rectFromString    } from './helpers';
 import { triggerNextFrame  } from '../../src/view/onNextFrame'
 
+function round2decimals( aNumber ) {
+    return Math.round( aNumber * 100 ) / 100
+}
+
+
 function getPointString( aPoint ): string {
     return `( ${ aPoint.x }, ${ aPoint.y } )`;
 }
@@ -55,9 +60,19 @@ function getRectMismatchMessage( aActual, aExpected ): string {
     return `Expected ${ iExpectedRect } to be ${ iActualRect }`;
 }
 
+function roundRect( aRect ) {
+    return new Rect (
+        round2decimals( aRect.x ),
+        round2decimals( aRect.y ),
+        round2decimals( aRect.w ),
+        round2decimals( aRect.h )
+    );
+}
+
 function assertRectMatch( aActual, aExpected ): void {
-    if ( isRectMismatch( aActual, aExpected ) ) {
-        throw new Error( getRectMismatchMessage( aActual, aExpected ) )
+    let iActual = roundRect( aActual );
+    if ( isRectMismatch( iActual, aExpected ) ) {
+        throw new Error( getRectMismatchMessage( iActual, aExpected ) )
     }
 }
 
