@@ -11,13 +11,17 @@ class Rect {
     w: number;
     h: number;
 
-    constructor( ...args: any[] ) {
-        if ( isXYWH( args ) ){
-            // new Rect( x, y, w, h )
-            [ this.x, this.y, this.w, this.h ] = args;
-        } else if ( isTwoPoints( args ) ) {
-            // new Rect( leftTop, bottomRight  )
-            let [ iLeftTop, iRightBottom ] = args;
+    constructor( x: number, y: number, w: number, h: number );
+    constructor( aLeftTop: Point, aRightBottom: Point );
+    constructor() {
+        if ( isXYWH( arguments ) ){
+            this.x = arguments[ 0 ];
+            this.y = arguments[ 1 ];
+            this.w = arguments[ 2 ];
+            this.h = arguments[ 3 ];
+        } else if ( isTwoPoints( arguments ) ) {
+            let iLeftTop     = arguments[ 0 ],
+                iRightBottom = arguments[ 1 ];
             [ this.x, this.y, this.w, this.h ] = [ iLeftTop.x, iLeftTop.y, iRightBottom.x - iLeftTop.x, iRightBottom.y - iLeftTop.y ]
         }
 
