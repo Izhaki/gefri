@@ -1,6 +1,5 @@
 import { ElementLayer } from './'
 import { Rectangle    } from '../viewees/visibles/shapes';
-import { Rect         } from '../geometry';
 
 export
 function ElementLayerSpecs() {
@@ -8,7 +7,7 @@ function ElementLayerSpecs() {
     describe( 'setContents()', () => {
 
         beforeEach( () => {
-            this.rectangle = new Rectangle( new Rect( 10, 10, 20, 20 ) );
+            this.rectangle = new Rectangle( 10, 10, 20, 20 );
         });
 
         it( 'should add the viewee provided as a child of the root viewee', () => {

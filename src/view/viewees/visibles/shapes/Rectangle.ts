@@ -5,9 +5,9 @@ export
 class Rectangle extends Shape {
     private rect: Rect;
 
-    constructor( aRect: Rect ) {
+    constructor( x: number, y: number, w: number, h: number ) {
         super();
-        this.rect = aRect;
+        this.rect = new Rect( arguments[ 0 ], arguments[ 1 ], arguments[ 2 ], arguments[ 3 ] );
     }
 
     getBoundingRect(): Rect {

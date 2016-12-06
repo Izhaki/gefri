@@ -1,7 +1,6 @@
 import { setup            } from './Helpers.spec';
 import { createLayer      } from '../Layer.spec'
 import { Rectangle        } from '../../../viewees/visibles/shapes';
-import { Rect             } from '../../../geometry';
 
 describe( 'Layers: ', () => {
 
@@ -38,8 +37,8 @@ describe( 'Layers: ', () => {
             this.L2 = createLayer();
             this.control.addLayer( this.L2 );
 
-            this.RectL1 = new Rectangle( new Rect( 10, 10, 20, 20 ) );
-            this.RectL2 = new Rectangle( new Rect( 20, 20, 20, 20 ) );
+            this.RectL1 = new Rectangle( 10, 10, 20, 20 );
+            this.RectL2 = new Rectangle( 20, 20, 20, 20 );
 
             this.L1.setContents( this.RectL1 );
             this.L2.setContents( this.RectL2 );

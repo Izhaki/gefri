@@ -38,7 +38,7 @@ function createViewees( aTable: string ) {
         switch ( aType ) {
             case 'Rectangle':
                 let iBounds = rectFromString( aParams );
-                return new Rectangle( iBounds );
+                return new Rectangle( iBounds.x, iBounds.y, iBounds.w, iBounds.h );
             case 'Transformer':
                 return new Transformer();
             default:

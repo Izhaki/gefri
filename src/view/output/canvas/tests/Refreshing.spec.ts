@@ -1,7 +1,6 @@
 import { setup            } from './Helpers.spec';
 import { Rectangle        } from '../../../viewees/visibles/shapes';
-import { Point,
-         Rect             } from '../../../geometry';
+import { Point            } from '../../../geometry';
 import { Path             } from '../../../viewees/visibles/path'
 
 describe( 'The canvas should refresh when', () => {
@@ -63,7 +62,7 @@ describe( 'The canvas should refresh when', () => {
         });
 
         it( 'is added to a parent', () => {
-            this.child = new Rectangle( new Rect( 2, 2, 6, 6 ) );
+            this.child = new Rectangle( 2, 2, 6, 6 );
             this.rectangle.addChild( this.child );
 
             expect( this.context ).toHaveRendered(`
@@ -74,7 +73,7 @@ describe( 'The canvas should refresh when', () => {
         });
 
         it( 'is removed from its parent', () => {
-            this.child = new Rectangle( new Rect( 2, 2, 6, 6 ) );
+            this.child = new Rectangle( 2, 2, 6, 6 );
             this.rectangle.addChild( this.child );
 
             this.clearRenderedLog();
