@@ -80,11 +80,6 @@ class Renderer extends Transforming {
     }
 
     private renderPath( aPath: Path ): void {
-        // aPath.forEachSegment( ( aSegment: PathSegment, aStart: Point ) => {
-        //     let iBox = aSegment.getBoundingRect( aStart );
-        //     this.drawRectangle( iBox );
-        // });
-
         this.moveTo( aPath.getStart() );
 
         aPath.forEachSegment( ( aSegment: PathSegment ) => {

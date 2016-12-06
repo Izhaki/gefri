@@ -56,6 +56,21 @@ class Path extends Visible {
         this.notifyUpdate();
     }
 
+    setControl1( aSegmentIndex: number, aPoint: Point ): void {
+        this.notifyUpdate();
+        let iSegment: CubicSegment = this.segments[ aSegmentIndex ] as CubicSegment;
+        iSegment.setControl1( aPoint );
+        this.notifyUpdate();
+    }
+
+    setControl2( aSegmentIndex: number, aPoint: Point ): void {
+        this.notifyUpdate();
+        let iSegment: CubicSegment = this.segments[ aSegmentIndex ] as CubicSegment;
+        iSegment.setControl2( aPoint );
+        this.notifyUpdate();
+    }
+
+
     getStart(): Point {
         return this.start;
     }

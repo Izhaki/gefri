@@ -99,8 +99,29 @@ class CubicSegment extends PathSegment {
         return this.control2;
     }
 
+    setControl1( aControl ) {
+        this.control1 = aControl;
+    }
+
+    setControl2( aControl ) {
+        this.control2 = aControl;
+    }
+
     getBoundingRect( aStart: Point ): Rect {
-        return new Rect( 0,0,20,20); // TODO
+        let iStart = aStart,
+            iCtrl1 = this.getControl1(),
+            iCtrl2 = this.getControl2(),
+            iEnd   = this.getEnd();
+
+        let iBezier = new Bezier(
+            iStart.x, iStart.y,
+            iCtrl1.x, iCtrl1.y,
+            iCtrl2.x, iCtrl2.y,
+            iEnd.x,   iEnd.y
+        );
+
+        return this.getBezierBoundingRect( iBezier ) ;
+
     };
 
 }

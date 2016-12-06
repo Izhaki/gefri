@@ -198,6 +198,68 @@ describe( 'The canvas should refresh when', () => {
 
         });
 
+        describe( 'with a cubic Bézier segment', () => {
+
+            beforeEach( () => {
+                this.path.cubicTo( new Point( 20, 0 ), new Point ( 40, 0 ), new Point ( 40, 20 ) );
+
+                this.layer.setContents( this.path );
+                this.clearRenderedLog();
+            });
+
+            it( 'start point changes', () => {
+
+                this.path.setStart( new Point( 10, 20 ) );
+
+                expect( this.context ).toHaveRendered(`
+                    | Erase     | 19, 4, 22, 17  |       |        |
+                    | Erase     | 9,  4, 32, 17  |       |        |
+                    | PathStart | 10, 20         |       |        |
+                    | CubicTo   | 20, 0          | 40, 0 | 40, 20 |
+                    | PathEnd   |                |       |        |
+                `);
+            });
+
+            it( 'first control point changes', () => {
+
+                this.path.setControl1( 0, new Point( 0, 0 ) );
+
+                expect( this.context ).toHaveRendered(`
+                    | Erase     | 19,   4, 22,   17  |       |        |
+                    | Erase     | 13.4, 4, 27.6, 17  |       |        |
+                    | PathStart | 20, 20             |       |        |
+                    | CubicTo   | 0, 0               | 40, 0 | 40, 20 |
+                    | PathEnd   |                    |       |        |
+                `);
+            });
+
+            it( 'second control point changes', () => {
+
+                this.path.setControl2( 0, new Point( 40, 40 ) );
+
+                expect( this.context ).toHaveRendered(`
+                    | Erase     | 19, 4,     22, 17    |        |        |
+                    | Erase     | 19, 13.23, 22, 13.55 |        |        |
+                    | PathStart | 20, 20               |        |        |
+                    | CubicTo   | 20, 0                | 40, 40 | 40, 20 |
+                    | PathEnd   |                      |        |        |
+                `);
+            });
+
+            it( 'end point changes', () => {
+                this.path.setEnd( 0, new Point( 50, 20 ) );
+
+                expect( this.context ).toHaveRendered(`
+                    | Erase     | 19, 4, 22, 17  |       |        |
+                    | Erase     | 19, 4, 32, 17  |       |        |
+                    | PathStart | 20, 20         |       |        |
+                    | CubicTo   | 20, 0          | 40, 0 | 50, 20 |
+                    | PathEnd   |                |       |        |
+                `);
+            });
+
+        });
+
     });
 
 });
