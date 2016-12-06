@@ -92,13 +92,13 @@ describe( 'Rect', () => {
 
         it( 'should return the correct point for positive dimensions', () => {
             var iRect = new Rect( 20, 30, 100, 100 );
-            expect( iRect.getLeftTop() ).toEqual( new Point( 20, 30 ) );
+            expect( iRect.getLeftTop() ).toEqualPoint( 20, 30 );
         });
 
 
         it( 'should return the correct point for negative dimensions', () => {
             var iRect = new Rect( 20, 30, -10, -20 );
-            expect( iRect.getLeftTop() ).toEqual( new Point( 10, 10 ) );
+            expect( iRect.getLeftTop() ).toEqualPoint( 10, 10 );
         });
 
     });
@@ -114,7 +114,7 @@ describe( 'Rect', () => {
 
                 iRect1.intersect( iRect2 );
 
-                expect( iRect1 ).toEqual( jasmine.objectContaining( { x: 100, y: 100, w: 50, h: 50 } ) );
+                expect( iRect1 ).toEqualRect( 100, 100, 50, 50 );
             });
 
 
@@ -124,7 +124,7 @@ describe( 'Rect', () => {
 
                 iRect1.intersect( iRect2 );
 
-                expect( iRect1 ).toEqual( jasmine.objectContaining( { x: 150, y: 120, w: 50, h: 60 } ) );
+                expect( iRect1 ).toEqualRect( 150, 120, 50, 60 );
             });
 
 
@@ -134,7 +134,7 @@ describe( 'Rect', () => {
 
                 iRect1.intersect( iRect2 );
 
-                expect( iRect1 ).toEqual( jasmine.objectContaining( { x: 120, y: 120, w: 60, h: 60 } ) );
+                expect( iRect1 ).toEqualRect( 120, 120, 60, 60 );
             });
         });
 
@@ -292,7 +292,7 @@ describe( 'Rect', () => {
         it( 'should add the offset provided to the top left corener', () => {
             var iRect = new Rect( 10, 10, 20, 20 );
             iRect.translate( new Point( 5, -5 ) );
-            expect( iRect ).toEqual( jasmine.objectContaining( { x: 15, y: 5, w: 20, h: 20 } ) );
+            expect( iRect ).toEqualRect( 15, 5, 20, 20 );
         });
 
     });
@@ -303,13 +303,13 @@ describe( 'Rect', () => {
         it( 'should expand the rect by the given point when width and height are positive', () => {
             var iRect = new Rect( 10, 10, 20, 20 );
             iRect.expand( 5 );
-            expect( iRect ).toEqual( jasmine.objectContaining( { x: 5, y: 5, w: 30, h: 30 } ) );
+            expect( iRect ).toEqualRect( 5, 5, 30, 30 );
         });
 
         it( 'should expand the rect by the given point when width and height are negative', () => {
             var iRect = new Rect( 20, 20, -10, -10 );
             iRect.expand( 5 );
-            expect( iRect ).toEqual( jasmine.objectContaining( { x: 25, y: 25, w: -20, h: -20 } ) );
+            expect( iRect ).toEqualRect( 25, 25, -20, -20 );
         });
 
     });
@@ -319,13 +319,13 @@ describe( 'Rect', () => {
         it( 'should contract the rect by the given point when width and height are positive', () => {
             var iRect = new Rect( 10, 10, 20, 20 );
             iRect.contract( 1 );
-            expect( iRect ).toEqual( jasmine.objectContaining( { x: 11, y: 11, w: 18, h: 18 } ) );
+            expect( iRect ).toEqualRect( 11, 11, 18, 18 );
         });
 
         it( 'should contract the rect by the given point when width and height are negative', () => {
             var iRect = new Rect( 20, 20, -10, -10 );
             iRect.contract( 1 );
-            expect( iRect ).toEqual( jasmine.objectContaining( { x: 19, y: 19, w: -8, h: -8 } ) );
+            expect( iRect ).toEqualRect( 19, 19, -8, -8 );
         });
 
     });
@@ -345,7 +345,5 @@ describe( 'Rect', () => {
         });
 
     });
-
-
 
 });
