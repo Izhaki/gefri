@@ -14,21 +14,21 @@ var iCanvasLayer = new CanvasLayer();
 iControl.addLayer( iCanvasLayer );
 
 var iTransformer = new Transformer();
-var iFace        = new Rectangle( new Rect( 200, 200, 100, 100 ) );
-var iEyeL        = new Rectangle( new Rect( 10, 10, 20, 20 ) );
-var iPupilL      = new Rectangle( new Rect( 5, 5, 10, 10 ) );
-var iEyeR        = new Rectangle( new Rect( 70, 10, 20, 20 ) );
-var iPupilR      = new Rectangle( new Rect( 5, 5, 10, 10 ) );
-var iMouth       = new Rectangle( new Rect( 45, 70, 10, 10 ) );
+var iFace        = new Rectangle( 200, 200, 100, 100 );
+var iEyeL        = new Rectangle( 10, 10, 20, 20 );
+var iPupilL      = new Rectangle( 5, 5, 10, 10 );
+var iEyeR        = new Rectangle( 70, 10, 20, 20 );
+var iPupilR      = new Rectangle( 5, 5, 10, 10 );
+var iMouth       = new Rectangle( 45, 70, 10, 10 );
 
 iEyeR.addChildren( iPupilR );
 iEyeL.addChildren( iPupilL );
 iFace.addChildren( iEyeL, iEyeR );
 iTransformer.addChildren( iFace );
 
-// var iGrandparent = new Rectangle( new Rect( 10, 10, 80, 80 ) );
-// var iParent      = new Rectangle( new Rect( 10, 10, 80, 60 ) );
-// var iChild       = new Rectangle( new Rect( 10, 10, 80, 80 ) );
+// var iGrandparent = new Rectangle( 10, 10, 80, 80 );
+// var iParent      = new Rectangle( 10, 10, 80, 60 );
+// var iChild       = new Rectangle( 10, 10, 80, 80 );
 
 // iGrandparent.addChild( iParent );
 // iParent.addChild( iChild );
@@ -55,7 +55,7 @@ iCanvasLayer.setContents( iTransformer );
 
 /*
 var iOverlay = new CanvasLayer();
-var iMask    = new Rectangle( new Rect( 10, 10, 100, 100 ) );
+var iMask    = new Rectangle( 10, 10, 100, 100 );
 iControl.addLayer( iOverlay );
 iOverlay.setContents( iMask );
 */
