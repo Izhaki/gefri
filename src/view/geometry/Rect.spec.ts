@@ -21,6 +21,14 @@ describe( 'Rect', () => {
 
     });
 
+    describe( 'constructor()', () => {
+
+        it( 'should throw if the provided argument list is invalid', () => {
+            let createRect = () => new Rect( {} as Point, {} as Point );
+            expect( createRect ).toThrow();
+        });
+
+    });
 
     describe( 'clone()', () => {
 

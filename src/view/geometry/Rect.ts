@@ -23,11 +23,13 @@ class Rect {
             let iLeftTop     = arguments[ 0 ],
                 iRightBottom = arguments[ 1 ];
             [ this.x, this.y, this.w, this.h ] = [ iLeftTop.x, iLeftTop.y, iRightBottom.x - iLeftTop.x, iRightBottom.y - iLeftTop.y ]
+        } else {
+            throw new Error( "Invalid arguments supplied to Rect constructor." )
         }
 
         function isXYWH( args ) {
-            return ( args.length == 4          ) &&
-                   (typeof args[0] === 'number');
+            return ( args.length == 4            ) &&
+                   ( typeof args[0] === 'number' );
         }
 
         function isTwoPoints( args ) {
