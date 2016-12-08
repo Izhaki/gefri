@@ -16,18 +16,29 @@ class Contextual extends Clipped {
         this.context = aContext;
     }
 
-    protected drawRectangle( aRect: Rect ): void {
+    protected fillRect( aRect: Rect ): void {
         let context = this.context;
         context.beginPath();
         context.rect( aRect.x, aRect.y, aRect.w, aRect.h );
         context.fill();
+        context.closePath();
+    }
+
+    protected strokeRect( aRect: Rect ): void {
+        let context = this.context;
+        context.beginPath();
+        context.rect( aRect.x, aRect.y, aRect.w, aRect.h );
         context.stroke();
         context.closePath();
     }
 
-    protected moveTo( aPoint: Point ): void {
+    protected startPath( aPoint: Point ): void {
         this.context.beginPath();
         this.context.moveTo( aPoint.x, aPoint.y )
+    }
+
+    protected endPath(): void {
+        this.context.stroke();
     }
 
     protected lineTo( aPoint: Point ): void {
@@ -42,10 +53,6 @@ class Contextual extends Clipped {
         this.context.bezierCurveTo( aControl1.x, aControl1.y, aControl2.x, aControl2.y, aPoint.x, aPoint.y )
     }
 
-    protected strokePath(): void {
-        this.context.stroke();
-    }
-
     protected erase( aRect: Rect ): void {
         let iExpandedRect = aRect.clone();
         iExpandedRect.expand( cAntialiasingExtraMargins );
@@ -56,16 +63,13 @@ class Contextual extends Clipped {
     protected intersectClipAreaWith( aRect: Rect ): void {
         super.intersectClipAreaWith( aRect );
 
-        var iRect = aRect.clone();
-        iRect.expand( cAntialiasingExtraMargins );
-
         this.context.beginPath();
 
         this.context.rect(
-            iRect.x,
-            iRect.y,
-            iRect.w,
-            iRect.h
+            aRect.x,
+            aRect.y,
+            aRect.w,
+            aRect.h
         );
 
         this.context.clip();

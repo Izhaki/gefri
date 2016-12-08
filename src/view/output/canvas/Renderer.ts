@@ -26,16 +26,25 @@ class Renderer extends Transforming {
 
     render( aViewee: Viewee ): void {
         if ( this.needsRendering( aViewee ) ) {
-            this.routeToRenderMethod( aViewee );
+            this.fill( aViewee );
             this.renderChildren( aViewee );
+            this.stroke( aViewee );
         }
     }
 
-    private routeToRenderMethod( aObject: any ) {
+    private routeToMethod( aPrefix: string, aObject: any ): void {
         let iObjectClass = getClassName( aObject ),
-            iMethodName  = 'render' + iObjectClass;
+            iMethodName  = aPrefix + iObjectClass;
 
         this[ iMethodName ]( aObject );
+    }
+
+    private fill( aObject: any ): void {
+        this.routeToMethod( 'fill', aObject );
+    }
+
+    private stroke( aObject: any ): void {
+        this.routeToMethod( 'stroke', aObject );
     }
 
     private eraseDamagedRects( aRects: Rects ): void {
@@ -75,36 +84,43 @@ class Renderer extends Transforming {
         this.popState();
     }
 
-    private renderRectangle( aRactangle: Rectangle ): void {
-        this.drawRectangle( aRactangle.getRect() );
+    private fillRectangle( aRactangle: Rectangle ): void {
+        this.context.fillStyle = aRactangle.fillColour;
+        this.fillRect( aRactangle.getRect() );
     }
 
-    private renderPath( aPath: Path ): void {
-        this.moveTo( aPath.getStart() );
+    private strokeRectangle( aRactangle: Rectangle ): void {
+        this.strokeRect( aRactangle.getRect() );
+    }
+
+    private fillPath( aPath: Path ): void {}
+
+    private strokePath( aPath: Path ): void {
+        this.startPath( aPath.getStart() );
 
         aPath.forEachSegment( ( aSegment: PathSegment ) => {
-            this.routeToRenderMethod( aSegment );
+            this.stroke( aSegment );
         });
 
-        this.strokePath();
+        this.endPath();
     }
 
-    private renderLineSegment( aSegment: LineSegment ) {
+    private strokeLineSegment( aSegment: LineSegment ) {
         this.lineTo( aSegment.getEnd() );
     }
 
-    private renderQuadSegment( aSegment: QuadSegment ) {
+    private strokeQuadSegment( aSegment: QuadSegment ) {
         this.quadTo( aSegment.getControl(), aSegment.getEnd() );
     }
 
-    private renderCubicSegment( aSegment: CubicSegment ) {
+    private strokeCubicSegment( aSegment: CubicSegment ) {
         this.cubicTo( aSegment.getControl1(), aSegment.getControl2(), aSegment.getEnd() );
     }
 
-    private renderTransformer( aTransformer: Transformer ): void {
-    }
+    private fillTransformer  ( aTransformer: Transformer ): void {}
+    private strokeTransformer( aTransformer: Transformer ): void {}
 
-    private renderRoot( aRoot: Root ): void {
-    }
+    private fillRoot  ( aRoot: Root ): void {}
+    private strokeRoot( aRoot: Root ): void {}
 
 }

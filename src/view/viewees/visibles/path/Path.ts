@@ -96,6 +96,7 @@ class Path extends Visible {
         return Rect.unionRects( iSegmentBoundingRects );
     }
 
+    /* istanbul ignore next */
     getTransformations(): Transformations {
         let iBounds: Rect = this.getBoundingRect();
 

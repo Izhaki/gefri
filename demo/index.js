@@ -26,13 +26,17 @@ iEyeL.addChildren( iPupilL );
 iFace.addChildren( iEyeL, iEyeR );
 iTransformer.addChildren( iFace );
 
-// var iGrandparent = new Rectangle( 10, 10, 80, 80 );
-// var iParent      = new Rectangle( 10, 10, 80, 60 );
-// var iChild       = new Rectangle( 10, 10, 80, 80 );
+var iGrandparent = new Rectangle( 10, 10, 80, 80 );
+var iParent      = new Rectangle( 10, 10, 80, 60 );
+var iChild       = new Rectangle( 10, 10, 80, 80 );
 
-// iGrandparent.addChild( iParent );
-// iParent.addChild( iChild );
-// iTransformer.addChildren( iGrandparent );
+iGrandparent.fillColour = '#FF0000';
+iParent.fillColour = '#00FF00';
+iChild.fillColour = '#0000FF';
+
+iGrandparent.addChild( iParent );
+iParent.addChild( iChild );
+iTransformer.addChildren( iGrandparent );
 
 // iTransformer.setTranslate( -100, -100 );
 // iTransformer.setScale( 0.5, 0.5 );

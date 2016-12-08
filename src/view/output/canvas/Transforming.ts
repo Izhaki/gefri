@@ -33,16 +33,23 @@ class Transforming extends Contextual {
         super.intersectClipAreaWith( this.preTransformRect( aRect ) );
     }
 
-    protected drawRectangle( aRect: Rect ): void {
+    protected fillRect( aRect: Rect ): void {
         // Zoom has already been applied on the canvas (in transform above),
         // so we only need to apply the post-matrix here.
         let iRect = this.preTransformRect( aRect );
-        super.drawRectangle( iRect );
+        super.fillRect( iRect );
     }
 
-    protected moveTo( aPoint: Point ): void {
+    protected strokeRect( aRect: Rect ): void {
+        // Zoom has already been applied on the canvas (in transform above),
+        // so we only need to apply the post-matrix here.
+        let iRect = this.preTransformRect( aRect );
+        super.strokeRect( iRect );
+    }
+
+    protected startPath( aPoint: Point ): void {
         let iPoint = this.preTransformPoint( aPoint );
-        super.moveTo( iPoint );
+        super.startPath( iPoint );
     }
 
     protected lineTo( aPoint: Point ): void {

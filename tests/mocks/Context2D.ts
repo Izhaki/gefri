@@ -176,7 +176,10 @@ class Context2DMock implements CanvasRenderingContext2D {
         if ( this.hasRendered() ) {
             var lastRender = this.getLastRendered();
 
-            if ( lastRender.type !== 'Rectangle' ) {
+            if ( lastRender.type == 'Rectangle' ) {
+                // Since we both fill and stroke rectangles, we only want to register the stroke.
+                this.rendered.pop();
+            } else {
                 this.rendered.push({
                     type: 'PathEnd'
                 })
@@ -193,12 +196,7 @@ class Context2DMock implements CanvasRenderingContext2D {
             throw new Error( 'clip() was called but not with rect' )
         }
 
-        var iRect = lastRender.bounds.clone();
-
-        // Undo antialiasing
-        var dRect = this.matrix.detransformRect( iRect );
-        dRect.contract( 1 );
-        iRect = this.matrix.transformRect( dRect );
+        var iRect = lastRender.bounds;
 
         this.log( 'clip()', 'before intersection:', this.clipArea, iRect );
 
