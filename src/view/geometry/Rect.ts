@@ -38,6 +38,25 @@ class Rect {
 
     }
 
+    static unionRects( aRects: Rects ) : Rect {
+        let iLefts   = aRects.map( ( aRect ) => aRect.getLeft()   ),
+            iRights  = aRects.map( ( aRect ) => aRect.getRight()  ),
+            iTops    = aRects.map( ( aRect ) => aRect.getTop()    ),
+            iBottoms = aRects.map( ( aRect ) => aRect.getBottom() );
+
+        let iLeft    = Math.min( ...iLefts   ),
+            iRight   = Math.max( ...iRights  ),
+            iTop     = Math.min( ...iTops    ),
+            iBottom = Math.max( ...iBottoms );
+
+        return new Rect (
+            iLeft,
+            iTop,
+            iRight  - iLeft,
+            iBottom - iTop
+        );
+    }
+
     clone(): Rect {
         return new Rect( this.x, this.y, this.w, this.h );
     }
@@ -76,6 +95,13 @@ class Rect {
         this.y = iTop;
         this.w = iRight - iLeft;
         this.h = iBottom - iTop;
+    }
+
+    union( aRect: Rect ): void {
+        this.x = Math.min( this.getLeft(),   aRect.getLeft()   );
+        this.y = Math.min( this.getTop(),    aRect.getTop()    );
+        this.w = Math.max( this.getRight(),  aRect.getRight()  ) - this.x;
+        this.h = Math.max( this.getBottom(), aRect.getBottom() ) - this.y;
     }
 
     isOverlappingWith( aRect: Rect ): boolean {

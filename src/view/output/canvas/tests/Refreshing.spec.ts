@@ -126,11 +126,11 @@ describe( 'The canvas should refresh when', () => {
                 this.path.setStart( new Point( 30, 20 ) );
 
                 expect( this.context ).toHaveRendered(`
-                    | Erase     | 21, 19, -12, 12 |
-                    | Erase     | 31, 19, -22, 12 |
-                    | PathStart | 30, 20          |
-                    | LineTo    | 10, 30          |
-                    | PathEnd   |                 |
+                    | Erase     | 9, 19, 12, 12 |
+                    | Erase     | 9, 19, 22, 12 |
+                    | PathStart | 30, 20        |
+                    | LineTo    | 10, 30        |
+                    | PathEnd   |               |
                 `);
             });
 
@@ -138,11 +138,11 @@ describe( 'The canvas should refresh when', () => {
                 this.path.setEnd( 0, new Point( 40, 40 ) );
 
                 expect( this.context ).toHaveRendered(`
-                    | Erase     | 21, 19, -12, 12 |
-                    | Erase     | 19, 19,  22, 22 |
-                    | PathStart | 20, 20          |
-                    | LineTo    | 40, 40          |
-                    | PathEnd   |                 |
+                    | Erase     | 9,  19, 12, 12 |
+                    | Erase     | 19, 19, 22, 22 |
+                    | PathStart | 20, 20         |
+                    | LineTo    | 40, 40         |
+                    | PathEnd   |                |
                 `);
             });
 
@@ -256,6 +256,29 @@ describe( 'The canvas should refresh when', () => {
                     | PathEnd   |                |       |        |
                 `);
             });
+
+        });
+
+        it( 'with multiple segments changes', () => {
+            this.path
+                .lineTo( new Point ( 30, 20 ) )
+                .quadTo( new Point( 50, 30 ), new Point ( 30, 40 ) )
+                .cubicTo( new Point( 20, 50 ), new Point ( 30, 50 ), new Point ( 20, 40 ) );
+
+            this.layer.setContents( this.path );
+            this.clearRenderedLog();
+
+            this.path.setStart( new Point( 0, 20 ) );
+
+            expect( this.context ).toHaveRendered(`
+                | Erase     | 19, 19, 22, 29.5  |        |        |
+                | Erase     | -1, 19, 42, 29.5  |        |        |
+                | PathStart | 0, 20             |        |        |
+                | LineTo    | 30, 20            |        |        |
+                | QuadTo    | 50, 30            | 30, 40 |        |
+                | CubicTo   | 20, 50            | 30, 50 | 20, 40 |
+                | PathEnd   |                   |        |        |
+            `);
 
         });
 

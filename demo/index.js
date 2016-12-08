@@ -51,6 +51,13 @@ var iCubic = new Path( new Point( 300, 20 ) );
 iCubic.cubicTo( new Point( 320, 30 ), new Point( 280, 50 ), new Point( 300, 60 ) );
 iTransformer.addChildren( iCubic );
 
+// var iPath = new Path( new Point( 0, 20 ) );
+// iPath
+//     .lineTo( new Point ( 30, 20 ) )
+//     .quadTo( new Point( 50, 30 ), new Point ( 30, 40 ) )
+//     .cubicTo( new Point( 20, 50 ), new Point ( 30, 50 ), new Point ( 20, 40 ) );
+// iTransformer.addChildren( iPath );
+
 iCanvasLayer.setContents( iTransformer );
 
 /*

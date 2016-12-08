@@ -6,6 +6,7 @@ import { PathSegment,
          CubicSegment     } from './PathSegments'
 import { Point,
          Rect,
+         Rects,
          cNoScale,        } from './../../../geometry';
 import { Transformations  } from './../../../output';
 
@@ -85,14 +86,14 @@ class Path extends Visible {
 
     // TODO
     getBoundingRect(): Rect {
-        let iBoundingRect: Rect = new Rect( 0, 0, 0, 0 );
+        let iSegmentBoundingRects: Rects = [];
 
-        this.forEachSegment( ( aSegment ) => {
-            let iSegmentBoundingRect: Rect = aSegment.getBoundingRect( this.getStart() );
-            iBoundingRect = iSegmentBoundingRect;
+        this.forEachSegment( ( aSegment: PathSegment , aSegmentStart: Point ) => {
+            let iSegmentBoundingRect: Rect = aSegment.getBoundingRect( aSegmentStart );
+            iSegmentBoundingRects.push( iSegmentBoundingRect );
         });
 
-        return iBoundingRect;
+        return Rect.unionRects( iSegmentBoundingRects );
     }
 
     getTransformations(): Transformations {
