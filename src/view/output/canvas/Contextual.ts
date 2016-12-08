@@ -17,19 +17,11 @@ class Contextual extends Clipped {
     }
 
     protected fillRect( aRect: Rect ): void {
-        let context = this.context;
-        context.beginPath();
-        context.rect( aRect.x, aRect.y, aRect.w, aRect.h );
-        context.fill();
-        context.closePath();
+        this.context.fillRect( aRect.x, aRect.y, aRect.w, aRect.h );
     }
 
     protected strokeRect( aRect: Rect ): void {
-        let context = this.context;
-        context.beginPath();
-        context.rect( aRect.x, aRect.y, aRect.w, aRect.h );
-        context.stroke();
-        context.closePath();
+        this.context.strokeRect( aRect.x, aRect.y, aRect.w, aRect.h );
     }
 
     protected startPath( aPoint: Point ): void {

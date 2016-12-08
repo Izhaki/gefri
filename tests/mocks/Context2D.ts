@@ -48,6 +48,15 @@ class Context2DMock implements CanvasRenderingContext2D {
         return this.matrix.transformPoint( iPoint );
     }
 
+    private transformRect( x, y, width, height ) {
+        var iRect = new Rect( x, y, width, height );
+        this.log( 'rect()', 'was given', iRect )
+        var iTransformedRect = this.matrix.transformRect( iRect );
+        this.log( 'The rect', iRect, 'was transformed to', iTransformedRect );
+        return iTransformedRect;
+    }
+
+
     // Drawing rectangles
 
     public clearRect( x: number, y: number, w: number, h: number ): void {
@@ -57,8 +66,22 @@ class Context2DMock implements CanvasRenderingContext2D {
             bounds: iRect
         })
     }
-    public fillRect( x: number, y: number, w: number, h: number ): void {}
-    public strokeRect( x: number, y: number, w: number, h: number ): void {}
+    public fillRect( x: number, y: number, w: number, h: number ): void {
+        var iRect = this.transformRect( x, y, w, h );
+
+        if ( this.clipArea ) {
+            iRect.intersect( this.clipArea );
+            this.log( 'closePath()', 'intersected last rect with clip area', iRect )
+        }
+
+        this.rendered.push({
+            type:   'Rectangle',
+            bounds: iRect
+        })
+    }
+    public strokeRect( x: number, y: number, w: number, h: number ): void {
+        // Since we both fill and stroke rect, we don't log this one.
+    }
 
     // Drawing text
 
@@ -104,21 +127,7 @@ class Context2DMock implements CanvasRenderingContext2D {
     // Paths
 
     public beginPath(): void {}
-    public closePath() {
-
-        // closePath() means we have drawn the rect (rather than use it for clipping),
-        // so intersect it with the clip area if exists
-        if ( this.clipArea ) {
-            var lastRender = this.getLastRendered();
-
-            if ( lastRender.type !== 'Rectangle' ) {
-                throw new Error( 'closePath() was called but not with rect' )
-            }
-
-            lastRender.bounds.intersect( this.clipArea );
-            this.log( 'closePath()', 'intersected last rect with clip area', lastRender.bounds )
-        }
-    }
+    public closePath() {}
 
     public moveTo( x, y ) {
         this.rendered.push({
@@ -155,16 +164,10 @@ class Context2DMock implements CanvasRenderingContext2D {
     public arcTo() {}
     public ellipse() {}
     public rect( x, y, width, height ) {
-
-        var iRect = new Rect( x, y, width, height );
-        this.log( 'rect()', 'was given', iRect )
-        var iTransformedRect = this.matrix.transformRect( iRect );
-        this.log( 'rect()', 'transformed to', iTransformedRect )
-
-        this.log( 'rect()', 'pushed to rendered', iTransformedRect )
+        var iRect = this.transformRect( x, y, width, height );
         this.rendered.push({
-            type: 'Rectangle',
-            bounds: iTransformedRect
+            type:   'Rect',
+            bounds: iRect
         })
     }
 
@@ -172,27 +175,17 @@ class Context2DMock implements CanvasRenderingContext2D {
 
     public fill( fillRule?: string ): void {}
     public stroke(): void {
-
-        if ( this.hasRendered() ) {
-            var lastRender = this.getLastRendered();
-
-            if ( lastRender.type == 'Rectangle' ) {
-                // Since we both fill and stroke rectangles, we only want to register the stroke.
-                this.rendered.pop();
-            } else {
-                this.rendered.push({
-                    type: 'PathEnd'
-                })
-            }
-        }
-
+        this.rendered.push({
+            type: 'PathEnd'
+        })
     }
+
     public drawFocusIfNeeded() {}
     public scrollPathIntoView() {}
     public clip( fillRule?: string ): void {
         var lastRender = this.rendered.pop();
 
-        if ( lastRender.type !== 'Rectangle' ) {
+        if ( lastRender.type !== 'Rect' ) {
             throw new Error( 'clip() was called but not with rect' )
         }
 
@@ -207,8 +200,8 @@ class Context2DMock implements CanvasRenderingContext2D {
         }
 
         this.log( 'clip()', 'after intersection:', this.clipArea );
-
     }
+
     public isPointInPath( x: number, y: number, fillRule?: string ): boolean { return true }
     public isPointInStroke() {}
 
