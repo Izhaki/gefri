@@ -1,6 +1,7 @@
-import { setup            } from './Helpers.spec';
-import { createLayer      } from '../Layer.spec'
-import { Rectangle        } from '../../../viewees/visibles/shapes';
+import { setup,
+         disableAntialiasingEraseCompensation  } from './Helpers.spec';
+import { createLayer } from '../Layer.spec'
+import { Rectangle   } from '../../../viewees/visibles/shapes';
 
 describe( 'Layers: ', () => {
 
@@ -11,6 +12,7 @@ describe( 'Layers: ', () => {
         expect( setLayerContents ).toThrow();
     });
 
+    disableAntialiasingEraseCompensation.call( this );
     setup.call( this );
 
     describe( 'When adding a canvas layer to the control', () => {
@@ -50,7 +52,7 @@ describe( 'Layers: ', () => {
         it( 'only the layer on which changes happen should update', () => {
             this.RectL1.hide();
             expect( this.L1.context ).toHaveRendered(`
-                | Erase | 9, 9, 22, 22 |
+                | Erase | 10, 10, 20, 20 |
             `);
             expect( this.L2.context ).toHaveRendered(``);
         });

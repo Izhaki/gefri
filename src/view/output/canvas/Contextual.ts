@@ -3,17 +3,17 @@ import { Point,
          Rect,
          Translation,
          Scale        } from '../../geometry';
-
-export
-const cAntialiasingExtraMargins = 1
+import { inject       } from '../../../di';
 
 export
 class Contextual extends Clipped {
-    protected context:  CanvasRenderingContext2D;
+    private   antialiasingExtraMargins: number;
+    protected context:                  CanvasRenderingContext2D;
 
     constructor( aContext: CanvasRenderingContext2D ) {
         super();
         this.context = aContext;
+        this.antialiasingExtraMargins = inject( 'antialiasingExtraMargins' );
     }
 
     protected fillRect( aRect: Rect ): void {
@@ -47,7 +47,7 @@ class Contextual extends Clipped {
 
     protected erase( aRect: Rect ): void {
         let iExpandedRect = aRect.clone();
-        iExpandedRect.expand( cAntialiasingExtraMargins );
+        iExpandedRect.expand( this.antialiasingExtraMargins );
 
         this.context.clearRect( iExpandedRect.x, iExpandedRect.y, iExpandedRect.w, iExpandedRect.h );
     };

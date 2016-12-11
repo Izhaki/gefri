@@ -1,7 +1,18 @@
-import { createControl    } from '../../../Control.spec'
-import { createLayer      } from '../Layer.spec'
-import { triggerNextFrame } from '../../../onNextFrame'
+import { createControl     } from '../../../Control.spec'
+import { createLayer       } from '../Layer.spec'
+import { triggerNextFrame  } from '../../../onNextFrame'
 import * as helpers from '../../../../../tests/unit/helpers';
+import { overrideProviders } from '../../../../di';
+
+export
+function disableAntialiasingEraseCompensation(): void {
+
+    beforeEach( () => {
+        overrideProviders([{
+            provide: 'antialiasingExtraMargins', useValue: 0
+        }]);
+    });
+}
 
 export
 function setup(): void {

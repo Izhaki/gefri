@@ -7,6 +7,8 @@ const cAnimationFrame = Rx.Scheduler.animationFrame;
 // Defualt providers for production
 var injector = ReflectiveInjector.resolveAndCreate([{
     provide: 'waitForFrame', useValue: cAnimationFrame
+}, {
+    provide: 'antialiasingExtraMargins', useValue: 0.5
 }]);
 
 // A way to override the default providers.
