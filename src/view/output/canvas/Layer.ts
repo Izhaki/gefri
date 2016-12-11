@@ -11,7 +11,6 @@ class Layer extends ElementLayer {
     private context:      CanvasRenderingContext2D;
     private renderer:     Renderer;
     private updater:      Updater;
-    private damagedRects: Rects = [];
 
     // Called after the layer element has been added to the DOM, which is
     // required in order to retrive the actual context.
@@ -31,11 +30,24 @@ class Layer extends ElementLayer {
         this.queueRefresh();
     }
 
+    protected removeCurrentContents() {
+        super.removeCurrentContents();
+        this.clearCanvas();
+    }
+
+    private clearCanvas() {
+        this.refreshRenderer( [ this.getBoundingRect() ] );
+    }
+
+    private refreshRenderer( aDamagedRect: Rects ) {
+        this.renderer.refresh( this.root, aDamagedRect );
+    }
+
     // As a callback, refresh is an instance method so we always get the same reference for it per instance
     // (required for correct operation of onNextFrame).
     private refresh = () => {
         let damagedRects = this.updater.getDamagedRects();
-        this.renderer.refresh( this.root, damagedRects );
+        this.refreshRenderer( damagedRects );
     }
 
     queueRefresh(): void {
@@ -58,4 +70,5 @@ class Layer extends ElementLayer {
         context.strokeStyle = 'black';
         return context;
     }
+
 }

@@ -34,7 +34,9 @@ abstract class ElementLayer {
             throw new Error( 'Setting contents of cavnas layer before it has been added to the DOM' );
         }
 
-        this.removeCurrentContents();
+        if ( this.contents !== null ) {
+            this.removeCurrentContents();
+        }
         this.contents = aViewee;
         this.root.addChild( aViewee );
         this.root.attach( this.updatesStream );
@@ -50,10 +52,9 @@ abstract class ElementLayer {
 
     protected abstract createElement(): HTMLElement;
 
-    private removeCurrentContents() {
-        if ( this.contents !== null ) {
-            this.root.removeChild( this.contents );
-        }
+    protected removeCurrentContents() {
+        this.root.detach()
+        this.root.removeChild( this.contents );
     }
 
 }

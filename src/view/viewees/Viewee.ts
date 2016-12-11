@@ -7,7 +7,7 @@ import { Rect,
 
 export
 abstract class Viewee extends Composite< Viewee > {
-    static    updatesStream: Stream = new Stream();
+    static    updatesStream: Stream = new Stream(); // A global static (null) updates stream
     protected updatesStream: Stream = Viewee.updatesStream;
 
     protected clipping: boolean = true;
@@ -29,6 +29,14 @@ abstract class Viewee extends Composite< Viewee > {
 
         this.forEachChild( aChild => {
             aChild.attach( aStream );
+        });
+    }
+
+    detach() {
+        this.updatesStream = Viewee.updatesStream;
+
+        this.forEachChild( aChild => {
+            aChild.detach();
         });
     }
 
