@@ -4,16 +4,14 @@ import { Row,
          getRows,
          removeWhitespace,
          pointFromString,
-         rectFromString    } from './helpers';
+         rectFromString,
+         getPointString,
+         getRectString,
+         renderedToString  } from './helpers';
 import { triggerNextFrame  } from '../../src/view/onNextFrame'
 
 function round2decimals( aNumber ) {
     return Math.round( aNumber * 100 ) / 100
-}
-
-
-function getPointString( aPoint ): string {
-    return `( ${ aPoint.x }, ${ aPoint.y } )`;
 }
 
 function isPointMatch( a, b ): boolean {
@@ -36,10 +34,6 @@ function assertPointMatch( aActual, aExpected ): void {
     if ( isPointMismatch( aActual, aExpected ) ) {
         throw new Error( getPointMismatchMessage( aActual, aExpected ) )
     }
-}
-
-function getRectString( aBounds ): string {
-    return `( ${ aBounds.x }, ${ aBounds.y }, ${ aBounds.w }, ${ aBounds.h } )`;
 }
 
 function isRectMatch( a, b ): boolean {
@@ -157,7 +151,7 @@ beforeEach( () => {
                     throw new Error(
                         `Expected and actual render operations differ ( ${ aExpected.length } vs ${ aActual.length } ) \n` +
                         `Expected: ` +  aExpected + '\n' +
-                        `Actual: `   +  JSON.stringify( aActual )
+                        `Actual: `   + '\n' + renderedToString( aActual )
                     );
                 }
             }

@@ -57,10 +57,16 @@ class Renderer extends Transforming {
         emptyArray( aRects );
     }
 
+    private isWithinClipArea( aViewee: Viewee ): boolean {
+        let iBounds = aViewee.getBoundingRect();
+        return this.isRectWithinClipArea( iBounds );
+    }
+
     private needsRendering( aViewee: Viewee ): boolean {
         if ( aViewee instanceof Visible ) {
             let isVisble = (<Visible>aViewee).isVisible();
-            return isVisble;
+            let isWithinClipArea = this.isWithinClipArea( aViewee );
+            return isVisble && isWithinClipArea;
         } else {
             return true;
         }

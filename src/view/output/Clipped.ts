@@ -9,19 +9,18 @@ abstract class Clipped extends Transformable {
     isRectWithinClipArea( aRect: Rect ): boolean {
         // Clip area is in absolute coordinates
         // So we convert the rect to absolute ones.
-        var iAbsoluteRect = this.toAbsoluteRect( aRect );
-        if ( this.clipArea ) {
-            return this.clipArea.isOverlappingWith( iAbsoluteRect );
-        } else {
-            return true;
-        }
+        let iAbsoluteRect = this.toAbsoluteRect( aRect );
+        return this.clipArea.isOverlappingWith( iAbsoluteRect );
     }
 
     protected intersectClipAreaWith( aRect: Rect ): void {
+        // preTransform was already applied by Transforming, so to get the
+        // absolute rect we only need to apply the post transforms
+        let iAbsoluteRect = this.postTransformRect( aRect );
         if ( this.clipArea ) {
-            this.clipArea.intersect( aRect );
+            this.clipArea.intersect( iAbsoluteRect );
         } else {
-            this.clipArea = aRect;
+            this.clipArea = iAbsoluteRect;
         }
     }
 

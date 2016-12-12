@@ -111,3 +111,47 @@ function pointFromString( aString: string ): Point {
     let [ x, y ] = iArguments.map( parseFloat );
     return new Point( x, y );
 }
+
+export
+function getPointString( aPoint ): string {
+    return `( ${ aPoint.x }, ${ aPoint.y } )`;
+}
+
+export
+function getRectString( aBounds ): string {
+    return `( ${ aBounds.x }, ${ aBounds.y }, ${ aBounds.w }, ${ aBounds.h } )`;
+}
+
+export
+function renderedToString( aRendered: any[] ): string {
+    let iLines: string[];
+    iLines = aRendered.map( ( iRendered ) => {
+        let iType   = iRendered.type,
+            iParams: string;
+
+        switch ( iType ) {
+            case 'Rectangle':
+            case 'Erase':
+                iParams = getRectString( iRendered.bounds );
+                break;
+            case 'PathStart':
+            case 'LineTo':
+                iParams = getPointString( iRendered.point );
+                break;
+            case 'QuadTo':
+                iParams = [ getPointString( iRendered.control ), getPointString( iRendered.point ) ].join( ' | ' );
+                break;
+            case 'CubicTo':
+                iParams = [ getPointString( iRendered.control1 ), getPointString( iRendered.control2 ), getPointString( iRendered.point ) ].join( ' | ' );
+                break;
+            case 'PathEnd':
+                // PathEnd has no params
+                break;
+            default:
+                throw new Error( "Could not find the requested render action" )
+        }
+
+        return iRendered.type + ' '  + iParams;
+    });
+    return iLines.join( '\n' );
+}

@@ -4,7 +4,7 @@ import { Rectangle } from '../../../viewees/visibles/shapes';
 import { Point     } from '../../../geometry';
 import { Path      } from '../../../viewees/visibles/path'
 
-describe( 'The canvas should refresh when', () => {
+describe( 'Refreshing: The canvas should refresh when', () => {
 
     disableAntialiasingEraseCompensation.call( this );
     setup.call( this );
