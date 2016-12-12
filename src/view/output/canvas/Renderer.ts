@@ -1,4 +1,4 @@
-import { Transforming  } from './';
+import { Contextual    } from './';
 import { Point,
          Rects         } from '../../geometry';
 import { getClassName,
@@ -16,7 +16,7 @@ import { Transformer,
          Root            } from '../../viewees/invisibles';
 
 export
-class Renderer extends Transforming {
+class Renderer extends Contextual {
 
     refresh( aViewee: Viewee, damagedRects: Rects ): void {
         this.eraseDamagedRects( damagedRects );
