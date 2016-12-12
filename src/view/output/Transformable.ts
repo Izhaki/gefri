@@ -25,12 +25,6 @@ class Transformable extends Stateful {
         this.postMatrix = new TransformMatrix();
     }
 
-    protected transform( aTransformations: Transformations ): void {
-        this.translate( aTransformations.translate );
-        this.zoom( aTransformations.zoom );
-        this.scale( aTransformations.scale );
-    }
-
     protected translate( aTranslation: Translation ): void {
         // Translation goes in the preMatrix to make calculation easier - had
         // it been assigned to the postMatrix, we'd need some extra maths to
@@ -70,7 +64,10 @@ class Transformable extends Stateful {
         let iTransformations: Transformations;
 
         iTransformations = aViewee.getTransformations();
-        this.transform( iTransformations );
+
+        this.translate( iTransformations.translate );
+        this.zoom( iTransformations.zoom );
+        this.scale( iTransformations.scale );
     }
 
     protected getState() : any {

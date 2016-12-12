@@ -20,13 +20,13 @@ class Contextual extends Clipped {
     // Called via applyTransformations. To achieve zoom, we simply scale the
     // canvas context. We practically apply the postMatrix here, but on the
     // canvas rather than the shape itself.
-    // Note that this is applied first (on the canvas), only then the preMatrix
-    // will be applied on the shape (via the drawX methods below). But since the
-    // pre-matrix is applied before rendering to the canvas, the actual
-    // transformations follow pre then post matrix.
-    protected transform( aTransformations: Transformations ): void {
-        super.transform( aTransformations );
-        this.context.scale( aTransformations.zoom.x, aTransformations.zoom.y );
+    // Note that all the methods below that output to the context first apply
+    // the preMatrix, which applies the scale; but they do not apply the
+    // postMatrix, which applies the zoom since the zoom was already applied
+    // in this method.
+    protected zoom( aZoom: Scale ): void {
+        super.zoom( aZoom );
+        this.context.scale( aZoom.x, aZoom.y );
     }
 
     protected fillRect( aRect: Rect ): void {
