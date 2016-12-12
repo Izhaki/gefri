@@ -1,5 +1,5 @@
 import { createControl     } from '../../../Control.spec'
-import { createLayer       } from '../Layer.spec'
+import { Layer             } from '../'
 import { triggerNextFrame  } from '../../../onNextFrame'
 import * as helpers from '../../../../../tests/unit/helpers';
 import { overrideProviders } from '../../../../di';
@@ -23,7 +23,7 @@ function setup(): void {
 
     beforeEach( () => {
         this.control  = createControl();
-        this.layer    = createLayer();
+        this.layer    = new Layer();
         this.control.addLayer( this.layer );
 
         this.context  = this.layer.context;
