@@ -1,4 +1,5 @@
-import { Point } from './';
+import { Point,
+         TransformMatrix } from './';
 
 describe( 'Point', () => {
 
@@ -33,6 +34,29 @@ describe( 'Point', () => {
 
             expect( iPoint.x ).toEqual( 5 );
             expect( iPoint.y ).toEqual( 15 );
+        });
+
+    });
+
+    describe( 'apply()', () => {
+
+        it( 'should apply the transformation matrix on the point regardless of the order in which scale and translation where applied', () => {
+            let iPoint1  = new Point( 100, 100 ),
+                iMatrix1 = new TransformMatrix();
+
+            iMatrix1.scale( 2, 0.5 );
+            iMatrix1.translate( 10, 20 );
+            let iTransformedPoint1 = iPoint1.apply( iMatrix1 );
+
+            let iPoint2  = new Point( 100, 100 ),
+                iMatrix2 = new TransformMatrix();
+
+            iMatrix2.translate( 10, 20 );
+            iMatrix2.scale( 2, 0.5 );
+            let iTransformedPoint2 = iPoint2.apply( iMatrix2 );
+
+            expect( iTransformedPoint1 ).toEqualPoint( 220, 60 );
+            expect( iTransformedPoint1 ).toEqual( iTransformedPoint2 );
         });
 
     });

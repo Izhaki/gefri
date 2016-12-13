@@ -1,5 +1,6 @@
-import { Rect }  from './';
-import { Point } from './';
+import { Point,
+         Rect,
+         TransformMatrix } from './';
 
 describe( 'Rect', () => {
 
@@ -394,6 +395,29 @@ describe( 'Rect', () => {
             let iRect = new Rect( 100, 100, 20, -20 );
             iRect.normalise();
             expect( iRect ).toEqualRect( 100, 80, 20, 20 );
+        });
+
+    });
+
+    describe( 'apply()', () => {
+
+        it( 'should apply the transformation matrix on the rect regardless of the order in which scale and translation where applied', () => {
+            let iRect1   = new Rect( 100, 100, 100, 100 ),
+                iMatrix1 = new TransformMatrix();
+
+            iMatrix1.scale( 2, 0.5 );
+            iMatrix1.translate( 10, 20 );
+            let iTransformedRect1 = iRect1.apply( iMatrix1 );
+
+            let iRect2   = new Rect( 100, 100, 100, 100 ),
+                iMatrix2 = new TransformMatrix();
+
+            iMatrix2.translate( 10, 20 );
+            iMatrix2.scale( 2, 0.5 );
+            let iTransformedRect2 = iRect2.apply( iMatrix2 );
+
+            expect( iTransformedRect1 ).toEqualRect( 220, 60, 200, 50 );
+            expect( iTransformedRect1 ).toEqual( iTransformedRect2 );
         });
 
     });

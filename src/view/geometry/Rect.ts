@@ -1,5 +1,6 @@
 import { Point,
-         Translation } from './';
+         TransformMatrix,
+         Translation      } from './';
 
 export
 type Rects = Rect[];
@@ -85,6 +86,20 @@ class Rect {
 
     getLeftTop(): Point {
         return new Point( this.getLeft(), this.getTop() );
+    }
+
+    apply( aMatrix: TransformMatrix ) : Rect {
+        let iOrigin            = this.getOrigin(),
+            iTransformedOrigin = iOrigin.apply( aMatrix ),
+
+            iTransformedRect = new Rect(
+                iTransformedOrigin.x,
+                iTransformedOrigin.y,
+                this.w * aMatrix.scaleX,
+                this.h * aMatrix.scaleY
+            );
+
+        return iTransformedRect;
     }
 
     intersect( aRect: Rect ): void {

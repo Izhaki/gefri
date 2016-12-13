@@ -1,3 +1,5 @@
+import { TransformMatrix } from './';
+
 export
 class Point {
     x: number;
@@ -15,5 +17,12 @@ class Point {
     set( x: number, y: number ) {
         this.x = x;
         this.y = y;
+    }
+
+    apply( aMatrix: TransformMatrix ) : Point {
+        return new Point(
+            this.x * aMatrix.scaleX + aMatrix.translateX,
+            this.y * aMatrix.scaleY + aMatrix.translateY
+        );
     }
 }

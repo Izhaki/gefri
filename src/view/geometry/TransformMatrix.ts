@@ -4,21 +4,6 @@
  * skew).
  */
 
-import { Rect,
-         Point } from './';
-
-export
-type Translation = Point;
-
-export
-type Scale = Point;
-
-export
-const cNoTranslate: Translation = new Point( 0, 0 );
-
-export
-const cNoScale: Scale = new Point( 1, 1 );
-
 export
 class TransformMatrix {
     scaleX    : number; // a
@@ -54,50 +39,6 @@ class TransformMatrix {
 
         this.scaleX     *= x;
         this.scaleY     *= y;
-    }
-
-    transformPoint( aPoint: Point ) : Point {
-        return new Point(
-            aPoint.x * this.scaleX + this.translateX,
-            aPoint.y * this.scaleY + this.translateY
-        );
-    }
-
-    // A temporal hack. Rects should really be represented as a polygon to
-    // support rotate, but this will do for now.
-    transformRect( aRect: Rect ) : Rect {
-        var iOrigin            = aRect.getOrigin(),
-            iTransformedOrigin = this.transformPoint( iOrigin ),
-
-            iTransformedRect = new Rect(
-                iTransformedOrigin.x,
-                iTransformedOrigin.y,
-                aRect.w * this.scaleX,
-                aRect.h * this.scaleY
-            );
-
-        return iTransformedRect;
-    }
-
-    detransformPoint( aPoint: Point ) : Point {
-        return new Point(
-            ( aPoint.x - this.translateX ) / this.scaleX,
-            ( aPoint.y - this.translateY ) / this.scaleY
-        );
-    }
-
-    detransformRect( aRect: Rect ) : Rect {
-        var iLeftTop            = aRect.getLeftTop(),
-            iTransformedLeftTop = this.detransformPoint( iLeftTop ),
-
-            iTransformedRect = new Rect(
-                iTransformedLeftTop.x,
-                iTransformedLeftTop.y,
-                aRect.w / this.scaleX,
-                aRect.h / this.scaleY
-            );
-
-        return iTransformedRect;
     }
 
 }

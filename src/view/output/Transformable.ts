@@ -43,15 +43,15 @@ class Transformable extends Stateful {
     }
 
     protected preTransformPoint( aPoint: Point ): Point {
-        return this.preMatrix.transformPoint( aPoint );
+        return aPoint.apply( this.preMatrix );
     }
 
     protected preTransformRect( aRect: Rect ): Rect {
-        return this.preMatrix.transformRect( aRect );
+        return aRect.apply( this.preMatrix );
     }
 
     protected postTransformRect( aRect: Rect ): Rect {
-        return this.postMatrix.transformRect( aRect );
+        return aRect.apply( this.postMatrix );
     }
 
     protected toAbsoluteRect( aRect: Rect ): Rect {
