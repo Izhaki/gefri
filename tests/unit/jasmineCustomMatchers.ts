@@ -122,6 +122,7 @@ beforeEach( () => {
                     triggerNextFrame();
 
                     let iRows = getRows( expected );
+                    let iActualString = renderedToString( context.rendered );
 
                     try {
                         assertLengthMatch( context.rendered, iRows );
@@ -133,7 +134,14 @@ beforeEach( () => {
 
                         return match();
                     } catch ( exception ) {
-                        return mismatch( exception.message );
+                        let iMessage = [
+                            exception.message,
+                            'Expected:',
+                            expected,
+                            'Actual:',
+                            iActualString
+                        ].join( '\n' );
+                        return mismatch( iMessage );
                     }
                 }
             }
@@ -148,11 +156,7 @@ beforeEach( () => {
 
             function assertLengthMatch( aActual: any[], aExpected: any[] ): void {
                 if ( aActual.length != aExpected.length ) {
-                    throw new Error(
-                        `Expected and actual render operations differ ( ${ aExpected.length } vs ${ aActual.length } ) \n` +
-                        `Expected: ` +  aExpected + '\n' +
-                        `Actual: `   + '\n' + renderedToString( aActual )
-                    );
+                    throw new Error( `Expected and actual render operations differ ( ${ aExpected.length } vs ${ aActual.length } )` );
                 }
             }
 

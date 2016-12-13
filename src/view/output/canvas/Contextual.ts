@@ -18,53 +18,53 @@ class Contextual extends Clipped {
     }
 
     // Called via applyTransformations. To achieve zoom, we simply scale the
-    // canvas context. We practically apply the postMatrix here, but on the
+    // canvas context. We practically apply the zoomMatrix here, but on the
     // canvas rather than the shape itself.
     // Note that all the methods below that output to the context first apply
-    // the preMatrix, which applies the scale; but they do not apply the
-    // postMatrix, which applies the zoom since the zoom was already applied
+    // the scaleMatrix; but they do not apply the
+    // zoomMatrix since the zoom was already applied
     // in this method.
     protected zoom( aZoom: Scale ): void {
         super.zoom( aZoom );
         this.context.scale( aZoom.x, aZoom.y );
     }
 
-    protected fillRect( aRect: Rect ): void {
-        let iRect = this.preTransformRect( aRect );
-        this.context.fillRect( iRect.x, iRect.y, iRect.w, iRect.h );
+    protected fillRect( aRelativeRect: Rect ): void {
+        let iScaledRect = aRelativeRect.apply( this.scaleMatrix );
+        this.context.fillRect( iScaledRect.x, iScaledRect.y, iScaledRect.w, iScaledRect.h );
     }
 
-    protected strokeRect( aRect: Rect ): void {
-        let iRect = this.preTransformRect( aRect );
-        this.context.strokeRect( iRect.x, iRect.y, iRect.w, iRect.h );
+    protected strokeRect( aRelativeRect: Rect ): void {
+        let iScaledRect = aRelativeRect.apply( this.scaleMatrix );
+        this.context.strokeRect( iScaledRect.x, iScaledRect.y, iScaledRect.w, iScaledRect.h );
     }
 
-    protected startPath( aPoint: Point ): void {
-        let iPoint = this.preTransformPoint( aPoint );
+    protected startPath( aRelativePoint: Point ): void {
+        let iScaledPoint = aRelativePoint.apply( this.scaleMatrix );
         this.context.beginPath();
-        this.context.moveTo( iPoint.x, iPoint.y )
+        this.context.moveTo( iScaledPoint.x, iScaledPoint.y )
     }
 
     protected endPath(): void {
         this.context.stroke();
     }
 
-    protected lineTo( aPoint: Point ): void {
-        let iPoint = this.preTransformPoint( aPoint );
-        this.context.lineTo( iPoint.x, iPoint.y )
+    protected lineTo( aRelativePoint: Point ): void {
+        let iScaledPoint = aRelativePoint.apply( this.scaleMatrix );
+        this.context.lineTo( iScaledPoint.x, iScaledPoint.y )
     }
 
-    protected quadTo( aControl: Point, aPoint: Point ): void {
-        let iControl = this.preTransformPoint( aControl ),
-            iPoint   = this.preTransformPoint( aPoint );
+    protected quadTo( aRelativeControl: Point, aRelativePoint: Point ): void {
+        let iControl = aRelativeControl.apply( this.scaleMatrix ),
+            iPoint   = aRelativePoint.apply( this.scaleMatrix );
 
         this.context.quadraticCurveTo( iControl.x, iControl.y, iPoint.x, iPoint.y )
     }
 
-    protected cubicTo( aControl1: Point, aControl2: Point, aPoint: Point ): void {
-        let iControl1 = this.preTransformPoint( aControl1 ),
-            iControl2 = this.preTransformPoint( aControl2 ),
-            iPoint    = this.preTransformPoint( aPoint );
+    protected cubicTo( aRelativeControl1: Point, aRelativeControl2: Point, aRelativePoint: Point ): void {
+        let iControl1 = aRelativeControl1.apply( this.scaleMatrix ),
+            iControl2 = aRelativeControl2.apply( this.scaleMatrix ),
+            iPoint   = aRelativePoint.apply( this.scaleMatrix );
 
         this.context.bezierCurveTo( iControl1.x, iControl1.y, iControl2.x, iControl2.y, iPoint.x, iPoint.y )
     }
@@ -76,28 +76,23 @@ class Contextual extends Clipped {
         this.context.clearRect( iExpandedRect.x, iExpandedRect.y, iExpandedRect.w, iExpandedRect.h );
     };
 
-    protected intersectClipAreaWith( aRect: Rect ): void {
-        let iRect = this.preTransformRect( aRect );
+    protected intersectClipAreaWith( aRelativeRect: Rect ): void {
+        let iScaledRect = aRelativeRect.apply( this.scaleMatrix );
 
         this.context.beginPath();
-        this.context.rect(
-            iRect.x,
-            iRect.y,
-            iRect.w,
-            iRect.h
-        );
+        this.context.rect( iScaledRect.x, iScaledRect.y, iScaledRect.w, iScaledRect.h );
         this.context.clip();
 
         // Clip area is in absolute coordinates
         // So we convert the rect to absolute ones.
-        let iAbsoluteRect = this.postTransformRect( iRect );
+        let iAbsoluteRect = iScaledRect.apply( this.zoomMatrix );
         super.intersectClipAreaWith( iAbsoluteRect );
     }
 
-    isRectWithinClipArea( aRect: Rect ): boolean {
+    isRectWithinClipArea( aRelativeRect: Rect ): boolean {
         // Clip area is in absolute coordinates
         // So we convert the rect to absolute ones.
-        let iAbsoluteRect = this.toAbsoluteRect( aRect );
+        let iAbsoluteRect = this.toAbsoluteRect( aRelativeRect );
         return super.isRectWithinClipArea( iAbsoluteRect );
     }
 

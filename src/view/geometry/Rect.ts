@@ -88,18 +88,20 @@ class Rect {
         return new Point( this.getLeft(), this.getTop() );
     }
 
-    apply( aMatrix: TransformMatrix ) : Rect {
-        let iOrigin            = this.getOrigin(),
-            iTransformedOrigin = iOrigin.apply( aMatrix ),
+    apply( ...aMatrices: TransformMatrix[] ) : Rect {
+        let iRect = this.clone();
 
-            iTransformedRect = new Rect(
-                iTransformedOrigin.x,
-                iTransformedOrigin.y,
-                this.w * aMatrix.scaleX,
-                this.h * aMatrix.scaleY
-            );
+        aMatrices.forEach( ( aMatrix: TransformMatrix ) => {
+            let iOrigin            = iRect.getOrigin(),
+                iTransformedOrigin = iOrigin.apply( aMatrix );
 
-        return iTransformedRect;
+            iRect.x = iTransformedOrigin.x;
+            iRect.y = iTransformedOrigin.y;
+            iRect.w = iRect.w * aMatrix.scaleX;
+            iRect.h = iRect.h * aMatrix.scaleY;
+        });
+
+        return iRect;
     }
 
     intersect( aRect: Rect ): void {
