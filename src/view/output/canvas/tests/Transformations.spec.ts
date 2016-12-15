@@ -20,14 +20,15 @@ describe( 'The canvas should', () => {
         iTransformer.setScale( 0.5, 0.5 );
         iTransformer.setZoom( 4, 4 );
 
-        this.layer.setContents( iTransformer );
+        this.layer.addViewees( iTransformer );
 
         expect( this.context ).toHaveRendered(`
+            | Erase     |   0,   0, 500, 400 |
             | Rectangle | 200, 200, 200, 200 |
-            | Rectangle | 220, 220, 40,  40  |
-            | Rectangle | 230, 230, 20,  20  |
-            | Rectangle | 340, 220, 40,  40  |
-            | Rectangle | 350, 230, 20,  20  |
+            | Rectangle | 220, 220,  40,  40 |
+            | Rectangle | 230, 230,  20,  20 |
+            | Rectangle | 340, 220,  40,  40 |
+            | Rectangle | 350, 230,  20,  20 |
         `);
     });
 
@@ -43,9 +44,10 @@ describe( 'The canvas should', () => {
         iTransformer.setScale( 0.5, 0.5 );
         iTransformer.setZoom( 4, 4 );
 
-        this.layer.setContents( iTransformer );
+        this.layer.addViewees( iTransformer );
 
         expect( this.context ).toHaveRendered(`
+            | Erase     | 0,   0, 500, 400 |
             | Rectangle | 40, 40, 160, 160 |
             | Rectangle | 60, 60, 140, 120 |
             | Rectangle | 80, 80, 120, 100 |

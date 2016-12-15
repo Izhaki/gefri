@@ -4,7 +4,6 @@ import { triggerNextFrame  } from '../../../onNextFrame'
 import * as helpers from '../../../../../tests/unit/helpers';
 import { overrideProviders } from '../../../../di';
 
-export
 function disableAntialiasingEraseCompensation(): void {
 
     beforeEach( () => {
@@ -15,7 +14,11 @@ function disableAntialiasingEraseCompensation(): void {
 }
 
 export
-function setup(): void {
+function setup( antialiasingEraseCompensation: Boolean = false ): void {
+
+    if ( !antialiasingEraseCompensation ) {
+        disableAntialiasingEraseCompensation();
+    }
 
     beforeEach( () => {
         this.createViewees = helpers.createViewees;

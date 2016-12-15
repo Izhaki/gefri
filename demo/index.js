@@ -62,13 +62,13 @@ iTransformer.addChildren( iCubic );
 //     .cubicTo( new Point( 20, 50 ), new Point ( 30, 50 ), new Point ( 20, 40 ) );
 // iTransformer.addChildren( iPath );
 
-iCanvasLayer.setContents( iTransformer );
+iCanvasLayer.addViewees( iTransformer );
 
 /*
 var iOverlay = new CanvasLayer();
 var iMask    = new Rectangle( 10, 10, 100, 100 );
 iControl.addLayer( iOverlay );
-iOverlay.setContents( iMask );
+iOverlay.addViewees( iMask );
 */
 
 $( '#hide-button' ).click( function() {

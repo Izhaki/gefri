@@ -1,33 +1,17 @@
-import { Layer             } from '../'
-import { setup,
-         disableAntialiasingEraseCompensation  } from './Helpers.spec';
-import { Rectangle   } from '../../../viewees/visibles/shapes';
+import { Layer     } from '../'
+import { setup     } from './Helpers.spec';
+import { Rectangle } from '../../../viewees/visibles/shapes';
 
 describe( 'Layers: ', () => {
 
     it( 'A layer must be added to the container before its content is set', () => {
         this.layer = new Layer();
-        let setLayerContents = () => this.layer.setContents();
+        let setLayerContents = () => this.layer.addViewees();
 
         expect( setLayerContents ).toThrow();
     });
 
-    disableAntialiasingEraseCompensation.call( this );
     setup.call( this );
-
-    it ( 'should clear the whole layer and remove previous contents when new contents is set', () => {
-        let iRect1 = new Rectangle( 10, 10, 20, 20 ),
-            iRect2 = new Rectangle( 40, 40, 50, 50 );
-
-        this.layer.setContents( iRect1 );
-        this.clearRenderedLog();
-        this.layer.setContents( iRect2 );
-
-        expect( this.context ).toHaveRendered(`
-            | Erase     | 0,  0,  500, 400 |
-            | Rectangle | 40, 40, 50,  50  |
-        `);
-    });
 
     it ( 'should only update once when multiple changes occur', () => {
         let { iTransformer, iRectangle } = this.createViewees(`
@@ -36,7 +20,7 @@ describe( 'Layers: ', () => {
         `);
 
         iRectangle.hide();
-        this.layer.setContents( iTransformer );
+        this.layer.addViewees( iTransformer );
         this.clearRenderedLog();
 
         iRectangle.show();
@@ -79,8 +63,8 @@ describe( 'Layers: ', () => {
             this.RectL1 = new Rectangle( 10, 10, 20, 20 );
             this.RectL2 = new Rectangle( 20, 20, 20, 20 );
 
-            this.L1.setContents( this.RectL1 );
-            this.L2.setContents( this.RectL2 );
+            this.L1.addViewees( this.RectL1 );
+            this.L2.addViewees( this.RectL2 );
 
             this.clearRenderedLog(); // Will only clear layer 1
             this.L2.context.reset(); // so we clear layer 2

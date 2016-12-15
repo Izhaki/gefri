@@ -4,14 +4,14 @@ import { Path  } from '../../../viewees/visibles/path'
 
 describe( 'Antialiasing: Erase operations should extract the viewee bounding rect by 0.5 to compensate for the antialiasing canvas applies', () => {
 
-    setup.call( this );
+    setup.call( this, true );
 
     it( 'when erasing the bounds of a Rectangle', () => {
         let { iRectangle } = this.createViewees(`
             | iRectangle | Rectangle   | 100, 100, 10, 10  |
         `);
 
-        this.layer.setContents( iRectangle );
+        this.layer.addViewees( iRectangle );
         this.clearRenderedLog();
 
         iRectangle.hide();
@@ -29,7 +29,7 @@ describe( 'Antialiasing: Erase operations should extract the viewee bounding rec
             .quadTo( new Point( 50, 30 ), new Point ( 30, 40 ) )
             .cubicTo( new Point( 20, 50 ), new Point ( 30, 50 ), new Point ( 20, 40 ) );
 
-        this.layer.setContents( this.path );
+        this.layer.addViewees( this.path );
         this.clearRenderedLog();
 
         this.path.setStart( new Point( 0, 20 ) );

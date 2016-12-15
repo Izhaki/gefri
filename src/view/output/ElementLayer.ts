@@ -10,7 +10,6 @@ abstract class ElementLayer {
     private   hasBeenAddedToTheDOM: boolean = false;
     protected control:              Control
 
-    protected contents:             Viewee  = null;
     protected root:                 Root;
     protected updatesStream:        Stream;
 
@@ -18,6 +17,8 @@ abstract class ElementLayer {
         this.updatesStream = new Stream();
         this.root          = new Root( this );
         this.element       = this.createElement();
+
+        this.root.attach( this.updatesStream );
     }
 
     onAfterAdded( aControl: Control ): void {
@@ -29,17 +30,14 @@ abstract class ElementLayer {
         return this.control.getBoundingRect();
     }
 
-    setContents( aViewee: Viewee ): void {
+    addViewees( ...aViewees: Viewee[] ): void {
         if ( !this.hasBeenAddedToTheDOM ) {
-            throw new Error( 'Setting contents of cavnas layer before it has been added to the DOM' );
+            throw new Error( 'Adding viewees to a layer before it has been added to the DOM' );
         }
 
-        if ( this.contents !== null ) {
-            this.removeCurrentContents();
-        }
-        this.contents = aViewee;
-        this.root.addChild( aViewee );
-        this.root.attach( this.updatesStream );
+        aViewees.forEach( ( aViewee: Viewee ) => {
+            this.root.addChild( aViewee );
+        })
     }
 
     getRoot(): Root {
@@ -51,10 +49,5 @@ abstract class ElementLayer {
     }
 
     protected abstract createElement(): HTMLElement;
-
-    protected removeCurrentContents() {
-        this.root.detach()
-        this.root.removeChild( this.contents );
-    }
 
 }

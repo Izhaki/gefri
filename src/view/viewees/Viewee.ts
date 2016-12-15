@@ -41,7 +41,8 @@ abstract class Viewee extends Composite< Viewee > {
     }
 
     protected onAfterAdd() {
-        this.updatesStream = this.getParent().updatesStream;
+        let iUpdateStream = this.getParent().updatesStream;
+        this.attach( iUpdateStream );
         super.onAfterAdd();
         this.notifyUpdate();
     }
@@ -49,6 +50,7 @@ abstract class Viewee extends Composite< Viewee > {
     protected onBeforeRemove() {
         super.onBeforeRemove();
         this.notifyUpdate();
+        this.detach();
     }
 
     protected notifyUpdate(): void {

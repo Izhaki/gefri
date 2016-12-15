@@ -14,33 +14,23 @@ class Layer extends ElementLayer {
 
     // Called after the layer element has been added to the DOM, which is
     // required in order to retrive the actual context.
-    onAfterAdded(  aControl: Control ): void {
+    onAfterAdded( aControl: Control ): void {
         super.onAfterAdded( aControl );
+
+        this.updatesStream.subscribe( () => this.queueRefresh() )
 
         this.context  = this.getContext( this.getCanvas() );
         this.renderer = new Renderer( this.context );
         this.updater  = new Updater( this.updatesStream );
     }
 
-    setContents( aViewee: Viewee ): void {
-        super.setContents( aViewee );
-
-        this.updatesStream.subscribe( () => this.queueRefresh() )
-
+    addViewees( ...aViewees: Viewee[] ): void {
+        super.addViewees( ...aViewees );
         this.queueRefresh();
     }
 
-    protected removeCurrentContents() {
-        super.removeCurrentContents();
-        this.clearCanvas();
-    }
-
-    private clearCanvas() {
-        this.refreshRenderer( [ this.getBoundingRect() ] );
-    }
-
-    private refreshRenderer( aDamagedRect: Rects ) {
-        this.renderer.refresh( this.root, aDamagedRect );
+    private refreshRenderer( aDamagedRects: Rects ) {
+        this.renderer.refresh( this.root, aDamagedRects );
     }
 
     // As a callback, refresh is an instance method so we always get the same reference for it per instance

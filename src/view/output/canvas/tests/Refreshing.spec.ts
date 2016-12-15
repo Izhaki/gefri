@@ -1,12 +1,10 @@
-import { setup,
-         disableAntialiasingEraseCompensation } from './Helpers.spec';
+import { setup     } from './Helpers.spec';
 import { Rectangle } from '../../../viewees/visibles/shapes';
 import { Point     } from '../../../geometry';
 import { Path      } from '../../../viewees/visibles/path'
 
 describe( 'Refreshing: The canvas should refresh when', () => {
 
-    disableAntialiasingEraseCompensation.call( this );
     setup.call( this );
 
     describe( 'a transformer', () => {
@@ -18,7 +16,7 @@ describe( 'Refreshing: The canvas should refresh when', () => {
             `);
             this.transformer = iTransformer;
 
-            this.layer.setContents( this.transformer );
+            this.layer.addViewees( this.transformer );
             this.clearRenderedLog();
         });
 
@@ -59,7 +57,7 @@ describe( 'Refreshing: The canvas should refresh when', () => {
             `);
             this.rectangle = iRectangle;
 
-            this.layer.setContents( this.rectangle );
+            this.layer.addViewees( this.rectangle );
             this.clearRenderedLog();
         });
 
@@ -74,8 +72,14 @@ describe( 'Refreshing: The canvas should refresh when', () => {
             `);
         });
 
+        // Note: This is currently the only test that involves removeChild(),
+        // so we tuck on a grandChild to satisfy coverage for removing viewees
+        // that have children.
         it( 'is removed from its parent', () => {
-            this.child = new Rectangle( 2, 2, 6, 6 );
+            this.child      = new Rectangle( 2, 2, 6, 6 );
+            this.grandChild = new Rectangle( 1, 1, 4, 4);
+
+            this.child.addChild( this.grandChild );
             this.rectangle.addChild( this.child );
 
             this.clearRenderedLog();
@@ -119,7 +123,7 @@ describe( 'Refreshing: The canvas should refresh when', () => {
             beforeEach( () => {
                 this.path.lineTo( new Point ( 10, 30 ) );
 
-                this.layer.setContents( this.path );
+                this.layer.addViewees( this.path );
                 this.clearRenderedLog();
             });
 
@@ -155,7 +159,7 @@ describe( 'Refreshing: The canvas should refresh when', () => {
             beforeEach( () => {
                 this.path.quadTo( new Point( 30, 30 ), new Point ( 10, 40 ) );
 
-                this.layer.setContents( this.path );
+                this.layer.addViewees( this.path );
                 this.clearRenderedLog();
             });
 
@@ -204,7 +208,7 @@ describe( 'Refreshing: The canvas should refresh when', () => {
             beforeEach( () => {
                 this.path.cubicTo( new Point( 20, 0 ), new Point ( 40, 0 ), new Point ( 40, 20 ) );
 
-                this.layer.setContents( this.path );
+                this.layer.addViewees( this.path );
                 this.clearRenderedLog();
             });
 
@@ -267,7 +271,7 @@ describe( 'Refreshing: The canvas should refresh when', () => {
                 .quadTo( new Point( 50, 30 ), new Point ( 30, 40 ) )
                 .cubicTo( new Point( 20, 50 ), new Point ( 30, 50 ), new Point ( 20, 40 ) );
 
-            this.layer.setContents( this.path );
+            this.layer.addViewees( this.path );
             this.clearRenderedLog();
 
             this.path.setStart( new Point( 0, 20 ) );
