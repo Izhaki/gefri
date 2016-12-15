@@ -15,6 +15,8 @@ import { Path,
 import { Transformer,
          Root            } from '../../viewees/invisibles';
 
+import { getBoundingRect } from '../../viewees/multimethods';
+
 export
 class Renderer extends Contextual {
 
@@ -58,7 +60,7 @@ class Renderer extends Contextual {
     }
 
     private isWithinClipArea( aViewee: Viewee ): boolean {
-        let iBounds = aViewee.getBoundingRect();
+        let iBounds = getBoundingRect( aViewee );
         return this.isRectWithinClipArea( iBounds );
     }
 
@@ -78,7 +80,7 @@ class Renderer extends Contextual {
         this.pushState();
 
         if ( aViewee.isClipping ) {
-            this.intersectClipAreaWith( aViewee.getBoundingRect() );
+            this.intersectClipAreaWith( getBoundingRect( aViewee ) );
         }
 
         this.applyTransformations( aViewee );

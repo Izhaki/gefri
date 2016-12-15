@@ -12,10 +12,6 @@ class Rectangle extends Shape {
         this.rect = new Rect( arguments[ 0 ], arguments[ 1 ], arguments[ 2 ], arguments[ 3 ] );
     }
 
-    getBoundingRect(): Rect {
-        return this.rect;
-    }
-
     getRect(): Rect {
         return this.rect;
     }

@@ -7,7 +7,8 @@ import { PathSegment,
 import { Point,
          Rect,
          Rects,
-         cNoScale,        } from './../../../geometry';
+         cNoScale,
+         cNoTranslate     } from './../../../geometry';
 import { Transformations  } from './../../../output';
 
 export
@@ -84,24 +85,10 @@ class Path extends Visible {
         });
     }
 
-    // TODO
-    getBoundingRect(): Rect {
-        let iSegmentBoundingRects: Rects = [];
-
-        this.forEachSegment( ( aSegment: PathSegment , aSegmentStart: Point ) => {
-            let iSegmentBoundingRect: Rect = aSegment.getBoundingRect( aSegmentStart );
-            iSegmentBoundingRects.push( iSegmentBoundingRect );
-        });
-
-        return Rect.unionRects( iSegmentBoundingRects );
-    }
-
     /* istanbul ignore next */
     getTransformations(): Transformations {
-        let iBounds: Rect = this.getBoundingRect();
-
         return {
-            translate: iBounds.getLeftTop(),
+            translate: cNoTranslate,
             zoom:      cNoScale,
             scale:     cNoScale
         }

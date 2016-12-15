@@ -3,11 +3,13 @@ import { Rect,
          cNoScale,        } from './../../../geometry';
 import { Transformations  } from './../../../output';
 
+import { getBoundingRect } from '../../multimethods';
+
 export
 abstract class Shape extends Visible {
 
     getTransformations(): Transformations {
-        let iBounds: Rect = this.getBoundingRect();
+        let iBounds: Rect = getBoundingRect( this );
 
         return {
             translate: iBounds.getLeftTop(),

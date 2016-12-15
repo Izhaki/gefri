@@ -1,0 +1,1 @@
+export { getBoundingRect } from './getBoundingRect';

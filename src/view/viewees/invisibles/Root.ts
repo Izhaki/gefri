@@ -17,9 +17,8 @@ class Root extends Invisible {
         this.layer = aElementLayer;
     }
 
-    getBoundingRect(): Rect {
-        // TODO change to tactic
-        return this.layer.getBoundingRect();
+    getLayer(): ElementLayer {
+        return this.layer;
     }
 
     getTransformations(): Transformations {

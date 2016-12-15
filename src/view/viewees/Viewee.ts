@@ -12,8 +12,6 @@ abstract class Viewee extends Composite< Viewee > {
 
     protected clipping: boolean = true;
 
-    abstract getBoundingRect(): Rect;
-
     get isClipping(): boolean {
         return this.clipping;
     }

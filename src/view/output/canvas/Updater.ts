@@ -4,6 +4,7 @@ import { Viewee          } from '../../viewees/Viewee';
 import { Rect,
          Rects,
          TransformMatrix } from '../../geometry';
+import { getBoundingRect } from '../../viewees/multimethods';
 
 export
 class Updater extends Transformable {
@@ -39,11 +40,7 @@ class Updater extends Transformable {
     }
 
     private getVieweeAbsoluteBoundingRect( aViewee: Viewee ): Rect {
-        let iBoundingRect:         Rect;
-
-        iBoundingRect = aViewee.getBoundingRect();
-
-        return this.toAbsoluteRect( iBoundingRect );
+        return this.toAbsoluteRect( getBoundingRect( aViewee ) );
     }
 
 }

@@ -15,11 +15,4 @@ describe( 'Rectangle', () => {
         this.rectangle = createRectangle();
     });
 
-    describe( 'getBoundingRect()', () => {
-        it( 'should return the bounds of the rectangle', () => {
-            expect( this.rectangle.getBoundingRect() ).toEqualRect( 10, 10, 20, 20 );
-        });
-
-    });
-
 });

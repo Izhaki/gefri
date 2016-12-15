@@ -33,12 +33,6 @@ class Transformer extends Invisible {
         this.notifyUpdate()
     }
 
-    /* istanbul ignore next */
-    getBoundingRect(): Rect {
-        // TODO change to tactic
-        return this.getParent().getBoundingRect();
-    }
-
     getTransformations(): Transformations {
         return {
             translate: this.translation,
