@@ -1,14 +1,15 @@
-var iJsdom = require( 'jsdom' );
-var iFs    = require( 'fs' );
+import * as jsdom from 'jsdom';
+import * as fs from 'fs';
 
-var Context2DMock = require( './Context2D.ts' ).Context2DMock;
+import { Context2DMock  } from './Context2D';
 var iMockContext = new Context2DMock();
 
-var mockDom = function( aScriptFiles, aDoneCallback ) {
+export
+function mockDom( aScriptFiles, aDoneCallback ) {
 
-    scripts = loadScripts( aScriptFiles );
+    let scripts = loadScripts( aScriptFiles );
 
-    iJsdom.env({
+    jsdom.env({
         html: '<html><body><div id="view" style="width:500px; height:400px;"></div></body></html>',
         src:  scripts,
         done: onDomLoaded
@@ -17,7 +18,7 @@ var mockDom = function( aScriptFiles, aDoneCallback ) {
     function loadScripts( aScriptFiles ) {
         var iScripts = [];
         aScriptFiles.forEach( function( aScriptFile ){
-            var iScript = iFs.readFileSync( aScriptFile, 'utf-8' );
+            var iScript = fs.readFileSync( aScriptFile, 'utf-8' );
             iScripts.push( iScript );
         });
         return iScripts;
@@ -65,5 +66,3 @@ var mockDom = function( aScriptFiles, aDoneCallback ) {
     }
 
 }
-
-module.exports = mockDom;

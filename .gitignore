@@ -1,9 +1,8 @@
 /tests/coverage/
 node_modules/
 .DS_Store
-.editorconfig
-.vscode/
 demo/vendor.js
 demo/vendor.css
 demo/gefri.js
 npm-debug.log
+transpiled

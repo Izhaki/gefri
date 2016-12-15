@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+		{
+			"name": "Debug Jasmine Test",
+			"type": "node",
+            "request": "launch",
+            "program": "${workspaceRoot}/transpiled/tests/unit/jasmine.js",
+            "stopOnEntry": false,
+            "args": [],
+            "cwd": "${workspaceRoot}",
+            "preLaunchTask": "transpile",
+            "runtimeExecutable": null,
+			"sourceMaps": true,
+            "outDir": "${workspaceRoot}/transpiled",
+            "env": {
+                "NODE_ENV": "development"
+            }
+		}
+    ]
+}

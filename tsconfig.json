@@ -1,9 +1,12 @@
 {
     "compilerOptions": {
         "target":             "es5",
+        "module":             "commonjs",
         "removeComments":     false,
         "preserveConstEnums": true,
-        "forceConsistentCasingInFileNames": true
+        "forceConsistentCasingInFileNames": true,
+        "outDir":             "transpiled",
+        "inlineSourceMap":    true
     },
     "exclude": [
         "node_modules",
