@@ -2,7 +2,7 @@ import { createControl     } from '../../../Control.spec'
 import { Layer             } from '../'
 import { triggerNextFrame  } from '../../../onNextFrame'
 import * as helpers from '../../../../../tests/unit/helpers';
-import { overrideProviders } from '../../../../di';
+import { overrideProviders } from '../../../../core/di';
 
 function disableAntialiasingEraseCompensation(): void {
 

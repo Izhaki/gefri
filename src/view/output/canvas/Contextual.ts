@@ -4,7 +4,7 @@ import { Point,
          Translation,
          Scale        } from '../../geometry';
 import { Transformations } from '../../output';
-import { inject       } from '../../../di';
+import { inject       } from '../../../core/di';
 
 export
 class Contextual extends Clipped {

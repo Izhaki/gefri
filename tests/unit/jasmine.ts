@@ -1,6 +1,6 @@
 import { mockDom } from '../mocks/mockDom';
 import { mockWaitForFrame } from '../mocks/mockWaitForFrame';
-import * as di from '../../src/di';
+import * as di from '../../src/core/di';
 
 var Jasmine  = require( 'jasmine' );
 var failFast = require( 'jasmine-fail-fast' );

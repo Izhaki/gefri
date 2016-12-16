@@ -1,4 +1,4 @@
-import { inject     } from '../di';
+import { inject     } from '../core/di';
 import { emptyArray } from '../core/Utils'
 
 let waitForFrame = inject( 'waitForFrame' );
