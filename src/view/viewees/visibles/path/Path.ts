@@ -85,13 +85,4 @@ class Path extends Visible {
         });
     }
 
-    /* istanbul ignore next */
-    getTransformations(): Transformations {
-        return {
-            translate: cNoTranslate,
-            zoom:      cNoScale,
-            scale:     cNoScale
-        }
-    }
-
 }

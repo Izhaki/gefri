@@ -6,7 +6,7 @@ import { Rect,
          TransformMatrix  } from '../geometry';
 
 export
-abstract class Viewee extends Composite< Viewee > {
+class Viewee extends Composite< Viewee > {
     static    updatesStream: Stream = new Stream(); // A global static (null) updates stream
     protected updatesStream: Stream = Viewee.updatesStream;
 
@@ -19,8 +19,6 @@ abstract class Viewee extends Composite< Viewee > {
     set isClipping( clipping: boolean ) {
         this.clipping = clipping;
     }
-
-    abstract getTransformations(): Transformations;
 
     attach( aStream: Stream ) {
         this.updatesStream = aStream;

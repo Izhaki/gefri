@@ -15,7 +15,8 @@ import { Path,
 import { Transformer,
          Root            } from '../../viewees/invisibles';
 
-import { getBoundingRect } from '../../viewees/multimethods';
+import { getBoundingRect,
+         cumulateTransformations } from '../../viewees/multimethods';
 
 export
 class Renderer extends Contextual {
@@ -83,7 +84,7 @@ class Renderer extends Contextual {
             this.intersectClipAreaWith( getBoundingRect( aViewee ) );
         }
 
-        this.applyTransformations( aViewee );
+        cumulateTransformations( this, aViewee );
 
         aViewee.forEachChild( ( aChild ) => {
             this.render( aChild );

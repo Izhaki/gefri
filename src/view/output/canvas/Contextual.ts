@@ -17,14 +17,14 @@ class Contextual extends Clipped {
         this.antialiasingExtraMargins = inject( 'antialiasingExtraMargins' );
     }
 
-    // Called via applyTransformations. To achieve zoom, we simply scale the
+    // Called via cumulateTransformations. To achieve zoom, we simply scale the
     // canvas context. We practically apply the zoomMatrix here, but on the
     // canvas rather than the shape itself.
     // Note that all the methods below that output to the context first apply
     // the scaleMatrix; but they do not apply the
     // zoomMatrix since the zoom was already applied
     // in this method.
-    protected zoom( aZoom: Scale ): void {
+    zoom( aZoom: Scale ): void {
         super.zoom( aZoom );
         this.context.scale( aZoom.x, aZoom.y );
     }

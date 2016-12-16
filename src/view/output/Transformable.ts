@@ -4,8 +4,6 @@ import { Translation,
          TransformMatrix,
          Rect,
          Point            } from '../geometry';
-import { Viewee           } from '../viewees/Viewee';
-
 
 export
 interface Transformations {
@@ -25,35 +23,25 @@ class Transformable extends Stateful {
         this.zoomMatrix  = new TransformMatrix();
     }
 
-    protected translate( aTranslation: Translation ): void {
+    translate( aTranslation: Translation ): void {
         // Translation goes in the scaleMatrix to make calculations easier - had
         // it been assigned to the zoomMatrix, we'd need some extra maths to
         // componsate for the scale in the scaleMatrix.
         this.scaleMatrix.translate( aTranslation.x, aTranslation.y );
     }
 
-    protected scale( aScale: Scale ): void {
+    scale( aScale: Scale ): void {
         // Scale goes in the scaleMatrix.
         this.scaleMatrix.scale( aScale.x, aScale.y );
     }
 
-    protected zoom( aZoom: Scale ): void {
+    zoom( aZoom: Scale ): void {
         // Zoom goes in the post matrix.
         this.zoomMatrix.scale( aZoom.x, aZoom.y );
     }
 
     protected toAbsoluteRect( aRelativeRect: Rect ): Rect {
         return aRelativeRect.apply( this.scaleMatrix, this.zoomMatrix );
-    }
-
-    protected applyTransformations( aViewee: Viewee ): void {
-        let iTransformations: Transformations;
-
-        iTransformations = aViewee.getTransformations();
-
-        this.translate( iTransformations.translate );
-        this.zoom( iTransformations.zoom );
-        this.scale( iTransformations.scale );
     }
 
     protected getState() : any {

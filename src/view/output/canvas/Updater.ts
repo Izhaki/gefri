@@ -4,7 +4,10 @@ import { Viewee          } from '../../viewees/Viewee';
 import { Rect,
          Rects,
          TransformMatrix } from '../../geometry';
-import { getBoundingRect } from '../../viewees/multimethods';
+
+import { getBoundingRect,
+         cumulateTransformations } from '../../viewees/multimethods';
+
 
 export
 class Updater extends Transformable {
@@ -30,7 +33,7 @@ class Updater extends Transformable {
 
     private updateTransformationsFor( aViewee: Viewee ) {
         aViewee.forEachAncestor( ( aAncestor: Viewee )  => {
-            this.applyTransformations( aAncestor );
+            cumulateTransformations( this, aAncestor );
         });
     }
 

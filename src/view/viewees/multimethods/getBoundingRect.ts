@@ -4,11 +4,11 @@ import { Point,
 import { getClassName  } from '../../../core/Utils';
 
 import { Viewee        } from '../Viewee';
-import { Root          } from '../../viewees/invisibles';
-import { Transformer   } from '../../viewees/invisibles';
-import { Rectangle     } from '../../viewees/visibles/shapes';
+import { Root          } from '../invisibles';
+import { Transformer   } from '../invisibles';
+import { Rectangle     } from '../visibles/shapes';
 import { Path,
-         PathSegment   } from '../../viewees/visibles/path';
+         PathSegment   } from '../visibles/path';
 
 let methods = {
 

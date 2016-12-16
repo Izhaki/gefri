@@ -1,21 +1,5 @@
-import { Visible          } from './../Visible';
-import { Rect,
-         cNoScale,        } from './../../../geometry';
-import { Transformations  } from './../../../output';
-
-import { getBoundingRect } from '../../multimethods';
+import { Visible } from './../Visible';
 
 export
-abstract class Shape extends Visible {
-
-    getTransformations(): Transformations {
-        let iBounds: Rect = getBoundingRect( this );
-
-        return {
-            translate: iBounds.getLeftTop(),
-            zoom:      cNoScale,
-            scale:     cNoScale
-        }
-    }
-
+class Shape extends Visible {
 }
