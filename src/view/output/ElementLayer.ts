@@ -40,10 +40,6 @@ abstract class ElementLayer {
         })
     }
 
-    getRoot(): Root {
-        return this.root;
-    }
-
     getElement(): HTMLElement {
         return this.element;
     }

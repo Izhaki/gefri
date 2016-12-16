@@ -1,7 +1,12 @@
 import { Composite } from './';
 
-export
-function CompositeSpecs( createComposite: () => Composite< any > ) {
+class Mock extends Composite< Mock >{}
+
+function createComposite(): any {
+    return new Mock();
+}
+
+describe( 'Composite', () => {
 
     beforeEach( () => {
         this.parent = createComposite();
@@ -190,4 +195,4 @@ function CompositeSpecs( createComposite: () => Composite< any > ) {
 
     });
 
-}
+});
