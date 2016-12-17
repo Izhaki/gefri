@@ -16,10 +16,16 @@ import { Transformer,
          Root            } from '../../viewees/invisibles';
 
 import { getBoundingRect,
-         cumulateTransformations } from '../../viewees/multimethods';
+         cumulateTransformationsOf } from '../../viewees/multimethods';
 
 export
 class Renderer extends Contextual {
+    private cumulateTransformationsOf: ( Viewee ) => void;
+
+    constructor( aContext: CanvasRenderingContext2D ) {
+        super( aContext );
+        this.cumulateTransformationsOf = cumulateTransformationsOf.curry( this );
+    }
 
     refresh( aViewee: Viewee, damagedRects: Rects ): void {
         this.eraseDamagedRects( damagedRects );
@@ -84,7 +90,7 @@ class Renderer extends Contextual {
             this.intersectClipAreaWith( getBoundingRect( aViewee ) );
         }
 
-        cumulateTransformations( this, aViewee );
+        this.cumulateTransformationsOf( aViewee );
 
         aViewee.forEachChild( ( aChild ) => {
             this.render( aChild );
@@ -94,7 +100,7 @@ class Renderer extends Contextual {
     }
 
     private fillRectangle( aRactangle: Rectangle ): void {
-        this.context.fillStyle = aRactangle.fillColour;
+        this.setFillStyle( aRactangle.fillColour );
         this.fillRect( aRactangle.getRect() );
     }
 

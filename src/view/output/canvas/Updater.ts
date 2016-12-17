@@ -6,16 +6,18 @@ import { Rect,
          TransformMatrix } from '../../geometry';
 
 import { getBoundingRect,
-         cumulateTransformations } from '../../viewees/multimethods';
+         cumulateTransformationsOf } from '../../viewees/multimethods';
 
 
 export
 class Updater extends Transformable {
-    private damagedRects: Rects = [];
+    private damagedRects:              Rects = [];
+    private cumulateTransformationsOf: ( Viewee ) => void;
 
     constructor( aUpdateStream: Stream ) {
         super();
-        aUpdateStream.subscribe( aViewee => this.onUpdate( aViewee ) )
+        aUpdateStream.subscribe( aViewee => this.onUpdate( aViewee ) );
+        this.cumulateTransformationsOf = cumulateTransformationsOf.curry( this );
     }
 
     onUpdate( aViewee: Viewee ): void {
@@ -33,7 +35,7 @@ class Updater extends Transformable {
 
     private updateTransformationsFor( aViewee: Viewee ) {
         aViewee.forEachAncestor( ( aAncestor: Viewee )  => {
-            cumulateTransformations( this, aAncestor );
+            this.cumulateTransformationsOf( aAncestor );
         });
     }
 

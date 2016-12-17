@@ -1,2 +1,2 @@
-export { getBoundingRect         } from './getBoundingRect';
-export { cumulateTransformations } from './cumulateTransformations';
+export { getBoundingRect           } from './getBoundingRect';
+export { cumulateTransformationsOf } from './cumulateTransformations';

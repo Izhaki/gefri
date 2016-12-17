@@ -69,6 +69,10 @@ class Contextual extends Clipped {
         this.context.bezierCurveTo( iControl1.x, iControl1.y, iControl2.x, iControl2.y, iPoint.x, iPoint.y )
     }
 
+    setFillStyle( aFillStyle ) {
+        this.context.fillStyle = aFillStyle;
+    }
+
     protected erase( aAbsoluteRect: Rect ): void {
         let iExpandedRect = aAbsoluteRect.clone();
         iExpandedRect.expand( this.antialiasingExtraMargins );
