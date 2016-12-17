@@ -1,16 +1,17 @@
+import { methodDispatcher } from '../methodDispatcher'
+
 import { Point,
          Rect,
          Rects         } from './../../geometry';
-import { getClassName  } from '../../../core/Utils';
 
-import { Viewee        } from '../Viewee';
 import { Root          } from '../invisibles';
 import { Transformer   } from '../invisibles';
 import { Rectangle     } from '../visibles/shapes';
 import { Path,
          PathSegment   } from '../visibles/path';
 
-let methods = {
+export
+let getBoundingRect = methodDispatcher({
 
     Root: ( aRoot: Root ): Rect => {
         return aRoot.getLayer().getBoundingRect().clone();
@@ -34,10 +35,4 @@ let methods = {
 
         return Rect.unionRects( iSegmentBoundingRects );
     }
-};
-
-export
-function getBoundingRect( aViewee: Viewee ): Rect {
-    let iClassName = getClassName( aViewee );
-    return methods[iClassName]( aViewee );
-}
+});

@@ -1,7 +1,6 @@
-import { getClassName,
-         currify       } from '../../../../core/Utils';
-
-import { Renderer      } from '../';
+import { currify          } from '../../../../core/Utils';
+import { methodDispatcher } from '../../../viewees/methodDispatcher'
+import { Renderer         } from '../';
 
 import { Root,
          Transformer   } from '../../../viewees/invisibles';
@@ -14,46 +13,40 @@ import { Path,
 
 export
 let stroke = currify(
-    ( aRenderer: Renderer) => {
-        let methods = {
+    ( aRenderer: Renderer) => methodDispatcher({
 
-            Root: ( aRoot: Root ): void => {
-            },
+        Root: ( aRoot: Root ): void => {
+        },
 
-            Transformer: ( aTransformer: Transformer ): void => {
-            },
+        Transformer: ( aTransformer: Transformer ): void => {
+        },
 
-            Rectangle: ( aRectangle: Rectangle ): void => {
-                aRenderer.strokeRect( aRectangle.getRect() );
-            },
+        Rectangle: ( aRectangle: Rectangle ): void => {
+            aRenderer.strokeRect( aRectangle.getRect() );
+        },
 
-            Path: ( aPath: Path ): void => {
-                aRenderer.startPath( aPath.getStart() );
+        Path: ( aPath: Path ): void => {
+            aRenderer.startPath( aPath.getStart() );
 
-                aPath.forEachSegment( ( aSegment: PathSegment ) => {
-                    aRenderer.stroke( aSegment );
-                });
+            aPath.forEachSegment( ( aSegment: PathSegment ) => {
+                aRenderer.stroke( aSegment );
+            });
 
-                aRenderer.endPath();
-            },
+            aRenderer.endPath();
+        },
 
-            LineSegment: ( aSegment: LineSegment ): void => {
-                aRenderer.lineTo( aSegment.getEnd() );
-            },
+        LineSegment: ( aSegment: LineSegment ): void => {
+            aRenderer.lineTo( aSegment.getEnd() );
+        },
 
-            QuadSegment: ( aSegment: QuadSegment ): void => {
-                aRenderer.quadTo( aSegment.getControl(), aSegment.getEnd() );
-            },
+        QuadSegment: ( aSegment: QuadSegment ): void => {
+            aRenderer.quadTo( aSegment.getControl(), aSegment.getEnd() );
+        },
 
-            CubicSegment: ( aSegment: CubicSegment ): void => {
-                aRenderer.cubicTo( aSegment.getControl1(), aSegment.getControl2(), aSegment.getEnd() );
-            }
-
-        };
-
-        return ( aViewee ) => {
-            let iClassName = getClassName( aViewee );
-            return methods[iClassName]( aViewee );
+        CubicSegment: ( aSegment: CubicSegment ): void => {
+            aRenderer.cubicTo( aSegment.getControl1(), aSegment.getControl2(), aSegment.getEnd() );
         }
-    }
+
+    })
+
 );
