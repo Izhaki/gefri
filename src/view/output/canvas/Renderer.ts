@@ -5,26 +5,24 @@ import { getClassName,
          emptyArray    } from '../../../core/Utils';
 import { Viewee        } from '../../viewees/Viewee';
 import { Visible       } from '../../viewees/visibles/Visible';
-import { Rectangle     } from '../../viewees/visibles/shapes';
-import { Path,
-         PathSegment,
-         LineSegment,
-         QuadSegment,
-         CubicSegment  } from '../../viewees/visibles/path';
-
-import { Transformer,
-         Root            } from '../../viewees/invisibles';
 
 import { getBoundingRect,
          cumulateTransformationsOf } from '../../viewees/multimethods';
 
+import { fill,
+         stroke } from './multimethods';
+
 export
 class Renderer extends Contextual {
     private cumulateTransformationsOf: ( Viewee ) => void;
+    private fill:                      ( Viewee ) => void;
+    stroke:                            ( Viewee ) => void;
 
     constructor( aContext: CanvasRenderingContext2D ) {
         super( aContext );
         this.cumulateTransformationsOf = cumulateTransformationsOf.curry( this );
+        this.fill                      = fill.curry( this );
+        this.stroke                    = stroke.curry( this );
     }
 
     refresh( aViewee: Viewee, damagedRects: Rects ): void {
@@ -39,21 +37,6 @@ class Renderer extends Contextual {
             this.renderChildren( aViewee );
             this.stroke( aViewee );
         }
-    }
-
-    private routeToMethod( aPrefix: string, aObject: any ): void {
-        let iObjectClass = getClassName( aObject ),
-            iMethodName  = aPrefix + iObjectClass;
-
-        this[ iMethodName ]( aObject );
-    }
-
-    private fill( aObject: any ): void {
-        this.routeToMethod( 'fill', aObject );
-    }
-
-    private stroke( aObject: any ): void {
-        this.routeToMethod( 'stroke', aObject );
     }
 
     private eraseDamagedRects( aRects: Rects ): void {
@@ -98,44 +81,5 @@ class Renderer extends Contextual {
 
         this.popState();
     }
-
-    private fillRectangle( aRactangle: Rectangle ): void {
-        this.setFillStyle( aRactangle.fillColour );
-        this.fillRect( aRactangle.getRect() );
-    }
-
-    private strokeRectangle( aRactangle: Rectangle ): void {
-        this.strokeRect( aRactangle.getRect() );
-    }
-
-    private fillPath( aPath: Path ): void {}
-
-    private strokePath( aPath: Path ): void {
-        this.startPath( aPath.getStart() );
-
-        aPath.forEachSegment( ( aSegment: PathSegment ) => {
-            this.stroke( aSegment );
-        });
-
-        this.endPath();
-    }
-
-    private strokeLineSegment( aSegment: LineSegment ) {
-        this.lineTo( aSegment.getEnd() );
-    }
-
-    private strokeQuadSegment( aSegment: QuadSegment ) {
-        this.quadTo( aSegment.getControl(), aSegment.getEnd() );
-    }
-
-    private strokeCubicSegment( aSegment: CubicSegment ) {
-        this.cubicTo( aSegment.getControl1(), aSegment.getControl2(), aSegment.getEnd() );
-    }
-
-    private fillTransformer  ( aTransformer: Transformer ): void {}
-    private strokeTransformer( aTransformer: Transformer ): void {}
-
-    private fillRoot  ( aRoot: Root ): void {}
-    private strokeRoot( aRoot: Root ): void {}
 
 }

@@ -6,8 +6,8 @@ import { getClassName,
 import { Transformable } from '../../output';
 
 import { Viewee        } from '../Viewee';
-import { Root          } from '../invisibles';
-import { Transformer   } from '../invisibles';
+import { Root,
+         Transformer   } from '../invisibles';
 import { Rectangle     } from '../visibles/shapes';
 import { Path,
          PathSegment   } from '../visibles/path';

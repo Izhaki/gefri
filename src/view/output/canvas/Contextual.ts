@@ -29,39 +29,39 @@ class Contextual extends Clipped {
         this.context.scale( aZoom.x, aZoom.y );
     }
 
-    protected fillRect( aRelativeRect: Rect ): void {
+    fillRect( aRelativeRect: Rect ): void {
         let iScaledRect = aRelativeRect.apply( this.scaleMatrix );
         this.context.fillRect( iScaledRect.x, iScaledRect.y, iScaledRect.w, iScaledRect.h );
     }
 
-    protected strokeRect( aRelativeRect: Rect ): void {
+    strokeRect( aRelativeRect: Rect ): void {
         let iScaledRect = aRelativeRect.apply( this.scaleMatrix );
         this.context.strokeRect( iScaledRect.x, iScaledRect.y, iScaledRect.w, iScaledRect.h );
     }
 
-    protected startPath( aRelativePoint: Point ): void {
+    startPath( aRelativePoint: Point ): void {
         let iScaledPoint = aRelativePoint.apply( this.scaleMatrix );
         this.context.beginPath();
         this.context.moveTo( iScaledPoint.x, iScaledPoint.y )
     }
 
-    protected endPath(): void {
+    endPath(): void {
         this.context.stroke();
     }
 
-    protected lineTo( aRelativePoint: Point ): void {
+    lineTo( aRelativePoint: Point ): void {
         let iScaledPoint = aRelativePoint.apply( this.scaleMatrix );
         this.context.lineTo( iScaledPoint.x, iScaledPoint.y )
     }
 
-    protected quadTo( aRelativeControl: Point, aRelativePoint: Point ): void {
+    quadTo( aRelativeControl: Point, aRelativePoint: Point ): void {
         let iControl = aRelativeControl.apply( this.scaleMatrix ),
             iPoint   = aRelativePoint.apply( this.scaleMatrix );
 
         this.context.quadraticCurveTo( iControl.x, iControl.y, iPoint.x, iPoint.y )
     }
 
-    protected cubicTo( aRelativeControl1: Point, aRelativeControl2: Point, aRelativePoint: Point ): void {
+    cubicTo( aRelativeControl1: Point, aRelativeControl2: Point, aRelativePoint: Point ): void {
         let iControl1 = aRelativeControl1.apply( this.scaleMatrix ),
             iControl2 = aRelativeControl2.apply( this.scaleMatrix ),
             iPoint   = aRelativePoint.apply( this.scaleMatrix );
