@@ -1,6 +1,6 @@
 import { createControl     } from '../../../Control.spec'
 import { Layer             } from '../'
-import { triggerNextFrame  } from '../../../onNextFrame'
+import { triggerNextFrame  } from '../../onNextFrame'
 import * as helpers from '../../../../../tests/unit/helpers';
 import { overrideProviders } from '../../../../core/di';
 

@@ -4,7 +4,7 @@ import { Renderer,
          Updater      } from './';
 import { Rects        } from '../../geometry';
 import { ElementLayer } from '../'
-import { onNextFrame  } from '../../onNextFrame'
+import { onNextFrame  } from '../onNextFrame'
 
 export
 class Layer extends ElementLayer {

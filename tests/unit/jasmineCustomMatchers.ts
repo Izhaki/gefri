@@ -8,7 +8,7 @@ import { Row,
          getPointString,
          getRectString,
          renderedToString  } from './helpers';
-import { triggerNextFrame  } from '../../src/view/onNextFrame'
+import { triggerNextFrame  } from '../../src/view/output/onNextFrame'
 
 function round2decimals( aNumber ) {
     return Math.round( aNumber * 100 ) / 100
