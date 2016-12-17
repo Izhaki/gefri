@@ -6,13 +6,10 @@ import { Transformable } from '../../output';
 
 import { Rect          } from './../../geometry';
 
-import { Viewee        } from '../Viewee';
 import { Root,
-         Transformer   } from '../invisibles';
-import { Rectangle     } from '../visibles/shapes';
-import { Path,
-         PathSegment   } from '../visibles/path';
-
+         Transformer,
+         Rectangle,
+         Path          } from '../';
 
 export
 let cumulateTransformationsOf = currify(

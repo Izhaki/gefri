@@ -4,11 +4,11 @@ import { Point,
          Rect,
          Rects         } from './../../geometry';
 
-import { Root          } from '../invisibles';
-import { Transformer   } from '../invisibles';
-import { Rectangle     } from '../visibles/shapes';
-import { Path,
-         PathSegment   } from '../visibles/path';
+import { Root,
+         Transformer,
+         Rectangle,
+         Path,
+         PathSegment   } from '../';
 
 export
 let getBoundingRect = methodDispatcher({

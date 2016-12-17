@@ -11,7 +11,7 @@ function emptyArray( aArray: any[] ) {
 }
 
 /**
- * Takes a currying function and exposes it as a static .curry() of itself.
+ * Takes a currying function and exposes it as a static .curry() on itself.
  *
  * This is done for syntax clarity, so instead of writing (the somewhat
  * confusing)

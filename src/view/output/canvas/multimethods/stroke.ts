@@ -3,13 +3,13 @@ import { methodDispatcher } from '../../../viewees/methodDispatcher'
 import { Renderer         } from '../';
 
 import { Root,
-         Transformer   } from '../../../viewees/invisibles';
-import { Rectangle     } from '../../../viewees/visibles/shapes';
-import { Path,
+         Transformer,
+         Rectangle,
+         Path,
          PathSegment,
          LineSegment,
          QuadSegment,
-         CubicSegment  } from '../../../viewees/visibles/path';
+         CubicSegment  } from '../../../viewees';
 
 export
 let stroke = currify(

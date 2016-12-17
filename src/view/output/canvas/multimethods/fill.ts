@@ -3,9 +3,9 @@ import { methodDispatcher } from '../../../viewees/methodDispatcher'
 import { Renderer         } from '../';
 
 import { Root,
-         Transformer      } from '../../../viewees/invisibles';
-import { Rectangle        } from '../../../viewees/visibles/shapes';
-import { Path             } from '../../../viewees/visibles/path';
+         Transformer,
+         Rectangle,
+         Path,            } from '../../../viewees';
 
 export
 let fill = currify(
