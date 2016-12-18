@@ -1,6 +1,6 @@
 import { setup } from './Helpers.spec';
 import { Point } from '../../../geometry';
-import { Path  } from '../../../viewees/visibles/path'
+import { Path  } from '../../../viewees'
 
 describe( 'Antialiasing: Erase operations should extract the viewee bounding rect by 0.5 to compensate for the antialiasing canvas applies', () => {
 

@@ -9,7 +9,7 @@ class Rectangle extends Shape {
 
     constructor( x: number, y: number, w: number, h: number ) {
         super();
-        this.rect = new Rect( arguments[ 0 ], arguments[ 1 ], arguments[ 2 ], arguments[ 3 ] );
+        this.rect = new Rect( x, y, w, h );
     }
 
     getRect(): Rect {

@@ -1,7 +1,8 @@
 import { setup     } from './Helpers.spec';
-import { Rectangle } from '../../../viewees/visibles/shapes';
 import { Point     } from '../../../geometry';
-import { Path      } from '../../../viewees/visibles/path'
+
+import { Rectangle,
+         Path      } from '../../../viewees'
 
 describe( 'Refreshing: The canvas should refresh when', () => {
 

@@ -1,6 +1,6 @@
 import { Layer     } from '../'
 import { setup     } from './Helpers.spec';
-import { Rectangle } from '../../../viewees/visibles/shapes';
+import { Rectangle } from '../../../viewees';
 
 describe( 'Layers: ', () => {
 
