@@ -4,8 +4,11 @@
 
 import { Point,
          Rect        } from '../../src/view/geometry';
-import { Rectangle   } from '../../src/view/viewees/visibles/shapes';
-import { Transformer } from '../../src/view/viewees/invisibles';
+
+import { Rectangle,
+         Transformer } from '../../src/view/viewees';
+
+import { getViewElement } from '../mocks/mockDom';
 
 export
 type Row = string[];
@@ -154,4 +157,40 @@ function renderedToString( aRendered: any[] ): string {
         return iRendered.type + ' '  + iParams;
     });
     return iLines.join( '\n' );
+}
+
+
+function newMouseEvent( aType, sx, sy, cx, cy ) {
+    let e = {
+        bubbles:       true,
+        cancelable:    ( aType != 'mousemove' ),
+        view:          window,
+        detail:        0,
+        screenX:       sx,
+        screenY:       sy,
+        clientX:       cx,
+        clientY:       cy,
+        ctrlKey:       false,
+        altKey:        false,
+        shiftKey:      false,
+        metaKey:       false,
+        button:        0,
+        relatedTarget: undefined
+    };
+
+    let iEvent = document.createEvent( 'MouseEvents' );
+
+    iEvent.initMouseEvent( aType,
+        e.bubbles, e.cancelable, e.view, e.detail,
+        e.screenX, e.screenY, e.clientX, e.clientY,
+        e.ctrlKey, e.altKey, e.shiftKey, e.metaKey,
+        e.button, document.body.parentNode);
+
+    return iEvent;
+}
+
+export
+function simulateMouseEvent( aEventType, x, y ) {
+    let iEvent = newMouseEvent( aEventType, x, y, x, y );
+    getViewElement().dispatchEvent( iEvent );
 }

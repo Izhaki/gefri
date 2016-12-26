@@ -6,7 +6,10 @@ import { Rect,
          TransformMatrix  } from '../geometry';
 
 export
-class Viewee extends Composite< Viewee > {
+type Viewees = Viewee[];
+
+export
+abstract class Viewee extends Composite< Viewee > {
     static    updatesStream: Stream = new Stream(); // A global static (null) updates stream
     protected updatesStream: Stream = Viewee.updatesStream;
 
@@ -27,6 +30,11 @@ class Viewee extends Composite< Viewee > {
             aChild.attach( aStream );
         });
     }
+
+    /**
+     * @returns {boolean} true if the viewee should be hit-tested against
+     */
+    abstract isInteractive(): boolean;
 
     detach() {
         this.updatesStream = Viewee.updatesStream;

@@ -16,6 +16,10 @@ abstract class Visible extends Viewee {
 
     isVisible(): boolean {
         return this.visible;
-    };
+    }
+
+    isInteractive(): boolean {
+        return this.visible;
+    }
 
 }

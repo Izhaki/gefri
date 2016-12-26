@@ -1,5 +1,10 @@
 import { Viewee }  from '../Viewee';
 
 export
-abstract class Invisible extends Viewee {
+class Invisible extends Viewee {
+
+    isInteractive(): boolean {
+        return false;
+    }
+
 }

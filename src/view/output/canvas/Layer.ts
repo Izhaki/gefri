@@ -1,5 +1,6 @@
 import { Control      } from '../../Control';
-import { Viewee       } from '../../viewees/Viewee';
+import { Viewee,
+         Viewees       } from '../../viewees/Viewee';
 import { Renderer,
          Updater      } from './';
 import { Rects        } from '../../geometry';
@@ -8,9 +9,9 @@ import { onNextFrame  } from '../onNextFrame'
 
 export
 class Layer extends ElementLayer {
-    private context:      CanvasRenderingContext2D;
-    private renderer:     Renderer;
-    private updater:      Updater;
+    private context:  CanvasRenderingContext2D;
+    private renderer: Renderer;
+    private updater:  Updater;
 
     // Called after the layer element has been added to the DOM, which is
     // required in order to retrive the actual context.
@@ -24,7 +25,7 @@ class Layer extends ElementLayer {
         this.updater  = new Updater( this.updatesStream );
     }
 
-    addViewees( ...aViewees: Viewee[] ): void {
+    addViewees( ...aViewees: Viewees ): void {
         super.addViewees( ...aViewees );
         this.queueRefresh();
     }

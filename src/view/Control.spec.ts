@@ -1,9 +1,10 @@
-import { Control } from './Control';
+import { Control        } from './Control';
+import { getViewElement } from '../../tests/mocks/mockDom'
 
 export
 function createControl(): Control {
 
-    let iViewElement = document.getElementById( 'view' );
+    let iViewElement = getViewElement();
 
     iViewElement.setAttribute( 'style', 'width:500px; height:400px;' );
     iViewElement.innerHTML = '';

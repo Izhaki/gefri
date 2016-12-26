@@ -1,22 +1,31 @@
-import { Control } from '../Control';
-import { Viewee  } from '../viewees/Viewee';
-import { Root    } from '../viewees/invisibles';
-import { Stream  } from '../../core';
+import { Control   } from '../Control';
+import { Stream    } from '../../core';
+import { HitTester } from './HitTester'
+
 import { Rect    } from '../geometry';
+
+import { Viewee,
+         Viewees,
+         Root    } from '../viewees';
 
 export
 abstract class ElementLayer {
     private   element:              HTMLElement;
     private   hasBeenAddedToTheDOM: boolean = false;
+    private   hitTester:            HitTester;
+
     protected control:              Control
 
     protected root:                 Root;
     protected updatesStream:        Stream;
 
+
+
     constructor() {
         this.updatesStream = new Stream();
         this.root          = new Root( this );
         this.element       = this.createElement();
+        this.hitTester     = new HitTester();
 
         this.root.attach( this.updatesStream );
     }
@@ -30,7 +39,7 @@ abstract class ElementLayer {
         return this.control.getBoundingRect();
     }
 
-    addViewees( ...aViewees: Viewee[] ): void {
+    addViewees( ...aViewees: Viewees ): void {
         if ( !this.hasBeenAddedToTheDOM ) {
             throw new Error( 'Adding viewees to a layer before it has been added to the DOM' );
         }
@@ -42,6 +51,12 @@ abstract class ElementLayer {
 
     getElement(): HTMLElement {
         return this.element;
+    }
+
+    hitTest( x: number, y: number ): Viewees {
+        let hits: Viewees = [];
+        this.hitTester.test( this.root, x, y, hits );
+        return hits;
     }
 
     protected abstract createElement(): HTMLElement;

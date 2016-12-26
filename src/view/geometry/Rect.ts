@@ -166,4 +166,9 @@ class Rect {
 
     }
 
+    contains( x: number, y: number ): boolean {
+        return this.getLeft() <= x && this.getRight()  >= x &&
+               this.getTop()  <= y && this.getBottom() >= y;
+    }
+
 }

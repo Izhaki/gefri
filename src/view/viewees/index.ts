@@ -1,4 +1,5 @@
-export { Viewee       } from './Viewee';
+export { Viewee,
+         Viewees      } from './Viewee';
 export { Root,
          Transformer  } from './invisibles';
 export { Rectangle    } from './visibles/shapes';
