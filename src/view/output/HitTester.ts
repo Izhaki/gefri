@@ -17,14 +17,16 @@ class HitTester extends Transformable {
     }
 
     test( aViewee: Viewee, x: number, y:number, hits: Viewees ) {
-        if ( aViewee.isInteractive() ) {
-            let aVieweeRect = this.getVieweeAbsoluteBoundingRect( aViewee );
-            let isHit = aVieweeRect.contains( x, y );
-            if ( isHit ) {
-                hits.unshift( aViewee );
+        if ( aViewee.rendered ) {
+            if ( aViewee.isInteractive() ) {
+                let aVieweeRect = this.getVieweeAbsoluteBoundingRect( aViewee );
+                let isHit = aVieweeRect.contains( x, y );
+                if ( isHit ) {
+                    hits.unshift( aViewee );
+                }
             }
+            this.testChildren( aViewee, x, y, hits );
         }
-        this.testChildren( aViewee, x, y, hits );
     }
 
     private testChildren( aViewee: Viewee, x: number, y:number, hits: Viewees ): void {

@@ -71,5 +71,19 @@ describe( 'Hit testing: ', () => {
 
         });
 
+        it( 'should exclude hidden viewees and their children', () => {
+            let { iFace } = this.createViewees(`
+                | iFace  | Rectangle | 10, 10, 100, 100 |
+                |   iEye | Rectangle | 10, 10,  10,  10 |
+            `);
+
+            iFace.shown = false;
+
+            this.layer.addViewees( iFace );
+            simulateMouseEvent( 'mousemove', 20, 20 );
+
+            expect( this.onMouseMove ).toHaveBeenCalledWith([]);
+        });
+
     });
 });

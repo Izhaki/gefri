@@ -18,6 +18,15 @@ abstract class Visible extends Viewee {
         return this.visible;
     }
 
+    get shown(): boolean {
+        return this._rendered;
+    }
+
+    set shown( shown: boolean ) {
+        this._rendered = shown;
+        this.notifyUpdate();
+    }
+
     isInteractive(): boolean {
         return this.visible;
     }

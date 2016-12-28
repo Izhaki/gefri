@@ -15,6 +15,13 @@ abstract class Viewee extends Composite< Viewee > {
 
     protected clipping: boolean = true;
 
+    // Determines wheather or not the viewee and its children should be rendered.
+    protected _rendered: boolean = true;
+
+    get rendered(): boolean {
+        return this._rendered;
+    }
+
     get isClipping(): boolean {
         return this.clipping;
     }
