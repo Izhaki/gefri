@@ -18,11 +18,11 @@ class Layer extends ElementLayer {
     onAfterAdded( aControl: Control ): void {
         super.onAfterAdded( aControl );
 
-        this.updatesStream.subscribe( () => this.queueRefresh() )
+        this.updates$.subscribe( () => this.queueRefresh() )
 
         this.context  = this.getContext( this.getCanvas() );
         this.renderer = new Renderer( this.context );
-        this.updater  = new Updater( this.updatesStream );
+        this.updater  = new Updater( this.updates$ );
     }
 
     addViewees( ...aViewees: Viewees ): void {

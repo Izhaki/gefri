@@ -17,17 +17,17 @@ abstract class ElementLayer {
     protected control:              Control
 
     protected root:                 Root;
-    protected updatesStream:        Stream;
+    protected updates$:             Stream;
 
 
 
     constructor() {
-        this.updatesStream = new Stream();
-        this.root          = new Root( this );
-        this.element       = this.createElement();
-        this.hitTester     = new HitTester();
+        this.updates$  = new Stream();
+        this.root      = new Root( this );
+        this.element   = this.createElement();
+        this.hitTester = new HitTester();
 
-        this.root.attach( this.updatesStream );
+        this.root.attach( this.updates$ );
     }
 
     onAfterAdded( aControl: Control ): void {

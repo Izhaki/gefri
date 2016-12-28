@@ -10,8 +10,8 @@ type Viewees = Viewee[];
 
 export
 abstract class Viewee extends Composite< Viewee > {
-    static    updatesStream: Stream = new Stream(); // A global static (null) updates stream
-    protected updatesStream: Stream = Viewee.updatesStream;
+    static    updates$: Stream = new Stream(); // A global static (null) updates stream
+    protected updates$: Stream = Viewee.updates$;
 
     protected clipping: boolean = true;
 
@@ -31,7 +31,7 @@ abstract class Viewee extends Composite< Viewee > {
     }
 
     attach( aStream: Stream ) {
-        this.updatesStream = aStream;
+        this.updates$ = aStream;
 
         this.forEachChild( aChild => {
             aChild.attach( aStream );
@@ -44,7 +44,7 @@ abstract class Viewee extends Composite< Viewee > {
     abstract isInteractive(): boolean;
 
     detach() {
-        this.updatesStream = Viewee.updatesStream;
+        this.updates$ = Viewee.updates$;
 
         this.forEachChild( aChild => {
             aChild.detach();
@@ -52,7 +52,7 @@ abstract class Viewee extends Composite< Viewee > {
     }
 
     protected onAfterAdd() {
-        let iUpdateStream = this.getParent().updatesStream;
+        let iUpdateStream = this.getParent().updates$;
         this.attach( iUpdateStream );
         super.onAfterAdd();
         this.notifyUpdate();
@@ -65,7 +65,7 @@ abstract class Viewee extends Composite< Viewee > {
     }
 
     protected notifyUpdate(): void {
-        this.updatesStream.notify( this );
+        this.updates$.notify( this );
     }
 
 }
