@@ -112,8 +112,11 @@ class Rect {
 
         this.x = iLeft;
         this.y = iTop;
-        this.w = iRight - iLeft;
-        this.h = iBottom - iTop;
+
+        // If two rects do not intersect, the resultant size will be negative.
+        // In such case, we set the size to 0 - which currently represents a null rect.
+        this.w = Math.max( 0, iRight - iLeft );
+        this.h = Math.max( 0, iBottom - iTop );
     }
 
     union( aRect: Rect ): void {
@@ -167,7 +170,8 @@ class Rect {
     }
 
     contains( x: number, y: number ): boolean {
-        return this.getLeft() <= x && this.getRight()  >= x &&
+        return this.w != 0         && this.h != 0           &&
+               this.getLeft() <= x && this.getRight()  >= x &&
                this.getTop()  <= y && this.getBottom() >= y;
     }
 

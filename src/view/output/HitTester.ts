@@ -2,13 +2,13 @@ import { getBoundingRect,
          cumulateTransformationsOf } from '../viewees/multimethods';
 
 import { Rect          } from '../geometry';
-import { Transformable } from './Transformable';
+import { Clipped       } from './Clipped';
 import { Viewee,
          Viewees       } from '../viewees';
 import { Visible       } from '../viewees/visibles/Visible';
 
 export
-class HitTester extends Transformable {
+class HitTester extends Clipped {
     private cumulateTransformationsOf: ( Viewee ) => void;
 
     constructor() {
@@ -20,6 +20,7 @@ class HitTester extends Transformable {
         if ( aViewee.rendered ) {
             if ( aViewee.isInteractive() ) {
                 let aVieweeRect = this.getVieweeAbsoluteBoundingRect( aViewee );
+                aVieweeRect.intersect( this.clipArea );
                 let isHit = aVieweeRect.contains( x, y );
                 if ( isHit ) {
                     hits.unshift( aViewee );
@@ -34,9 +35,9 @@ class HitTester extends Transformable {
 
         this.pushState();
 
-        // if ( aViewee.isClipping ) {
-        //     this.intersectClipAreaWith( getBoundingRect( aViewee ) );
-        // }
+        if ( aViewee.isClipping ) {
+            this.intersectClipAreaWith( getBoundingRect( aViewee ) );
+        }
 
         this.cumulateTransformationsOf( aViewee );
 
@@ -49,6 +50,13 @@ class HitTester extends Transformable {
 
     private getVieweeAbsoluteBoundingRect( aViewee: Viewee ): Rect {
         return this.toAbsoluteRect( getBoundingRect( aViewee ) );
+    }
+
+    protected intersectClipAreaWith( aRelativeRect: Rect ): void {
+        // Clip area is in absolute coordinates
+        // So we convert the rect to absolute ones.
+        let iAbsoluteRect = this.toAbsoluteRect( aRelativeRect );
+        super.intersectClipAreaWith( iAbsoluteRect );
     }
 
 }

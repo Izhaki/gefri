@@ -64,6 +64,13 @@ iTransformer.addChildren( iCubic );
 
 iCanvasLayer.addViewees( iTransformer );
 
+function onMouseMove( aViewees ) {
+    console.log( aViewees.length );
+}
+
+iControl.mouseMove$.subscribe( onMouseMove );
+
+
 /*
 var iOverlay = new CanvasLayer();
 var iMask    = new Rectangle( 10, 10, 100, 100 );

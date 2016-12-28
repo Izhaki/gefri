@@ -85,5 +85,17 @@ describe( 'Hit testing: ', () => {
             expect( this.onMouseMove ).toHaveBeenCalledWith([]);
         });
 
+        it( 'should exclude portions of viewees that are outside the clip area', () => {
+            let { iContainer } = this.createViewees(`
+                | iContainer  | Rectangle | 100, 100, 100, 100 |
+                |   iClipped  | Rectangle | 100, 100, 100, 100 |
+            `);
+
+            this.layer.addViewees( iContainer );
+            simulateMouseEvent( 'mousemove', 201, 201 );
+
+            expect( this.onMouseMove ).toHaveBeenCalledWith([]);
+        });
+
     });
 });
