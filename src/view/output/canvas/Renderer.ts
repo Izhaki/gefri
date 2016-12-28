@@ -55,12 +55,14 @@ class Renderer extends Contextual {
     }
 
     private needsRendering( aViewee: Viewee ): boolean {
-        if ( aViewee instanceof Visible ) {
-            let isVisble = (<Visible>aViewee).isVisible();
-            let isWithinClipArea = this.isWithinClipArea( aViewee );
-            return isVisble && isWithinClipArea;
+        if ( aViewee.rendered ) {
+            if ( aViewee instanceof Visible ) {
+                return this.isWithinClipArea( aViewee );
+            } else {
+                return true;
+            }
         } else {
-            return true;
+            return false;
         }
     }
 

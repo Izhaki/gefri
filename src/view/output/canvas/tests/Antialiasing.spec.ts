@@ -14,7 +14,7 @@ describe( 'Antialiasing: Erase operations should extract the viewee bounding rec
         this.layer.addViewees( iRectangle );
         this.clearRenderedLog();
 
-        iRectangle.hide();
+        iRectangle.shown = false;
 
         expect( this.context ).toHaveRendered(`
             | Erase | 99.5, 99.5, 11, 11 |

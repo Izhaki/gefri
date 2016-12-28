@@ -19,11 +19,11 @@ describe( 'Layers: ', () => {
             |   iRectangle | Rectangle   | 10, 10, 10, 10 |
         `);
 
-        iRectangle.hide();
+        iRectangle.shown = false;
         this.layer.addViewees( iTransformer );
         this.clearRenderedLog();
 
-        iRectangle.show();
+        iRectangle.shown = true;
         iTransformer.setScale( 2, 2 );
 
         // Had updates would happen after each change, we would see the
@@ -71,7 +71,7 @@ describe( 'Layers: ', () => {
         });
 
         it( 'only the layer on which changes happen should update', () => {
-            this.RectL1.hide();
+            this.RectL1.shown = false;
             expect( this.L1.context ).toHaveRendered(`
                 | Erase | 10, 10, 20, 20 |
             `);

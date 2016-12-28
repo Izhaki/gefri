@@ -95,7 +95,7 @@ describe( 'Refreshing: The canvas should refresh when', () => {
 
 
         it( 'is hidden', () => {
-            this.rectangle.hide();
+            this.rectangle.shown = false;
 
             expect( this.context ).toHaveRendered(`
                 | Erase | 100, 100, 10, 10 |
@@ -103,7 +103,7 @@ describe( 'Refreshing: The canvas should refresh when', () => {
         });
 
         it( 'is shown', () => {
-            this.rectangle.show();
+            this.rectangle.shown = true;
 
             expect( this.context ).toHaveRendered(`
                 | Erase     | 100, 100, 10, 10 |
