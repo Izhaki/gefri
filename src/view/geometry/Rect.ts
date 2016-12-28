@@ -41,15 +41,15 @@ class Rect {
 
     }
 
-    static unionRects( aRects: Rects ) : Rect {
-        let iLefts   = aRects.map( ( aRect ) => aRect.getLeft()   ),
-            iRights  = aRects.map( ( aRect ) => aRect.getRight()  ),
-            iTops    = aRects.map( ( aRect ) => aRect.getTop()    ),
-            iBottoms = aRects.map( ( aRect ) => aRect.getBottom() );
+    static union( aRects: Rects ) : Rect {
+        let iLefts   = aRects.map( aRect => aRect.getLeft()   ),
+            iRights  = aRects.map( aRect => aRect.getRight()  ),
+            iTops    = aRects.map( aRect => aRect.getTop()    ),
+            iBottoms = aRects.map( aRect => aRect.getBottom() );
 
-        let iLeft    = Math.min( ...iLefts   ),
-            iRight   = Math.max( ...iRights  ),
-            iTop     = Math.min( ...iTops    ),
+        let iLeft   = Math.min( ...iLefts   ),
+            iRight  = Math.max( ...iRights  ),
+            iTop    = Math.min( ...iTops    ),
             iBottom = Math.max( ...iBottoms );
 
         return new Rect (
@@ -88,7 +88,7 @@ class Rect {
         return new Point( this.getLeft(), this.getTop() );
     }
 
-    apply( ...aMatrices: TransformMatrix[] ) : Rect {
+    apply( ...aMatrices: TransformMatrix[] ): Rect {
         let iRect = this.clone();
 
         aMatrices.forEach( ( aMatrix: TransformMatrix ) => {

@@ -6,10 +6,10 @@ describe( 'Rect', () => {
 
     describe( 'The static method', () => {
 
-        describe( 'unionRects()', () => {
+        describe( 'union()', () => {
 
             it( 'should return a new rect that is a union of all the provided rects', () => {
-                let iUnion = Rect.unionRects([
+                let iUnion = Rect.union([
                     new Rect( 10, 20, 30, 40 ),
                     new Rect( 30, 40, 50, 60 ),
                     new Rect( 20, 20, 10, 10 ),

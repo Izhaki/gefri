@@ -33,6 +33,6 @@ let getBoundingRect = methodDispatcher({
             iSegmentBoundingRects.push( iSegmentBoundingRect );
         });
 
-        return Rect.unionRects( iSegmentBoundingRects );
+        return Rect.union( iSegmentBoundingRects );
     }
 });
