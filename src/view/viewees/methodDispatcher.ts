@@ -6,8 +6,8 @@ import { getClassName } from '../../core/Utils';
  */
 export
 function methodDispatcher( aMethods ) {
-    return ( aViewee ) => {
+    return ( aViewee, ...args ) => {
         let iClassName = getClassName( aViewee );
-        return aMethods[iClassName]( aViewee );
+        return aMethods[iClassName]( aViewee, ...args );
     }
 }

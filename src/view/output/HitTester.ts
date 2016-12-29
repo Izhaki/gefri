@@ -1,5 +1,6 @@
 import { getBoundingRect,
-         cumulateTransformationsOf } from '../viewees/multimethods';
+         cumulateTransformationsOf,
+         hitTest                    } from '../viewees/multimethods';
 
 import { Rect          } from '../geometry';
 import { Clipped       } from './Clipped';
@@ -9,19 +10,23 @@ import { Visible       } from '../viewees/visibles/Visible';
 
 export
 class HitTester extends Clipped {
-    private cumulateTransformationsOf: ( Viewee ) => void;
+    private cumulateTransformationsOf: ( aViewee: Viewee ) => void;
+    private hitTest:                   ( aViewee: Viewee, x: number, y: number, clipArea: Rect ) => boolean;
 
     constructor() {
         super();
         this.cumulateTransformationsOf = cumulateTransformationsOf.curry( this );
+        let getVieweeAbsoluteBoundingRect = ( aViewee: Viewee ) => this.getVieweeAbsoluteBoundingRect( aViewee );
+        this.hitTest = hitTest.curry( getVieweeAbsoluteBoundingRect );
     }
 
     test( aViewee: Viewee, x: number, y:number, hits: Viewees ) {
         if ( aViewee.rendered ) {
             if ( aViewee.isInteractive() ) {
-                let aVieweeRect = this.getVieweeAbsoluteBoundingRect( aViewee );
-                aVieweeRect.intersect( this.clipArea );
-                let isHit = aVieweeRect.contains( x, y );
+                // let aVieweeRect = this.getVieweeAbsoluteBoundingRect( aViewee );
+                // aVieweeRect.intersect( this.clipArea );
+                // let isHit = aVieweeRect.contains( x, y );
+                let isHit = this.hitTest( aViewee, x, y, this.clipArea );
                 if ( isHit ) {
                     hits.unshift( aViewee );
                 }
@@ -48,7 +53,7 @@ class HitTester extends Clipped {
         this.popState();
     }
 
-    private getVieweeAbsoluteBoundingRect( aViewee: Viewee ): Rect {
+    protected getVieweeAbsoluteBoundingRect( aViewee: Viewee ): Rect {
         return this.toAbsoluteRect( getBoundingRect( aViewee ) );
     }
 
