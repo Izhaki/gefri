@@ -14,9 +14,9 @@ import { fill,
 
 export
 class Renderer extends Contextual {
-    private cumulateTransformationsOf: ( Viewee ) => void;
-    private fill:                      ( Viewee ) => void;
-    stroke:                            ( Viewee ) => void;
+    private cumulateTransformationsOf: ( aViewee: Viewee ) => void;
+    private fill:                      ( aViewee: Viewee ) => void;
+    stroke:                            ( what:    any    ) => void;
 
     constructor( aContext: CanvasRenderingContext2D ) {
         super( aContext );

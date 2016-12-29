@@ -9,7 +9,7 @@ import { cumulateTransformationsOf } from '../../viewees/multimethods';
 export
 class Updater extends Transformable {
     private damagedRects:              Rects = [];
-    private cumulateTransformationsOf: ( Viewee ) => void;
+    private cumulateTransformationsOf: ( aViewee: Viewee ) => void;
 
     constructor( aUpdateStream: Stream ) {
         super();
