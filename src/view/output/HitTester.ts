@@ -16,8 +16,10 @@ class HitTester extends Clipped {
     constructor() {
         super();
         this.cumulateTransformationsOf = cumulateTransformationsOf.curry( this );
-        let getVieweeAbsoluteBoundingRect = ( aViewee: Viewee ) => this.getVieweeAbsoluteBoundingRect( aViewee );
-        this.hitTest = hitTest.curry( getVieweeAbsoluteBoundingRect );
+        this.hitTest = hitTest.curry(
+            // We define a new function so to maintain this.
+            aViewee => this.getVieweeAbsoluteBoundingRect( aViewee )
+        );
     }
 
     test( aViewee: Viewee, x: number, y:number, hits: Viewees ) {
@@ -51,10 +53,6 @@ class HitTester extends Clipped {
         });
 
         this.popState();
-    }
-
-    protected getVieweeAbsoluteBoundingRect( aViewee: Viewee ): Rect {
-        return this.toAbsoluteRect( getBoundingRect( aViewee ) );
     }
 
     protected intersectClipAreaWith( aRelativeRect: Rect ): void {

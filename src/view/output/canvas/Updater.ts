@@ -1,13 +1,10 @@
 import { Transformable   } from '../';
 import { Stream          } from '../../../core';
-import { Viewee          } from '../../viewees/Viewee';
-import { Rect,
-         Rects,
+import { Viewee          } from '../../viewees';
+import { Rects,
          TransformMatrix } from '../../geometry';
 
-import { getBoundingRect,
-         cumulateTransformationsOf } from '../../viewees/multimethods';
-
+import { cumulateTransformationsOf } from '../../viewees/multimethods';
 
 export
 class Updater extends Transformable {
@@ -42,10 +39,6 @@ class Updater extends Transformable {
     private addVieweeBoundingRectToDamagedRect( aViewee ) {
         let iDamagedRect = this.getVieweeAbsoluteBoundingRect( aViewee );
         this.damagedRects.push( iDamagedRect );
-    }
-
-    private getVieweeAbsoluteBoundingRect( aViewee: Viewee ): Rect {
-        return this.toAbsoluteRect( getBoundingRect( aViewee ) );
     }
 
 }

@@ -4,6 +4,9 @@ import { Translation,
          TransformMatrix,
          Rect,
          Point            } from '../geometry';
+import { Viewee           } from '../viewees';
+import { getBoundingRect  } from '../viewees/multimethods';
+
 
 export
 interface Transformations {
@@ -43,6 +46,11 @@ class Transformable extends Stateful {
     protected toAbsoluteRect( aRelativeRect: Rect ): Rect {
         return aRelativeRect.apply( this.scaleMatrix, this.zoomMatrix );
     }
+
+    protected getVieweeAbsoluteBoundingRect( aViewee: Viewee ): Rect {
+        return this.toAbsoluteRect( getBoundingRect( aViewee ) );
+    }
+
 
     protected getState() : any {
         var iState        = super.getState();
