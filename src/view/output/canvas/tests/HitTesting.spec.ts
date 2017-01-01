@@ -1,5 +1,8 @@
 import { setup } from './Helpers.spec';
-import { simulateMouseEvent } from '../../../../../tests/unit/helpers'
+import { simulateMouseEvent } from '../../../../../tests/unit/helpers';
+
+import { Point } from '../../../geometry';
+import { Path  } from '../../../viewees/';
 
 describe( 'Hit testing: ', () => {
 
@@ -96,6 +99,67 @@ describe( 'Hit testing: ', () => {
 
             expect( this.onMouseMove ).toHaveBeenCalledWith([]);
         });
+
+        it( 'should include a line path if the distance is smaller than the padding value', () => {
+            this.path = new Path( new Point( 10, 10 ) );
+            this.path.lineTo( new Point ( 20, 20 ) );
+
+            this.layer.addViewees( this.path );
+            simulateMouseEvent( 'mousemove', 16, 14 );
+
+            expect( this.onMouseMove ).toHaveBeenCalledWith([ this.path ]);
+        });
+
+        it( 'should exclude a line path if the distance is bigger than the padding value', () => {
+            this.path = new Path( new Point( 10, 10 ) );
+            this.path.lineTo( new Point ( 20, 20 ) );
+
+            this.layer.addViewees( this.path );
+            simulateMouseEvent( 'mousemove', 11, 19 );
+
+            expect( this.onMouseMove ).toHaveBeenCalledWith([]);
+        });
+
+        it( 'should include a quadratic Bézier path if the distance is smaller than the padding value', () => {
+            this.path = new Path( new Point( 10, 10 ) );
+            this.path.quadTo( new Point( 20, 20 ), new Point ( 10, 30 ) );
+
+            this.layer.addViewees( this.path );
+            simulateMouseEvent( 'mousemove', 16, 20 );
+
+            expect( this.onMouseMove ).toHaveBeenCalledWith([ this.path ]);
+        });
+
+        it( 'should exclude a quadratic Bézier path if the distance is bigger than the padding value', () => {
+            this.path = new Path( new Point( 10, 10 ) );
+            this.path.quadTo( new Point( 20, 20 ), new Point ( 10, 30 ) );
+
+            this.layer.addViewees( this.path );
+            simulateMouseEvent( 'mousemove', 10, 20 );
+
+            expect( this.onMouseMove ).toHaveBeenCalledWith([]);
+        });
+
+        it( 'should include a cubic Bézier path if the distance is smaller than the padding value', () => {
+            this.path = new Path( new Point( 10, 10 ) );
+            this.path.cubicTo( new Point( 20, 20 ), new Point ( 20, 30 ), new Point ( 10, 40 ) );
+
+            this.layer.addViewees( this.path );
+            simulateMouseEvent( 'mousemove', 16, 25 );
+
+            expect( this.onMouseMove ).toHaveBeenCalledWith([ this.path ]);
+        });
+
+        it( 'should exclude a cubic Bézier path if the distance is bigger than the padding value', () => {
+            this.path = new Path( new Point( 10, 10 ) );
+            this.path.cubicTo( new Point( 20, 20 ), new Point ( 20, 30 ), new Point ( 10, 40 ) );
+
+            this.layer.addViewees( this.path );
+            simulateMouseEvent( 'mousemove', 12, 25 );
+
+            expect( this.onMouseMove ).toHaveBeenCalledWith([]);
+        });
+
 
     });
 });

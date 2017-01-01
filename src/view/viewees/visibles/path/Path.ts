@@ -77,6 +77,16 @@ class Path extends Visible {
         return this.start;
     }
 
+    getPointDistance( x: number, y: number ): number {
+        let iSegmentDistances: number[] = [];
+        this.forEachSegment( ( aSegment, aStart ) => {
+            let iDistance = aSegment.getPointDistance( aStart, x, y );
+            iSegmentDistances.push( iDistance );
+        });
+
+        return Math.min( ...iSegmentDistances );
+    }
+
     forEachSegment( aCallback ): void {
         this.segments.forEach( ( aSegment: PathSegment, aIndex: number ) => {
             let isFirstSegment = aIndex == 0;

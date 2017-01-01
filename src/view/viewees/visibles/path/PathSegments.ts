@@ -20,6 +20,7 @@ abstract class PathSegment {
     }
 
     abstract getBoundingRect( aStart: Point ): Rect;
+    abstract getPointDistance( aStart: Point, x: number, y: number ): number;
 
     protected getBezierBoundingRect( aBezier: Bezier ): Rect {
         let iBox = aBezier.bbox();
@@ -43,6 +44,24 @@ class LineSegment extends PathSegment {
         return new Rect( aStart, this.getEnd() );
     };
 
+    getPointDistance( aStart: Point, x: number, y: number ): number {
+        let abs = Math.abs,
+            sqrt = Math.sqrt,
+            sqr  = ( x ) => Math.pow( x, 2 );
+
+        let x1 = aStart.x,
+            y1 = aStart.y,
+            x2 = this.getEnd().x,
+            y2 = this.getEnd().y;
+
+        let iDistance =
+            abs( ( y2 - y1 ) * x - ( x2 - x1 ) * y + x2 * y1 - y2 * x1 )
+            /
+            sqrt( sqr( y2 - y1 ) + sqr( x2 - x1 ) );
+
+        return iDistance
+    }
+
 }
 
 export
@@ -63,19 +82,30 @@ class QuadSegment extends PathSegment {
         this.control = aControl;
     }
 
-    getBoundingRect( aStart: Point ): Rect {
+    private getBezier( aStart ): Bezier {
         let iStart = aStart,
             iCtrl  = this.getControl(),
             iEnd   = this.getEnd();
 
-        let iBezier = new Bezier(
+        return new Bezier(
             iStart.x, iStart.y,
             iCtrl.x,  iCtrl.y,
             iEnd.x,   iEnd.y
         );
+    }
 
+    getBoundingRect( aStart: Point ): Rect {
+        let iBezier = this.getBezier( aStart );
         return this.getBezierBoundingRect( iBezier ) ;
     };
+
+    getPointDistance( aStart: Point, x: number, y: number ): number {
+        let iBezier     = this.getBezier( aStart ),
+            iProjection = iBezier.project({ x, y }),
+            iDistance   = iProjection.d;
+
+        return iDistance;
+    }
 
 }
 
@@ -107,21 +137,32 @@ class CubicSegment extends PathSegment {
         this.control2 = aControl;
     }
 
-    getBoundingRect( aStart: Point ): Rect {
+    private getBezier( aStart ): Bezier {
         let iStart = aStart,
             iCtrl1 = this.getControl1(),
             iCtrl2 = this.getControl2(),
             iEnd   = this.getEnd();
 
-        let iBezier = new Bezier(
+        return new Bezier(
             iStart.x, iStart.y,
             iCtrl1.x, iCtrl1.y,
             iCtrl2.x, iCtrl2.y,
             iEnd.x,   iEnd.y
         );
+    }
 
+    getBoundingRect( aStart: Point ): Rect {
+        let iBezier = this.getBezier( aStart );
         return this.getBezierBoundingRect( iBezier ) ;
 
-    };
+    }
+
+    getPointDistance( aStart: Point, x: number, y: number ): number {
+        let iBezier     = this.getBezier( aStart ),
+            iProjection = iBezier.project({ x, y }),
+            iDistance   = iProjection.d;
+
+        return iDistance;
+    }
 
 }
