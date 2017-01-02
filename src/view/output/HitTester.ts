@@ -12,21 +12,21 @@ import { Visible       } from '../viewees/visibles/Visible';
 export
 class HitTester extends Clipped {
     private cumulateTransformationsOf: ( aViewee: Viewee ) => void;
-    private hitTest:                   ( aViewee: Viewee, x: number, y: number, clipArea: Rect, aAbsoluteMatrix: TransformMatrix ) => boolean;
+    private hitTest:                   ( aViewee: Viewee, x: number, y: number, aAbsoluteMatrix: TransformMatrix ) => boolean;
 
     constructor() {
         super();
         this.cumulateTransformationsOf = cumulateTransformationsOf.curry( this );
         this.hitTest = hitTest.curry(
             // We define a new function so to maintain this.
-            aViewee => this.getVieweeAbsoluteBoundingRect( aViewee )
+            aViewee => this.getRendereredBoundingRectOf( aViewee )
         );
     }
 
     test( aViewee: Viewee, x: number, y:number, hits: Viewees ) {
         if ( aViewee.rendered ) {
             if ( aViewee.isInteractive() ) {
-                let isHit = this.hitTest( aViewee, x, y, this.clipArea, this.getAbsoluteMatrix() );
+                let isHit = this.hitTest( aViewee, x, y, this.getAbsoluteMatrix() );
                 if ( isHit ) {
                     hits.unshift( aViewee );
                 }

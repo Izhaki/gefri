@@ -12,24 +12,22 @@ import { Rectangle,
 
 export
 let hitTest = currify(
-    ( getVieweeAbsoluteBoundingRect ) => methodDispatcher({
+    ( getRendereredBoundingRectOf ) => methodDispatcher({
 
-        Rectangle: ( aRectangle: Rectangle, x: number, y:number, aClipArea: Rect, aAbsoluteMatrix: TransformMatrix ): boolean => {
+        Rectangle: ( aRectangle: Rectangle, x: number, y:number, aAbsoluteMatrix: TransformMatrix ): boolean => {
             let aVieweeRect: Rect;
 
-            aVieweeRect = getVieweeAbsoluteBoundingRect( aRectangle );
-            aVieweeRect.intersect( aClipArea );
+            aVieweeRect = getRendereredBoundingRectOf( aRectangle );
             return aVieweeRect.contains( x, y );
         },
 
-        Path: ( aPath: Path, x: number, y:number, aClipArea: Rect, aAbsoluteMatrix: TransformMatrix ): boolean => {
+        Path: ( aPath: Path, x: number, y:number, aAbsoluteMatrix: TransformMatrix ): boolean => {
             const HIT_PADDING = 3;
             let   aVieweeRect: Rect;
             let   isWithinRect: boolean;
 
-            aVieweeRect = getVieweeAbsoluteBoundingRect( aPath );
+            aVieweeRect = getRendereredBoundingRectOf( aPath );
 
-            aVieweeRect.intersect( aClipArea );
             aVieweeRect.expand( HIT_PADDING )
             isWithinRect = aVieweeRect.contains( x, y );
 

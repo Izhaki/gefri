@@ -1,6 +1,6 @@
+import { Viewee        } from '../viewees';
 import { Transformable } from './';
-import { Rect,
-         Point         } from '../geometry';
+import { Rect          } from '../geometry';
 
 export
 abstract class Clipped extends Transformable {
@@ -16,6 +16,15 @@ abstract class Clipped extends Transformable {
 
     isRectWithinClipArea( aAbsoluteRect: Rect ): boolean {
         return this.clipArea.isOverlappingWith( aAbsoluteRect );
+    }
+
+    protected getRendereredBoundingRectOf( aViewee: Viewee ) : Rect {
+        let aBoundingRect: Rect
+
+        aBoundingRect = super.getRendereredBoundingRectOf( aViewee );
+        aBoundingRect.intersect( this.clipArea );
+
+        return aBoundingRect;
     }
 
     protected getState() : any {
