@@ -9,7 +9,7 @@ describe( 'Hit testing: ', () => {
 
     setup.call( this );
 
-    describe( 'Upon mouse move it', () => {
+    describe( 'Upon mouse move', () => {
 
         beforeEach( () => {
             this.onMouseMove = jasmine.createSpy( 'onMouseMove' );
@@ -17,7 +17,7 @@ describe( 'Hit testing: ', () => {
         });
 
 
-        it( 'should return all the viewees under the mouse in deepest-first order', () => {
+        it( 'it should return all the viewees under the mouse in deepest-first order', () => {
 
             let { iFace, iEye, iPupil } = this.createViewees(`
                 | iFace      | Rectangle | 10, 10, 100, 100 |
@@ -32,7 +32,7 @@ describe( 'Hit testing: ', () => {
 
         });
 
-        it( 'should not return viewees that are not under the mouse', () => {
+        it( 'it should not return viewees that are not under the mouse', () => {
 
             let { iFace, iEye, iPupil } = this.createViewees(`
                 | iFace      | Rectangle | 10, 10, 100, 100 |
@@ -47,7 +47,7 @@ describe( 'Hit testing: ', () => {
 
         });
 
-        it( 'should not return non-interactive viewees', () => {
+        it( 'it should not return non-interactive viewees', () => {
             let { iTransformer } = this.createViewees(`
                 | iTransformer | Transformer | |
             `);
@@ -58,7 +58,7 @@ describe( 'Hit testing: ', () => {
             expect( this.onMouseMove ).toHaveBeenCalledWith([]);
         });
 
-        it( 'should account for transformations', () => {
+        it( 'it should account for transformations', () => {
             let { iTransformer, iFace } = this.createViewees(`
                 | iTransformer | Transformer |                    |
                 |   iFace      | Rectangle   | 200, 200, 100, 100 |
@@ -75,7 +75,7 @@ describe( 'Hit testing: ', () => {
 
         });
 
-        it( 'should exclude hidden viewees and their children', () => {
+        it( 'it should exclude hidden viewees and their children', () => {
             let { iFace } = this.createViewees(`
                 | iFace  | Rectangle | 10, 10, 100, 100 |
                 |   iEye | Rectangle | 10, 10,  10,  10 |
@@ -89,7 +89,7 @@ describe( 'Hit testing: ', () => {
             expect( this.onMouseMove ).toHaveBeenCalledWith([]);
         });
 
-        it( 'should exclude portions of viewees that are outside the clip area', () => {
+        it( 'it should exclude portions of viewees that are outside the clip area', () => {
             let { iContainer } = this.createViewees(`
                 | iContainer  | Rectangle | 100, 100, 100, 100 |
                 |   iClipped  | Rectangle | 100, 100, 100, 100 |
@@ -117,21 +117,21 @@ describe( 'Hit testing: ', () => {
                     this.path.lineTo( new Point ( 20, 20 ) );
                 });
 
-                it( 'should include the path if the distance is smaller than the padding value', () => {
+                it( 'it should include the path if the distance is smaller than the padding value', () => {
                     this.layer.addViewees( this.path );
                     simulateMouseEvent( 'mousemove', 16, 14 );
 
                     expect( this.onMouseMove ).toHaveBeenCalledWith([ this.path ]);
                 });
 
-                it( 'should exclude the path if the distance is bigger than the padding value', () => {
+                it( 'it should exclude the path if the distance is bigger than the padding value', () => {
                     this.layer.addViewees( this.path );
                     simulateMouseEvent( 'mousemove', 11, 19 );
 
                     expect( this.onMouseMove ).toHaveBeenCalledWith([]);
                 });
 
-                it( 'should account for transformations', () => {
+                it( 'it should account for transformations', () => {
                     this.transformer.addChild( this.path );
 
                     this.layer.addViewees( this.transformer );
@@ -151,21 +151,21 @@ describe( 'Hit testing: ', () => {
                 });
 
 
-                it( 'should include the path if the distance is smaller than the padding value', () => {
+                it( 'it should include the path if the distance is smaller than the padding value', () => {
                     this.layer.addViewees( this.path );
                     simulateMouseEvent( 'mousemove', 16, 20 );
 
                     expect( this.onMouseMove ).toHaveBeenCalledWith([ this.path ]);
                 });
 
-                it( 'should exclude the path if the distance is bigger than the padding value', () => {
+                it( 'it should exclude the path if the distance is bigger than the padding value', () => {
                     this.layer.addViewees( this.path );
                     simulateMouseEvent( 'mousemove', 10, 20 );
 
                     expect( this.onMouseMove ).toHaveBeenCalledWith([]);
                 });
 
-                it( 'should account for transformations', () => {
+                it( 'it should account for transformations', () => {
                     this.transformer.addChild( this.path );
 
                     this.layer.addViewees( this.transformer );
@@ -184,21 +184,21 @@ describe( 'Hit testing: ', () => {
                 });
 
 
-                it( 'should include the path if the distance is smaller than the padding value', () => {
+                it( 'it should include the path if the distance is smaller than the padding value', () => {
                     this.layer.addViewees( this.path );
                     simulateMouseEvent( 'mousemove', 16, 25 );
 
                     expect( this.onMouseMove ).toHaveBeenCalledWith([ this.path ]);
                 });
 
-                it( 'should exclude the path if the distance is bigger than the padding value', () => {
+                it( 'it should exclude the path if the distance is bigger than the padding value', () => {
                     this.layer.addViewees( this.path );
                     simulateMouseEvent( 'mousemove', 12, 25 );
 
                     expect( this.onMouseMove ).toHaveBeenCalledWith([]);
                 });
 
-                it( 'should account for transformations', () => {
+                it( 'it should account for transformations', () => {
                     this.transformer.addChild( this.path );
 
                     this.layer.addViewees( this.transformer );
