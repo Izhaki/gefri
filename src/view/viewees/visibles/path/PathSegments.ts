@@ -1,5 +1,6 @@
 import { Point,
-         Rect  } from './../../../geometry';
+         Rect,
+         TransformMatrix  } from './../../../geometry';
 
 import Bezier = require('bezier-js');
 
@@ -21,6 +22,11 @@ abstract class PathSegment {
 
     abstract getBoundingRect( aStart: Point ): Rect;
     abstract getPointDistance( aStart: Point, x: number, y: number ): number;
+    abstract clone(): PathSegment;
+
+    applyMatrix( aMatrix: TransformMatrix ) {
+        this.end = this.end.apply( aMatrix );
+    }
 
     protected getBezierBoundingRect( aBezier: Bezier ): Rect {
         let iBox = aBezier.bbox();
@@ -40,9 +46,13 @@ type PathSegments = PathSegment[];
 export
 class LineSegment extends PathSegment {
 
+    clone(): PathSegment {
+        return new LineSegment( this.getEnd().clone() );
+    }
+
     getBoundingRect( aStart: Point ): Rect {
         return new Rect( aStart, this.getEnd() );
-    };
+    }
 
     getPointDistance( aStart: Point, x: number, y: number ): number {
         let abs = Math.abs,
@@ -72,6 +82,15 @@ class QuadSegment extends PathSegment {
     constructor( aControl: Point, aEnd: Point ) {
         super( aEnd );
         this.control = aControl;
+    }
+
+    clone(): PathSegment {
+        return new QuadSegment( this.getControl().clone(), this.getEnd().clone() );
+    }
+
+    applyMatrix( aMatrix: TransformMatrix ) {
+        super.applyMatrix( aMatrix );
+        this.control = this.control.apply( aMatrix );
     }
 
     getControl(): Point {
@@ -120,6 +139,16 @@ class CubicSegment extends PathSegment {
         this.control1 = aControl1;
         this.control2 = aControl2;
     }
+
+    clone(): PathSegment {
+        return new CubicSegment( this.getControl1().clone(), this.getControl2().clone(), this.getEnd().clone() );
+    }
+
+    applyMatrix( aMatrix: TransformMatrix ) {
+        super.applyMatrix( aMatrix );
+        this.control1 = this.control1.apply( aMatrix );
+        this.control2 = this.control2.apply( aMatrix );
+    };
 
     getControl1(): Point {
         return this.control1;

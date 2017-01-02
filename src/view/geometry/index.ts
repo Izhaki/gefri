@@ -1,7 +1,8 @@
 import { Point           } from './Point';
 export { Point           } from './Point';
 export { Rect, Rects     } from './Rect';
-export { TransformMatrix } from './TransformMatrix'
+export { TransformMatrix,
+         Matrices        } from './TransformMatrix'
 
 export
 type Translation = Point;

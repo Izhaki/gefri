@@ -4,7 +4,8 @@ import { getBoundingRect  } from './getBoundingRect';
 
 import { HitTester        } from '../../output';
 
-import { Rect          } from './../../geometry';
+import { Rect,
+         TransformMatrix  } from './../../geometry';
 
 import { Rectangle,
          Path          } from '../';
@@ -13,7 +14,7 @@ export
 let hitTest = currify(
     ( getVieweeAbsoluteBoundingRect ) => methodDispatcher({
 
-        Rectangle: ( aRectangle: Rectangle, x: number, y:number, aClipArea: Rect ): boolean => {
+        Rectangle: ( aRectangle: Rectangle, x: number, y:number, aClipArea: Rect, aAbsoluteMatrix: TransformMatrix ): boolean => {
             let aVieweeRect: Rect;
 
             aVieweeRect = getVieweeAbsoluteBoundingRect( aRectangle );
@@ -21,8 +22,8 @@ let hitTest = currify(
             return aVieweeRect.contains( x, y );
         },
 
-        Path: ( aPath: Path, x: number, y:number, aClipArea: Rect ): boolean => {
-            const HIT_PADDING = 2;
+        Path: ( aPath: Path, x: number, y:number, aClipArea: Rect, aAbsoluteMatrix: TransformMatrix ): boolean => {
+            const HIT_PADDING = 3;
             let   aVieweeRect: Rect;
             let   isWithinRect: boolean;
 
@@ -33,7 +34,8 @@ let hitTest = currify(
             isWithinRect = aVieweeRect.contains( x, y );
 
             if ( isWithinRect ) {
-                let iDistance = aPath.getPointDistance( x, y );
+                let aAbsolutePath = Path.applyMatrix( aPath, aAbsoluteMatrix );
+                let iDistance = aAbsolutePath.getPointDistance( x, y );
                 return iDistance < HIT_PADDING;
             } else {
                 return false;

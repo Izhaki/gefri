@@ -1,5 +1,6 @@
 import { Point,
          TransformMatrix,
+         Matrices,
          Translation      } from './';
 
 export
@@ -88,7 +89,7 @@ class Rect {
         return new Point( this.getLeft(), this.getTop() );
     }
 
-    apply( ...aMatrices: TransformMatrix[] ): Rect {
+    apply( ...aMatrices: Matrices ): Rect {
         let iRect = this.clone();
 
         aMatrices.forEach( ( aMatrix: TransformMatrix ) => {

@@ -7,12 +7,18 @@ import { PathSegment,
 import { Point,
          Rect,
          Rects,
-         cNoScale,
-         cNoTranslate     } from './../../../geometry';
+         TransformMatrix  } from './../../../geometry';
 import { Transformations  } from './../../../output';
 
 export
 class Path extends Visible {
+    static applyMatrix( aPath: Path, aMatrix: TransformMatrix ): Path {
+        let iClone: Path = aPath.clone();
+        iClone.applyMatrix( aMatrix );
+        return iClone;
+    }
+
+
     private start:    Point;
     private segments: PathSegments = [];
 
@@ -21,21 +27,41 @@ class Path extends Visible {
         this.start = aStart;
     }
 
+    clone(): Path {
+        let iClone = new Path( this.getStart().clone() );
+        this.segments.forEach( aSegment => {
+            iClone.addSegment( aSegment.clone() );
+        });
+        return iClone;
+    }
+
+    applyMatrix( aMatrix: TransformMatrix ) {
+        this.start = this.start.apply( aMatrix );
+
+        this.segments.forEach( aSegment => {
+            aSegment.applyMatrix( aMatrix );
+        });
+    }
+
+    addSegment( aSegment: PathSegment ) {
+        this.segments.push( aSegment );
+    }
+
     lineTo( aEnd: Point ): Path {
         let iSegment = new LineSegment( aEnd );
-        this.segments.push( iSegment );
+        this.addSegment( iSegment );
         return this;
     }
 
     quadTo( aControl: Point, aEnd: Point ): Path {
         let iSegment = new QuadSegment( aControl, aEnd );
-        this.segments.push( iSegment );
+        this.addSegment( iSegment );
         return this;
     }
 
     cubicTo( aControl1: Point, aControl2: Point, aEnd: Point ): Path {
         let iSegment = new CubicSegment( aControl1, aControl2, aEnd );
-        this.segments.push( iSegment );
+        this.addSegment( iSegment );
         return this;
     }
 
