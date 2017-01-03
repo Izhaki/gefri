@@ -13,10 +13,10 @@
     "build-vendor:css": "cat node_modules/material-design-lite/material.min.css > demo/vendor.css",
     "transpile": "tsc",
     "test": "ts-node ./tests/unit/jasmine.ts",
-    "coverage": "./echolor.sh --hex 1abc9c 'Running unit tests...' && mkdir -p tests/coverage && ts-node node_modules/istanbul/lib/cli.js cover --captureExceptions --config=./tests/istanbul.yml ./tests/unit/jasmine.ts",
+    "coverage": "echo 'Running unit tests...' && mkdir -p tests/coverage && ts-node node_modules/istanbul/lib/cli.js cover --captureExceptions --config=./tests/istanbul.yml ./tests/unit/jasmine.ts",
     "coveralls": "cat ./tests/coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js",
-    "build-js-min": "./echolor.sh --hex 1abc9c 'Building gefri.min.js...' && browserify src/gefri.ns.ts -p [tsify] --standalone gefri | uglifyjs -c warnings=false > dist/gefri.min.js",
-    "build-js": "./echolor.sh --hex 1abc9c 'Building gefri.js...' && browserify src/gefri.ns.ts -p [tsify] -v --debug -o --standalone gefri > demo/gefri.js && npm run done --silent",
+    "build-js-min": "echo 'Building gefri.min.js...' && browserify src/gefri.ns.ts -p [tsify] --standalone gefri | uglifyjs -c warnings=false > dist/gefri.min.js",
+    "build-js": "echo 'Building gefri.js...' && browserify src/gefri.ns.ts -p [tsify] -v --debug -o --standalone gefri > demo/gefri.js && npm run done --silent",
     "watch": "npm-run-all --parallel watch:*",
     "watch:ts": "chokidar -p --poll-interval 999 'src/**/!(*spec).ts' -c 'npm run on-ts-change'",
     "on-ts-change": "npm-run-all coverage build-js done",
@@ -25,7 +25,7 @@
     "serve": "npm run build-js && http-server demo/",
     "serve-watch": "npm-run-all --parallel serve watch",
     "dev": "npm run serve-watch --silent",
-    "done": "figlet -f 'Dancing Font' 'Done'"
+    "done": "echo 'Done'"
   },
   "repository": {
     "type": "git",
@@ -48,7 +48,6 @@
     "chokidar-cli": "1.2.0",
     "coveralls": "2.11.15",
     "exit": "0.1.2",
-    "figlet-cli": "0.1.0",
     "http-server": "0.9.0",
     "istanbul": "1.1.0-alpha.1",
     "jasmine": "2.4.1",
