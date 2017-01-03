@@ -20,11 +20,11 @@ abstract class Clipped extends Transformable {
         }
     }
 
-    isRectWithinClipArea( aRelativeRect: Rect ): boolean {
-        // Clip area is in absolute coordinates
-        // So we convert the rect to absolute ones.
-        let iAbsoluteRect = this.toAbsoluteRect( aRelativeRect );
-        return this.clipArea.isOverlappingWith( iAbsoluteRect );
+    isWithinClipArea( aViewee: Viewee ): boolean {
+        let aBoundingRect: Rect
+
+        aBoundingRect = this.getRendereredBoundingRectOf( aViewee );
+        return !aBoundingRect.isNullRect()
     }
 
     protected getRendereredBoundingRectOf( aViewee: Viewee ) : Rect {

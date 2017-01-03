@@ -6,8 +6,7 @@ import { getClassName,
 import { Viewee        } from '../../viewees/Viewee';
 import { Visible       } from '../../viewees/visibles/Visible';
 
-import { getBoundingRect,
-         cumulateTransformationsOf } from '../../viewees/multimethods';
+import { cumulateTransformationsOf } from '../../viewees/multimethods';
 
 import { fill,
          stroke } from './multimethods';
@@ -47,11 +46,6 @@ class Renderer extends Contextual {
 
     private emptyDamagedRects( aRects: Rects ): void {
         emptyArray( aRects );
-    }
-
-    private isWithinClipArea( aViewee: Viewee ): boolean {
-        let iBounds = getBoundingRect( aViewee );
-        return this.isRectWithinClipArea( iBounds );
     }
 
     private needsRendering( aViewee: Viewee ): boolean {

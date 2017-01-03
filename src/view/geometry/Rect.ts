@@ -171,9 +171,13 @@ class Rect {
     }
 
     contains( x: number, y: number ): boolean {
-        return this.w != 0         && this.h != 0           &&
+        return !this.isNullRect()  &&
                this.getLeft() <= x && this.getRight()  >= x &&
                this.getTop()  <= y && this.getBottom() >= y;
+    }
+
+    isNullRect(): boolean {
+        return this.w == 0 || this.h == 0;
     }
 
 }

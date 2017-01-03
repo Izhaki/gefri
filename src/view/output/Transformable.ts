@@ -43,12 +43,9 @@ class Transformable extends Stateful {
         this.zoomMatrix.scale( aZoom.x, aZoom.y );
     }
 
-    protected toAbsoluteRect( aRelativeRect: Rect ): Rect {
-        return aRelativeRect.apply( this.scaleMatrix, this.zoomMatrix );
-    }
-
     protected getRendereredBoundingRectOf( aViewee: Viewee ) : Rect {
-        return this.toAbsoluteRect( getBoundingRect( aViewee ) );
+        return getBoundingRect( aViewee )
+               .apply( this.scaleMatrix, this.zoomMatrix );
     }
 
     protected getAbsoluteMatrix(): TransformMatrix {
