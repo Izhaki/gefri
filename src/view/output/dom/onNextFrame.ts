@@ -1,5 +1,5 @@
-import { inject     } from '../../core/di';
-import { emptyArray } from '../../core/Utils'
+import { inject     } from '../../../core/di';
+import { emptyArray } from '../../../core/Utils'
 
 let waitForFrame = inject( 'waitForFrame' );
 

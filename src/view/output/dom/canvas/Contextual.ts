@@ -1,14 +1,14 @@
-import { Viewee       } from '../../viewees';
-import { Clipped      } from './../';
+import { Viewee       } from '../../../viewees';
+import { Clipped      } from './../../';
 import { Point,
          Rect,
          Translation,
-         Scale        } from '../../geometry';
-import { Transformations } from '../../output';
-import { inject       } from '../../../core/di';
+         Scale        } from '../../../geometry';
 
-import { getBoundingRect } from '../../viewees/multimethods';
+import { Transformations } from '../../../output';
+import { inject          } from '../../../../core/di';
 
+import { getBoundingRect } from '../../../viewees/multimethods';
 
 export
 class Contextual extends Clipped {

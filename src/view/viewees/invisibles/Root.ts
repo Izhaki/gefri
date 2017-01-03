@@ -1,5 +1,5 @@
-import { Invisible       } from './';
-import { ElementLayer    } from '../../output';
+import { Invisible    } from './';
+import { ElementLayer } from '../../output/dom';
 
 // An adapter between the viewee composition and the control.
 // There is only one root per viewee hierarchy, and it is created automatically

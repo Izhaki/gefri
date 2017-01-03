@@ -1,11 +1,11 @@
-import { Control      } from '../../Control';
+import { Control,
+         ElementLayer,
+         onNextFrame  } from '../';
 import { Viewee,
-         Viewees       } from '../../viewees/Viewee';
+         Viewees      } from '../../../viewees/Viewee';
 import { Renderer,
          Updater      } from './';
-import { Rects        } from '../../geometry';
-import { ElementLayer } from '../'
-import { onNextFrame  } from '../onNextFrame'
+import { Rects        } from '../../../geometry';
 
 export
 class Layer extends ElementLayer {

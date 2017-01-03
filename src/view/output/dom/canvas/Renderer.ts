@@ -1,12 +1,12 @@
 import { Contextual    } from './';
 import { Point,
-         Rects         } from '../../geometry';
+         Rects         } from '../../../geometry';
 import { getClassName,
-         emptyArray    } from '../../../core/Utils';
-import { Viewee        } from '../../viewees/Viewee';
-import { Visible       } from '../../viewees/visibles/Visible';
+         emptyArray    } from '../../../../core/Utils';
+import { Viewee        } from '../../../viewees';
+import { Visible       } from '../../../viewees/visibles/Visible';
 
-import { cumulateTransformationsOf } from '../../viewees/multimethods';
+import { cumulateTransformationsOf } from '../../../viewees/multimethods';
 
 import { fill,
          stroke } from './multimethods';

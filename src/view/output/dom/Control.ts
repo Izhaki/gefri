@@ -1,9 +1,9 @@
 import { Viewee,
-         Viewees      } from './viewees/Viewee';
-import { Stream       } from '../core';
-import { ElementLayer } from './output'
-import { Layer        } from './output/canvas';
-import { Rect         } from './geometry';
+         Viewees      } from '../../viewees/Viewee';
+import { Stream       } from '../../../core';
+import { ElementLayer } from './ElementLayer'
+import { Layer        } from '../../output/dom/canvas';
+import { Rect         } from '../../geometry';
 
 export
 class Control {

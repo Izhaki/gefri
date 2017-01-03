@@ -1,9 +1,9 @@
-import { Clipped } from '../';
-import { Stream  } from '../../../core';
-import { Viewee  } from '../../viewees';
-import { Rects   } from '../../geometry';
+import { Clipped } from '../../';
+import { Stream  } from '../../../../core';
+import { Viewee  } from '../../../viewees';
+import { Rects   } from '../../../geometry';
 
-import { cumulateTransformationsOf } from '../../viewees/multimethods';
+import { cumulateTransformationsOf } from '../../../viewees/multimethods';
 
 export
 class Updater extends Clipped {

@@ -1,5 +1,5 @@
-import { currify          } from '../../../../core/Utils';
-import { methodDispatcher } from '../../../viewees/methodDispatcher'
+import { currify          } from '../../../../../core/Utils';
+import { methodDispatcher } from '../../../../viewees/methodDispatcher'
 import { Renderer         } from '../';
 
 import { Root,
@@ -9,7 +9,7 @@ import { Root,
          PathSegment,
          LineSegment,
          QuadSegment,
-         CubicSegment  } from '../../../viewees';
+         CubicSegment  } from '../../../../viewees';
 
 export
 let stroke = currify(

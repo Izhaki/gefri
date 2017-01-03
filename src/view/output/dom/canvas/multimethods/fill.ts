@@ -1,11 +1,11 @@
-import { currify          } from '../../../../core/Utils';
-import { methodDispatcher } from '../../../viewees/methodDispatcher'
+import { currify          } from '../../../../../core/Utils';
+import { methodDispatcher } from '../../../../viewees/methodDispatcher'
 import { Renderer         } from '../';
 
 import { Root,
          Transformer,
          Rectangle,
-         Path,            } from '../../../viewees';
+         Path,            } from '../../../../viewees';
 
 export
 let fill = currify(

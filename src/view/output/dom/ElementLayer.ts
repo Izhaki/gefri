@@ -1,12 +1,12 @@
-import { Control   } from '../Control';
-import { Stream    } from '../../core';
-import { HitTester } from './HitTester'
+import { Control   } from './Control';
+import { Stream    } from '../../../core';
+import { HitTester } from '../'
 
-import { Rect    } from '../geometry';
+import { Rect    } from '../../geometry';
 
 import { Viewee,
          Viewees,
-         Root    } from '../viewees';
+         Root    } from '../../viewees';
 
 export
 abstract class ElementLayer {

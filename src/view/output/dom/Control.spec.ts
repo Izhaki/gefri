@@ -1,5 +1,5 @@
 import { Control        } from './Control';
-import { getViewElement } from '../../tests/mocks/mockDom'
+import { getViewElement } from '../../../../tests/mocks/mockDom'
 
 export
 function createControl(): Control {

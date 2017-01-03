@@ -1,6 +1,6 @@
 import { setup } from './Helpers.spec';
-import { Point } from '../../../geometry';
-import { Path  } from '../../../viewees/'
+import { Point } from '../../../../geometry';
+import { Path  } from '../../../../viewees/'
 
 describe( 'The canvas should', () => {
 

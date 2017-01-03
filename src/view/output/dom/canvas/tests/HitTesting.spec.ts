@@ -1,9 +1,9 @@
 import { setup } from './Helpers.spec';
-import { simulateMouseEvent } from '../../../../../tests/unit/helpers';
+import { simulateMouseEvent } from '../../../../../../tests/unit/helpers';
 
-import { Point } from '../../../geometry';
+import { Point } from '../../../../geometry';
 import { Path,
-         Transformer  } from '../../../viewees/';
+         Transformer  } from '../../../../viewees/';
 
 describe( 'Hit testing: ', () => {
 
