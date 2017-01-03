@@ -31,7 +31,10 @@ abstract class Clipped extends Transformable {
         let aBoundingRect: Rect
 
         aBoundingRect = super.getRendereredBoundingRectOf( aViewee );
-        aBoundingRect.intersect( this.clipArea );
+
+        if ( this.clipArea ) {
+            aBoundingRect.intersect( this.clipArea );
+        }
 
         return aBoundingRect;
     }

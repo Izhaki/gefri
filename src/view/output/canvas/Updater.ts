@@ -1,13 +1,12 @@
-import { Transformable   } from '../';
-import { Stream          } from '../../../core';
-import { Viewee          } from '../../viewees';
-import { Rects,
-         TransformMatrix } from '../../geometry';
+import { Clipped } from '../';
+import { Stream  } from '../../../core';
+import { Viewee  } from '../../viewees';
+import { Rects   } from '../../geometry';
 
 import { cumulateTransformationsOf } from '../../viewees/multimethods';
 
 export
-class Updater extends Transformable {
+class Updater extends Clipped {
     private damagedRects:              Rects = [];
     private cumulateTransformationsOf: ( aViewee: Viewee ) => void;
 
