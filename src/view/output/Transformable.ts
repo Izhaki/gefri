@@ -1,11 +1,11 @@
-import { Stateful         } from './';
+import { Stateful        } from './';
 import { Translation,
          Scale,
-         TransformMatrix,
+         Matrix,
          Rect,
-         Point            } from '../geometry';
-import { Viewee           } from '../viewees';
-import { getBoundingRect  } from '../viewees/multimethods';
+         Point           } from '../geometry';
+import { Viewee          } from '../viewees';
+import { getBoundingRect } from '../viewees/multimethods';
 
 
 export
@@ -17,13 +17,13 @@ interface Transformations {
 
 export
 class Transformable extends Stateful {
-    protected scaleMatrix: TransformMatrix; // Pre-appearance matrix
-    protected zoomMatrix:  TransformMatrix; // Post-appearance matrix
+    protected scaleMatrix: Matrix; // Pre-appearance matrix
+    protected zoomMatrix:  Matrix; // Post-appearance matrix
 
     constructor() {
         super();
-        this.scaleMatrix = new TransformMatrix();
-        this.zoomMatrix  = new TransformMatrix();
+        this.scaleMatrix = new Matrix();
+        this.zoomMatrix  = new Matrix();
     }
 
     translate( aTranslation: Translation ): void {
@@ -48,8 +48,8 @@ class Transformable extends Stateful {
                .apply( this.scaleMatrix, this.zoomMatrix );
     }
 
-    protected getAbsoluteMatrix(): TransformMatrix {
-        return TransformMatrix.combine( this.scaleMatrix, this.zoomMatrix );
+    protected getAbsoluteMatrix(): Matrix {
+        return Matrix.combine( this.scaleMatrix, this.zoomMatrix );
     }
 
     protected getState() : any {

@@ -5,7 +5,7 @@ import { getBoundingRect  } from './getBoundingRect';
 import { HitTester        } from '../../output';
 
 import { Rect,
-         TransformMatrix  } from './../../geometry';
+         Matrix  } from './../../geometry';
 
 import { Rectangle,
          Path          } from '../';
@@ -14,14 +14,14 @@ export
 let hitTest = currify(
     ( getRendereredBoundingRectOf ) => methodDispatcher({
 
-        Rectangle: ( aRectangle: Rectangle, x: number, y:number, aAbsoluteMatrix: TransformMatrix ): boolean => {
+        Rectangle: ( aRectangle: Rectangle, x: number, y:number, aAbsoluteMatrix: Matrix ): boolean => {
             let aVieweeRect: Rect;
 
             aVieweeRect = getRendereredBoundingRectOf( aRectangle );
             return aVieweeRect.contains( x, y );
         },
 
-        Path: ( aPath: Path, x: number, y:number, aAbsoluteMatrix: TransformMatrix ): boolean => {
+        Path: ( aPath: Path, x: number, y:number, aAbsoluteMatrix: Matrix ): boolean => {
             const HIT_PADDING = 3;
             let   aVieweeRect: Rect;
             let   isWithinRect: boolean;

@@ -1,4 +1,4 @@
-import { TransformMatrix } from './';
+import { Matrix } from './';
 
 export
 class Point {
@@ -19,7 +19,7 @@ class Point {
         this.y = y;
     }
 
-    apply( aMatrix: TransformMatrix ) : Point {
+    apply( aMatrix: Matrix ) : Point {
         return new Point(
             this.x * aMatrix.scaleX + aMatrix.translateX,
             this.y * aMatrix.scaleY + aMatrix.translateY

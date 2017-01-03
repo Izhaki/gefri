@@ -1,7 +1,7 @@
 import { Point,
-         TransformMatrix,
+         Matrix,
          Matrices,
-         Translation      } from './';
+         Translation } from './';
 
 export
 type Rects = Rect[];
@@ -92,7 +92,7 @@ class Rect {
     apply( ...aMatrices: Matrices ): Rect {
         let iRect = this.clone();
 
-        aMatrices.forEach( ( aMatrix: TransformMatrix ) => {
+        aMatrices.forEach( ( aMatrix: Matrix ) => {
             let iOrigin            = iRect.getOrigin(),
                 iTransformedOrigin = iOrigin.apply( aMatrix );
 

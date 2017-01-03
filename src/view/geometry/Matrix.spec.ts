@@ -1,17 +1,17 @@
-import { TransformMatrix,
+import { Matrix,
          Rect             } from './';
 
-describe( 'TransformMatrix', () => {
+describe( 'Matrix', () => {
 
     describe( 'The static method', () => {
 
         describe( 'combine()', () => {
 
             it( 'should return a new matric that that when applied yields similar results as applying the matrices provided one by one', () => {
-                this.matrix1 = new TransformMatrix( 2, 2, 10, 20 );
-                this.matrix2 = new TransformMatrix( 4, 4, -20, -10 );
+                this.matrix1 = new Matrix( 2, 2, 10, 20 );
+                this.matrix2 = new Matrix( 4, 4, -20, -10 );
 
-                this.combinedMatrix = TransformMatrix.combine( this.matrix1, this.matrix2 );
+                this.combinedMatrix = Matrix.combine( this.matrix1, this.matrix2 );
 
                 this.rect1 = new Rect( 100, 100, 100, 100 );
                 this.rect2 = new Rect( 100, 100, 100, 100 );
@@ -27,7 +27,7 @@ describe( 'TransformMatrix', () => {
     });
 
     beforeEach( () => {
-        this.matrix = new TransformMatrix();
+        this.matrix = new Matrix();
     });
 
 

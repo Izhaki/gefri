@@ -2,16 +2,16 @@
 // - https://developer.mozilla.org/en/docs/Web/API/CanvasRenderingContext2D
 // - https://github.com/Microsoft/TypeScript/blob/ddadb472a6241bd14a267b915f5c4669bd094a28/src/lib/dom.generated.d.ts
 
-import { TransformMatrix,
+import { Matrix,
          Rect,
-         Point            } from '../../src/view/geometry';
+         Point  } from '../../src/view/geometry';
 
 export
 class Context2DMock implements CanvasRenderingContext2D {
 
     // Mock helpers
 
-    matrix:     TransformMatrix;
+    matrix:     Matrix;
     stateStack: any[] = [];
     rendered:   any[] = [];
     clipArea:   Rect;
@@ -19,7 +19,7 @@ class Context2DMock implements CanvasRenderingContext2D {
     public showLog: boolean = false;
 
     constructor() {
-        this.matrix = new TransformMatrix()
+        this.matrix = new Matrix()
     }
 
     public reset(): void {

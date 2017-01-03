@@ -2,16 +2,16 @@ import { cumulateTransformationsOf,
          hitTest                    } from '../viewees/multimethods';
 
 import { Rect,
-         TransformMatrix } from '../geometry';
-import { Clipped       } from './Clipped';
+         Matrix  } from '../geometry';
+import { Clipped } from './Clipped';
 import { Viewee,
-         Viewees       } from '../viewees';
-import { Visible       } from '../viewees/visibles/Visible';
+         Viewees } from '../viewees';
+import { Visible } from '../viewees/visibles/Visible';
 
 export
 class HitTester extends Clipped {
     private cumulateTransformationsOf: ( aViewee: Viewee ) => void;
-    private hitTest:                   ( aViewee: Viewee, x: number, y: number, aAbsoluteMatrix: TransformMatrix ) => boolean;
+    private hitTest:                   ( aViewee: Viewee, x: number, y: number, aAbsoluteMatrix: Matrix ) => boolean;
 
     constructor() {
         super();

@@ -3,7 +3,7 @@ import { Composite,
 import { Transformable,
          Transformations  } from './../output';
 import { Rect,
-         TransformMatrix  } from '../geometry';
+         Matrix           } from '../geometry';
 
 export
 type Viewees = Viewee[];

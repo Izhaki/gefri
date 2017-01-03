@@ -1,18 +1,18 @@
-import { Visible          } from './../Visible';
+import { Visible         } from './../Visible';
 import { PathSegment,
          PathSegments,
          LineSegment,
          QuadSegment,
-         CubicSegment     } from './PathSegments'
+         CubicSegment    } from './PathSegments'
 import { Point,
          Rect,
          Rects,
-         TransformMatrix  } from './../../../geometry';
-import { Transformations  } from './../../../output';
+         Matrix          } from './../../../geometry';
+import { Transformations } from './../../../output';
 
 export
 class Path extends Visible {
-    static applyMatrix( aPath: Path, aMatrix: TransformMatrix ): Path {
+    static applyMatrix( aPath: Path, aMatrix: Matrix ): Path {
         let iClone: Path = aPath.clone();
         iClone.applyMatrix( aMatrix );
         return iClone;
@@ -35,7 +35,7 @@ class Path extends Visible {
         return iClone;
     }
 
-    applyMatrix( aMatrix: TransformMatrix ) {
+    applyMatrix( aMatrix: Matrix ) {
         this.start = this.start.apply( aMatrix );
 
         this.segments.forEach( aSegment => {

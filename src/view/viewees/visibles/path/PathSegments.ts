@@ -1,6 +1,6 @@
 import { Point,
          Rect,
-         TransformMatrix  } from './../../../geometry';
+         Matrix  } from './../../../geometry';
 
 import Bezier = require('bezier-js');
 
@@ -24,7 +24,7 @@ abstract class PathSegment {
     abstract getPointDistance( aStart: Point, x: number, y: number ): number;
     abstract clone(): PathSegment;
 
-    applyMatrix( aMatrix: TransformMatrix ) {
+    applyMatrix( aMatrix: Matrix ) {
         this.end = this.end.apply( aMatrix );
     }
 
@@ -88,7 +88,7 @@ class QuadSegment extends PathSegment {
         return new QuadSegment( this.getControl().clone(), this.getEnd().clone() );
     }
 
-    applyMatrix( aMatrix: TransformMatrix ) {
+    applyMatrix( aMatrix: Matrix ) {
         super.applyMatrix( aMatrix );
         this.control = this.control.apply( aMatrix );
     }
@@ -144,7 +144,7 @@ class CubicSegment extends PathSegment {
         return new CubicSegment( this.getControl1().clone(), this.getControl2().clone(), this.getEnd().clone() );
     }
 
-    applyMatrix( aMatrix: TransformMatrix ) {
+    applyMatrix( aMatrix: Matrix ) {
         super.applyMatrix( aMatrix );
         this.control1 = this.control1.apply( aMatrix );
         this.control2 = this.control2.apply( aMatrix );

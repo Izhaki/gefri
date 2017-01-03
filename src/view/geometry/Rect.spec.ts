@@ -1,6 +1,6 @@
 import { Point,
          Rect,
-         TransformMatrix } from './';
+         Matrix } from './';
 
 describe( 'Rect', () => {
 
@@ -403,14 +403,14 @@ describe( 'Rect', () => {
 
         it( 'should apply the transformation matrix on the rect regardless of the order in which scale and translation where applied', () => {
             let iRect1   = new Rect( 100, 100, 100, 100 ),
-                iMatrix1 = new TransformMatrix();
+                iMatrix1 = new Matrix();
 
             iMatrix1.scale( 2, 0.5 );
             iMatrix1.translate( 10, 20 );
             let iTransformedRect1 = iRect1.apply( iMatrix1 );
 
             let iRect2   = new Rect( 100, 100, 100, 100 ),
-                iMatrix2 = new TransformMatrix();
+                iMatrix2 = new Matrix();
 
             iMatrix2.translate( 10, 20 );
             iMatrix2.scale( 2, 0.5 );
@@ -422,8 +422,8 @@ describe( 'Rect', () => {
 
         it( 'should support applying more than one matrix', () => {
             let iRect    = new Rect( 100, 100, 100, 100 ),
-                iMatrix1 = new TransformMatrix(),
-                iMatrix2 = new TransformMatrix();
+                iMatrix1 = new Matrix(),
+                iMatrix2 = new Matrix();
 
             iMatrix1.scale( 2, 0.5 );
             iMatrix1.translate( 10, 20 );

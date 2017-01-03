@@ -5,10 +5,10 @@
  */
 
 export
-type Matrices = TransformMatrix[];
+type Matrices = Matrix[];
 
 export
-class TransformMatrix {
+class Matrix {
 
     /**
      * Combines (ie, composes or multiplies) the provided matrices.
@@ -16,9 +16,9 @@ class TransformMatrix {
      * Note that the matrices should be provided in order of application
      * (ie, first matrix first, second second, and so forth)
      */
-    static combine( ...aMatrices: Matrices ) : TransformMatrix {
-        let multiplyMatrices = ( a:TransformMatrix, b:TransformMatrix ) => {
-            return new TransformMatrix(
+    static combine( ...aMatrices: Matrices ) : Matrix {
+        let multiplyMatrices = ( a:Matrix, b:Matrix ) => {
+            return new Matrix(
                 b.scaleX * a.scaleX,
                 b.scaleY * a.scaleY,
                 b.translateX * a.scaleX + a.translateX,
@@ -44,8 +44,8 @@ class TransformMatrix {
         this.translateY = aTranslateY;
     }
 
-    clone() : TransformMatrix {
-        var iClone = new TransformMatrix();
+    clone() : Matrix {
+        var iClone = new Matrix();
         iClone.translateX = this.translateX;
         iClone.translateY = this.translateY;
         iClone.scaleX = this.scaleX;

@@ -1,5 +1,5 @@
 import { Point,
-         TransformMatrix } from './';
+         Matrix } from './';
 
 describe( 'Point', () => {
 
@@ -42,14 +42,14 @@ describe( 'Point', () => {
 
         it( 'should apply the transformation matrix on the point regardless of the order in which scale and translation where applied', () => {
             let iPoint1  = new Point( 100, 100 ),
-                iMatrix1 = new TransformMatrix();
+                iMatrix1 = new Matrix();
 
             iMatrix1.scale( 2, 0.5 );
             iMatrix1.translate( 10, 20 );
             let iTransformedPoint1 = iPoint1.apply( iMatrix1 );
 
             let iPoint2  = new Point( 100, 100 ),
-                iMatrix2 = new TransformMatrix();
+                iMatrix2 = new Matrix();
 
             iMatrix2.translate( 10, 20 );
             iMatrix2.scale( 2, 0.5 );
