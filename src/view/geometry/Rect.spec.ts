@@ -399,7 +399,7 @@ describe( 'Rect', () => {
 
     });
 
-    describe( 'apply()', () => {
+    describe( 'applyMatrix()', () => {
 
         it( 'should apply the transformation matrix on the rect regardless of the order in which scale and translation where applied', () => {
             let iRect1   = new Rect( 100, 100, 100, 100 ),
@@ -418,20 +418,6 @@ describe( 'Rect', () => {
 
             expect( iTransformedRect1 ).toEqualRect( 220, 60, 200, 50 );
             expect( iTransformedRect1 ).toEqual( iTransformedRect2 );
-        });
-
-        it( 'should support applying more than one matrix', () => {
-            let iRect    = new Rect( 100, 100, 100, 100 ),
-                iMatrix1 = new Matrix(),
-                iMatrix2 = new Matrix();
-
-            iMatrix1.scale( 2, 0.5 );
-            iMatrix1.translate( 10, 20 );
-            iMatrix2.scale( 4, 1 );
-            iMatrix2.translate( 100, 200 );
-
-            let iTransformedRect = iRect.applyMatrix( iMatrix1, iMatrix2 );
-            expect( iTransformedRect ).toEqualRect( 1280, 260, 800, 50 );
         });
 
     });

@@ -38,7 +38,7 @@ describe( 'Point', () => {
 
     });
 
-    describe( 'apply()', () => {
+    describe( 'applyMatrix()', () => {
 
         it( 'should apply the transformation matrix on the point regardless of the order in which scale and translation where applied', () => {
             let iPoint1  = new Point( 100, 100 ),

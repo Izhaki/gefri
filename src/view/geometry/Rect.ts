@@ -1,6 +1,5 @@
 import { Point,
          Matrix,
-         Matrices,
          Translation } from './';
 
 export
@@ -89,18 +88,16 @@ class Rect {
         return new Point( this.getLeft(), this.getTop() );
     }
 
-    applyMatrix( ...aMatrices: Matrices ): Rect {
+    applyMatrix( aMatrix: Matrix ): Rect {
         let iRect = this.clone();
 
-        aMatrices.forEach( ( aMatrix: Matrix ) => {
-            let iOrigin            = iRect.getOrigin(),
-                iTransformedOrigin = iOrigin.applyMatrix( aMatrix );
+        let iOrigin            = iRect.getOrigin(),
+            iTransformedOrigin = iOrigin.applyMatrix( aMatrix );
 
-            iRect.x = iTransformedOrigin.x;
-            iRect.y = iTransformedOrigin.y;
-            iRect.w = iRect.w * aMatrix.scaleX;
-            iRect.h = iRect.h * aMatrix.scaleY;
-        });
+        iRect.x = iTransformedOrigin.x;
+        iRect.y = iTransformedOrigin.y;
+        iRect.w = iRect.w * aMatrix.scaleX;
+        iRect.h = iRect.h * aMatrix.scaleY;
 
         return iRect;
     }
