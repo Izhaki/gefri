@@ -81,23 +81,13 @@ class Contextual extends Clipped {
     };
 
     protected intersectClipAreaWith( aRelativeRect: Rect ): void {
-        let iScaledRect = aRelativeRect.apply( this.scaleMatrix );
+        let iScaledRect = aRelativeRect.clone().apply( this.scaleMatrix );
 
         this.context.beginPath();
         this.context.rect( iScaledRect.x, iScaledRect.y, iScaledRect.w, iScaledRect.h );
         this.context.clip();
 
-        // Clip area is in absolute coordinates
-        // So we convert the rect to absolute ones.
-        let iAbsoluteRect = iScaledRect.apply( this.zoomMatrix );
-        super.intersectClipAreaWith( iAbsoluteRect );
-    }
-
-    isRectWithinClipArea( aRelativeRect: Rect ): boolean {
-        // Clip area is in absolute coordinates
-        // So we convert the rect to absolute ones.
-        let iAbsoluteRect = this.toAbsoluteRect( aRelativeRect );
-        return super.isRectWithinClipArea( iAbsoluteRect );
+        super.intersectClipAreaWith( aRelativeRect );
     }
 
     protected pushState(): void {

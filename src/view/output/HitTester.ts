@@ -53,12 +53,5 @@ class HitTester extends Clipped {
         this.popState();
     }
 
-    protected intersectClipAreaWith( aRelativeRect: Rect ): void {
-        // Clip area is in absolute coordinates
-        // So we convert the rect to absolute ones.
-        let iAbsoluteRect = this.toAbsoluteRect( aRelativeRect );
-        super.intersectClipAreaWith( iAbsoluteRect );
-    }
-
 }
 

@@ -6,16 +6,20 @@ export
 abstract class Clipped extends Transformable {
     protected clipArea: Rect;
 
-    protected intersectClipAreaWith( aAbsoluteRect: Rect ): void {
+    protected intersectClipAreaWith( aRelativeRect: Rect ): void {
+        let iAbsoluteRect = aRelativeRect.apply( this.getAbsoluteMatrix() );
         if ( this.clipArea ) {
-            this.clipArea.intersect( aAbsoluteRect );
+            this.clipArea.intersect( iAbsoluteRect );
         } else {
-            this.clipArea = aAbsoluteRect;
+            this.clipArea = iAbsoluteRect;
         }
     }
 
-    isRectWithinClipArea( aAbsoluteRect: Rect ): boolean {
-        return this.clipArea.isOverlappingWith( aAbsoluteRect );
+    isRectWithinClipArea( aRelativeRect: Rect ): boolean {
+        // Clip area is in absolute coordinates
+        // So we convert the rect to absolute ones.
+        let iAbsoluteRect = this.toAbsoluteRect( aRelativeRect );
+        return this.clipArea.isOverlappingWith( iAbsoluteRect );
     }
 
     protected getRendereredBoundingRectOf( aViewee: Viewee ) : Rect {
