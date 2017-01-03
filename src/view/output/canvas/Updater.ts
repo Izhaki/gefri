@@ -37,7 +37,7 @@ class Updater extends Transformable {
     }
 
     private addVieweeBoundingRectToDamagedRect( aViewee ) {
-        let iDamagedRect = this.getVieweeAbsoluteBoundingRect( aViewee );
+        let iDamagedRect = this.getRendereredBoundingRectOf( aViewee );
         this.damagedRects.push( iDamagedRect );
     }
 
