@@ -1,5 +1,4 @@
-import { getBoundingRect,
-         cumulateTransformationsOf,
+import { cumulateTransformationsOf,
          hitTest                    } from '../viewees/multimethods';
 
 import { Rect,
@@ -41,7 +40,7 @@ class HitTester extends Clipped {
         this.pushState();
 
         if ( aViewee.isClipping ) {
-            this.intersectClipAreaWith( getBoundingRect( aViewee ) );
+            this.intersectClipAreaWith( aViewee );
         }
 
         this.cumulateTransformationsOf( aViewee );

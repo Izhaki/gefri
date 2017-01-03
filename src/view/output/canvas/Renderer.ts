@@ -72,7 +72,7 @@ class Renderer extends Contextual {
         this.pushState();
 
         if ( aViewee.isClipping ) {
-            this.intersectClipAreaWith( getBoundingRect( aViewee ) );
+            this.intersectClipAreaWith( aViewee );
         }
 
         this.cumulateTransformationsOf( aViewee );

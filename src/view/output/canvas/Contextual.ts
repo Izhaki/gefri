@@ -1,3 +1,4 @@
+import { Viewee       } from '../../viewees';
 import { Clipped      } from './../';
 import { Point,
          Rect,
@@ -5,6 +6,9 @@ import { Point,
          Scale        } from '../../geometry';
 import { Transformations } from '../../output';
 import { inject       } from '../../../core/di';
+
+import { getBoundingRect } from '../../viewees/multimethods';
+
 
 export
 class Contextual extends Clipped {
@@ -80,14 +84,17 @@ class Contextual extends Clipped {
         this.context.clearRect( iExpandedRect.x, iExpandedRect.y, iExpandedRect.w, iExpandedRect.h );
     };
 
-    protected intersectClipAreaWith( aRelativeRect: Rect ): void {
-        let iScaledRect = aRelativeRect.clone().apply( this.scaleMatrix );
+    // Note: We only clip the scaled rect as the applied zoom will be applied
+    // directly to the canvas.
+    protected intersectClipAreaWith( aViewee: Viewee ): void {
+        let iRelativeRect = getBoundingRect( aViewee );
+        let iScaledRect   = iRelativeRect.apply( this.scaleMatrix );
 
         this.context.beginPath();
         this.context.rect( iScaledRect.x, iScaledRect.y, iScaledRect.w, iScaledRect.h );
         this.context.clip();
 
-        super.intersectClipAreaWith( aRelativeRect );
+        super.intersectClipAreaWith( aViewee );
     }
 
     protected pushState(): void {

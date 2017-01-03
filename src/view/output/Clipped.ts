@@ -6,8 +6,13 @@ export
 abstract class Clipped extends Transformable {
     protected clipArea: Rect;
 
-    protected intersectClipAreaWith( aRelativeRect: Rect ): void {
-        let iAbsoluteRect = aRelativeRect.apply( this.getAbsoluteMatrix() );
+    protected intersectClipAreaWith( aViewee: Viewee ): void {
+        let iAbsoluteRect: Rect
+
+        // We get the bounding rect from our super, which should return a rect
+        // in absolute coordinates.
+        iAbsoluteRect = super.getRendereredBoundingRectOf( aViewee );
+
         if ( this.clipArea ) {
             this.clipArea.intersect( iAbsoluteRect );
         } else {
