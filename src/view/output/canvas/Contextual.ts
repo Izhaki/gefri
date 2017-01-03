@@ -34,17 +34,17 @@ class Contextual extends Clipped {
     }
 
     fillRect( aRelativeRect: Rect ): void {
-        let iScaledRect = aRelativeRect.apply( this.scaleMatrix );
+        let iScaledRect = aRelativeRect.applyMatrix( this.scaleMatrix );
         this.context.fillRect( iScaledRect.x, iScaledRect.y, iScaledRect.w, iScaledRect.h );
     }
 
     strokeRect( aRelativeRect: Rect ): void {
-        let iScaledRect = aRelativeRect.apply( this.scaleMatrix );
+        let iScaledRect = aRelativeRect.applyMatrix( this.scaleMatrix );
         this.context.strokeRect( iScaledRect.x, iScaledRect.y, iScaledRect.w, iScaledRect.h );
     }
 
     startPath( aRelativePoint: Point ): void {
-        let iScaledPoint = aRelativePoint.apply( this.scaleMatrix );
+        let iScaledPoint = aRelativePoint.applyMatrix( this.scaleMatrix );
         this.context.beginPath();
         this.context.moveTo( iScaledPoint.x, iScaledPoint.y )
     }
@@ -54,21 +54,21 @@ class Contextual extends Clipped {
     }
 
     lineTo( aRelativePoint: Point ): void {
-        let iScaledPoint = aRelativePoint.apply( this.scaleMatrix );
+        let iScaledPoint = aRelativePoint.applyMatrix( this.scaleMatrix );
         this.context.lineTo( iScaledPoint.x, iScaledPoint.y )
     }
 
     quadTo( aRelativeControl: Point, aRelativePoint: Point ): void {
-        let iControl = aRelativeControl.apply( this.scaleMatrix ),
-            iPoint   = aRelativePoint.apply( this.scaleMatrix );
+        let iControl = aRelativeControl.applyMatrix( this.scaleMatrix ),
+            iPoint   = aRelativePoint.applyMatrix( this.scaleMatrix );
 
         this.context.quadraticCurveTo( iControl.x, iControl.y, iPoint.x, iPoint.y )
     }
 
     cubicTo( aRelativeControl1: Point, aRelativeControl2: Point, aRelativePoint: Point ): void {
-        let iControl1 = aRelativeControl1.apply( this.scaleMatrix ),
-            iControl2 = aRelativeControl2.apply( this.scaleMatrix ),
-            iPoint   = aRelativePoint.apply( this.scaleMatrix );
+        let iControl1 = aRelativeControl1.applyMatrix( this.scaleMatrix ),
+            iControl2 = aRelativeControl2.applyMatrix( this.scaleMatrix ),
+            iPoint   = aRelativePoint.applyMatrix( this.scaleMatrix );
 
         this.context.bezierCurveTo( iControl1.x, iControl1.y, iControl2.x, iControl2.y, iPoint.x, iPoint.y )
     }
@@ -88,7 +88,7 @@ class Contextual extends Clipped {
     // directly to the canvas.
     protected intersectClipAreaWith( aViewee: Viewee ): void {
         let iRelativeRect = getBoundingRect( aViewee );
-        let iScaledRect   = iRelativeRect.apply( this.scaleMatrix );
+        let iScaledRect   = iRelativeRect.applyMatrix( this.scaleMatrix );
 
         this.context.beginPath();
         this.context.rect( iScaledRect.x, iScaledRect.y, iScaledRect.w, iScaledRect.h );

@@ -19,7 +19,7 @@ class Point {
         this.y = y;
     }
 
-    apply( aMatrix: Matrix ) : Point {
+    applyMatrix( aMatrix: Matrix ) : Point {
         return new Point(
             this.x * aMatrix.scaleX + aMatrix.translateX,
             this.y * aMatrix.scaleY + aMatrix.translateY

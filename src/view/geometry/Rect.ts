@@ -89,12 +89,12 @@ class Rect {
         return new Point( this.getLeft(), this.getTop() );
     }
 
-    apply( ...aMatrices: Matrices ): Rect {
+    applyMatrix( ...aMatrices: Matrices ): Rect {
         let iRect = this.clone();
 
         aMatrices.forEach( ( aMatrix: Matrix ) => {
             let iOrigin            = iRect.getOrigin(),
-                iTransformedOrigin = iOrigin.apply( aMatrix );
+                iTransformedOrigin = iOrigin.applyMatrix( aMatrix );
 
             iRect.x = iTransformedOrigin.x;
             iRect.y = iTransformedOrigin.y;

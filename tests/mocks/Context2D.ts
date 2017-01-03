@@ -45,13 +45,13 @@ class Context2DMock implements CanvasRenderingContext2D {
 
     private transformPoint( x, y ): Point {
         let iPoint = new Point( x, y );
-        return iPoint.apply( this.matrix );
+        return iPoint.applyMatrix( this.matrix );
     }
 
     private transformRect( x, y, width, height ) {
         var iRect = new Rect( x, y, width, height );
         this.log( 'rect()', 'was given', iRect )
-        var iTransformedRect = iRect.apply( this.matrix );
+        var iTransformedRect = iRect.applyMatrix( this.matrix );
         this.log( 'The rect', iRect, 'was transformed to', iTransformedRect );
         return iTransformedRect;
     }

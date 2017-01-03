@@ -407,14 +407,14 @@ describe( 'Rect', () => {
 
             iMatrix1.scale( 2, 0.5 );
             iMatrix1.translate( 10, 20 );
-            let iTransformedRect1 = iRect1.apply( iMatrix1 );
+            let iTransformedRect1 = iRect1.applyMatrix( iMatrix1 );
 
             let iRect2   = new Rect( 100, 100, 100, 100 ),
                 iMatrix2 = new Matrix();
 
             iMatrix2.translate( 10, 20 );
             iMatrix2.scale( 2, 0.5 );
-            let iTransformedRect2 = iRect2.apply( iMatrix2 );
+            let iTransformedRect2 = iRect2.applyMatrix( iMatrix2 );
 
             expect( iTransformedRect1 ).toEqualRect( 220, 60, 200, 50 );
             expect( iTransformedRect1 ).toEqual( iTransformedRect2 );
@@ -430,7 +430,7 @@ describe( 'Rect', () => {
             iMatrix2.scale( 4, 1 );
             iMatrix2.translate( 100, 200 );
 
-            let iTransformedRect = iRect.apply( iMatrix1, iMatrix2 );
+            let iTransformedRect = iRect.applyMatrix( iMatrix1, iMatrix2 );
             expect( iTransformedRect ).toEqualRect( 1280, 260, 800, 50 );
         });
 

@@ -36,7 +36,7 @@ class Path extends Visible {
     }
 
     applyMatrix( aMatrix: Matrix ) {
-        this.start = this.start.apply( aMatrix );
+        this.start = this.start.applyMatrix( aMatrix );
 
         this.segments.forEach( aSegment => {
             aSegment.applyMatrix( aMatrix );

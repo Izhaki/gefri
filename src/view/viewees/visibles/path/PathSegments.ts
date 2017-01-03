@@ -25,7 +25,7 @@ abstract class PathSegment {
     abstract clone(): PathSegment;
 
     applyMatrix( aMatrix: Matrix ) {
-        this.end = this.end.apply( aMatrix );
+        this.end = this.end.applyMatrix( aMatrix );
     }
 
     protected getBezierBoundingRect( aBezier: Bezier ): Rect {
@@ -90,7 +90,7 @@ class QuadSegment extends PathSegment {
 
     applyMatrix( aMatrix: Matrix ) {
         super.applyMatrix( aMatrix );
-        this.control = this.control.apply( aMatrix );
+        this.control = this.control.applyMatrix( aMatrix );
     }
 
     getControl(): Point {
@@ -146,8 +146,8 @@ class CubicSegment extends PathSegment {
 
     applyMatrix( aMatrix: Matrix ) {
         super.applyMatrix( aMatrix );
-        this.control1 = this.control1.apply( aMatrix );
-        this.control2 = this.control2.apply( aMatrix );
+        this.control1 = this.control1.applyMatrix( aMatrix );
+        this.control2 = this.control2.applyMatrix( aMatrix );
     };
 
     getControl1(): Point {

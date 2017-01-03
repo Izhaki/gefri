@@ -46,14 +46,14 @@ describe( 'Point', () => {
 
             iMatrix1.scale( 2, 0.5 );
             iMatrix1.translate( 10, 20 );
-            let iTransformedPoint1 = iPoint1.apply( iMatrix1 );
+            let iTransformedPoint1 = iPoint1.applyMatrix( iMatrix1 );
 
             let iPoint2  = new Point( 100, 100 ),
                 iMatrix2 = new Matrix();
 
             iMatrix2.translate( 10, 20 );
             iMatrix2.scale( 2, 0.5 );
-            let iTransformedPoint2 = iPoint2.apply( iMatrix2 );
+            let iTransformedPoint2 = iPoint2.applyMatrix( iMatrix2 );
 
             expect( iTransformedPoint1 ).toEqualPoint( 220, 60 );
             expect( iTransformedPoint1 ).toEqual( iTransformedPoint2 );

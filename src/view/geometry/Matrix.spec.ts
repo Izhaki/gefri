@@ -16,8 +16,8 @@ describe( 'Matrix', () => {
                 this.rect1 = new Rect( 100, 100, 100, 100 );
                 this.rect2 = new Rect( 100, 100, 100, 100 );
 
-                this.rect1t = this.rect1.apply( this.matrix1, this.matrix2);
-                this.rect2t = this.rect2.apply( this.combinedMatrix);
+                this.rect1t = this.rect1.applyMatrix( this.matrix1, this.matrix2);
+                this.rect2t = this.rect2.applyMatrix( this.combinedMatrix);
 
                 expect( this.rect1t ).toEqual( this.rect2t )
             });
