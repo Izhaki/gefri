@@ -1,6 +1,4 @@
-import { Viewee,
-         Viewees      } from '../../viewees/Viewee';
-import { Stream       } from '../../../core';
+import { Viewees      } from '../../viewees/Viewee';
 import { ElementLayer } from './ElementLayer'
 import { Layer        } from '../../output/dom/canvas';
 import { Rect         } from '../../geometry';
@@ -10,18 +8,11 @@ class Control {
     private container: HTMLElement;
     private bounds:    Rect;
     private layers:    ElementLayer[] = [];
-    private offsetLeft: number;
-    private offsetTop:  number;
-
-    public mouseMove$: Stream;
 
     constructor( aContainer: HTMLElement ) {
         aContainer.style.position = 'relative'; // So we can stack children
         this.container = aContainer;
         this.bounds    = new Rect( 0, 0, aContainer.offsetWidth, aContainer.offsetHeight );
-
-        this.mouseMove$ = new Stream();
-        this.watchMouseMove();
     }
 
     addLayer( aLayer: ElementLayer ): void {
@@ -30,21 +21,15 @@ class Control {
         aLayer.onAfterAdded( this );
     }
 
+    getContrainer(): HTMLElement {
+        return this.container;
+    }
+
     getBoundingRect(): Rect {
         return this.bounds;
     }
 
-    private watchMouseMove(): void {
-        this.offsetLeft = this.container.offsetLeft;
-        this.offsetTop  = this.container.offsetTop;
-
-        this.container.addEventListener( 'mousemove', ( aEvent ) => {
-            let hits: Viewees = this.hitTest( aEvent.clientX - this.offsetLeft, aEvent.clientY - this.offsetTop );
-            this.mouseMove$.notify( hits );
-        });
-    }
-
-    private hitTest( x: number, y:number ): Viewees {
+    hitTest( x: number, y: number ): Viewees {
         let hits: Viewees = [];
         this.forEachLayer( (aLayer) => {
             let layerHits: Viewees = aLayer.hitTest( x, y );

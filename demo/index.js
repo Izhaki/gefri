@@ -1,4 +1,5 @@
 var Control     = gefri.view.Control,
+    EventMediator = gefri.view.EventMediator,
     CanvasLayer = gefri.view.CanvasLayer
     Transformer = gefri.view.Transformer,
     Rectangle   = gefri.view.Rectangle,
@@ -68,8 +69,8 @@ function onMouseMove( aViewees ) {
     console.log( aViewees.length );
 }
 
-iControl.mouseMove$.subscribe( onMouseMove );
-
+var iEventMediator = new EventMediator( iControl );
+iEventMediator.mouseMove$.subscribe( onMouseMove );
 
 /*
 var iOverlay = new CanvasLayer();

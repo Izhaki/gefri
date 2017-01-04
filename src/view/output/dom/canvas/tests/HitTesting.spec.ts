@@ -1,6 +1,8 @@
 import { setup } from './Helpers.spec';
 import { simulateMouseEvent } from '../../../../../../tests/unit/helpers';
 
+import { EventMediator } from '../../';
+
 import { Point } from '../../../../geometry';
 import { Path,
          Transformer  } from '../../../../viewees/';
@@ -13,9 +15,9 @@ describe( 'Hit testing: ', () => {
 
         beforeEach( () => {
             this.onMouseMove = jasmine.createSpy( 'onMouseMove' );
-            this.control.mouseMove$.subscribe( this.onMouseMove );
+            this.eventMediator = new EventMediator( this.control );
+            this.eventMediator.mouseMove$.subscribe( this.onMouseMove );
         });
-
 
         it( 'it should return all the viewees under the mouse in deepest-first order', () => {
 
