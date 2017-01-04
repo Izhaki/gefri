@@ -133,9 +133,9 @@ class Rect {
         )
     }
 
-    translate( aTranslation: Translation ) {
-        this.x += aTranslation.x;
-        this.y += aTranslation.y;
+    translate( aDelta: Translation ) {
+        this.x += aDelta.x;
+        this.y += aDelta.y;
     }
 
     expand( aPoints: number ): void {

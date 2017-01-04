@@ -1,5 +1,6 @@
-import { Shape } from './Shape';
-import { Rect  } from './../../../geometry';
+import { Shape       } from './Shape';
+import { Rect,
+         Translation } from './../../../geometry';
 
 export
 class Rectangle extends Shape {
@@ -15,5 +16,11 @@ class Rectangle extends Shape {
     getRect(): Rect {
         return this.rect;
     }
+
+    translate( aDelta: Translation ): void {
+        this.notifyUpdate();
+        this.rect.translate( aDelta );
+        this.notifyUpdate();
+    };
 
 }

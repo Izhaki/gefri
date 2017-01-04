@@ -111,6 +111,16 @@ describe( 'Refreshing: The canvas should refresh when', () => {
             `);
         });
 
+        it( 'is moved' , () => {
+            this.rectangle.translate( new Point( 10, 20 ) );
+
+            expect( this.context ).toHaveRendered(`
+                | Erase     | 100, 100, 10, 10 |
+                | Erase     | 110, 120, 10, 10 |
+                | Rectangle | 110, 120, 10, 10 |
+            `);
+        });
+
     });
 
     describe( 'a path', () => {

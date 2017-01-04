@@ -1,5 +1,9 @@
-import { Visible } from './../Visible';
+import { Visible     } from './../Visible';
+import { Translation } from './../../../geometry';
 
 export
-class Shape extends Visible {
+abstract class Shape extends Visible {
+
+    abstract translate( aDelta: Translation ): void;
+
 }

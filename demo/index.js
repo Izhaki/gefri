@@ -95,6 +95,9 @@ $( '#remove-button' ).click( function() {
     iFace.removeChild( iMouth );
 });
 
+$( '#move-button' ).click( function() {
+    iFace.translate( new Point( 10, 10 ) );
+});
 
 function toRatio( val ) { return Math.pow( 1.1, val ); }
 
