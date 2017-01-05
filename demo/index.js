@@ -65,12 +65,17 @@ iTransformer.addChildren( iCubic );
 
 iCanvasLayer.addViewees( iTransformer );
 
-function onMouseMove( aViewees ) {
-    console.log( aViewees.length );
+function onMouseMove( aEvent ) {
+    //console.log( aEvent.hits.length );
+}
+
+function onMouseDrag( aEvent ) {
+    aEvent.dragged.translate( aEvent.delta );
 }
 
 var iEventMediator = new EventMediator( iControl );
 iEventMediator.mouseMove$.subscribe( onMouseMove );
+iEventMediator.mouseDrag$.subscribe( onMouseDrag );
 
 /*
 var iOverlay = new CanvasLayer();
@@ -80,11 +85,11 @@ iOverlay.addViewees( iMask );
 */
 
 $( '#hide-button' ).click( function() {
-    iEyeL.hide();
+    iEyeL.shown = false;
 });
 
 $( '#show-button' ).click( function() {
-    iEyeL.show();
+    iEyeL.shown = true;
 });
 
 $( '#add-button' ).click( function() {
@@ -93,10 +98,6 @@ $( '#add-button' ).click( function() {
 
 $( '#remove-button' ).click( function() {
     iFace.removeChild( iMouth );
-});
-
-$( '#move-button' ).click( function() {
-    iFace.translate( new Point( 10, 10 ) );
 });
 
 function toRatio( val ) { return Math.pow( 1.1, val ); }

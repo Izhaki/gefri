@@ -5,11 +5,60 @@ import { EventMediator } from '../../';
 
 import { Point } from '../../../../geometry';
 import { Path,
-         Transformer  } from '../../../../viewees/';
+         Transformer  } from '../../../../viewees';
+
+import { MouseMoveEvent } from '../../MouseMoveEvent';
 
 describe( 'Hit testing: ', () => {
 
     setup.call( this );
+
+    describe( 'A mouse drag event', () => {
+
+        beforeEach( () => {
+            this.onMouseDrag = jasmine.createSpy( 'onMouseDrag' );
+            this.eventMediator = new EventMediator( this.control );
+            this.eventMediator.mouseDrag$.subscribe( this.onMouseDrag );
+
+            this.getLastEvent = (): MouseMoveEvent => {
+                return this.onMouseDrag.calls.mostRecent().args[0];
+            }
+        });
+
+        beforeEach( () => {
+            let { iRectangle } = this.createViewees(`
+                | iRectangle | Rectangle | 10, 10, 20, 20 |
+            `);
+
+            this.layer.addViewees( iRectangle );
+            simulateMouseEvent( 'mousedown', 15, 15 );
+            simulateMouseEvent( 'mousemove', 25,  5 );
+
+            this.rectangle = iRectangle;
+            this.lastMouseEvent = this.getLastEvent();
+        });
+
+        it( 'should include the dragged viewee', () => {
+            expect( this.lastMouseEvent.dragged ).toEqual( this.rectangle );
+
+        });
+
+        it( 'should include the delta from the previous mouse event', () => {
+            expect( this.lastMouseEvent.delta ).toEqualPoint( 10, -10 );
+        });
+
+        it( 'should not be emitted if the mouse is not down', () => {
+            this.onMouseDrag.calls.reset();
+            simulateMouseEvent( 'mousedown', 15, 15 );
+            simulateMouseEvent( 'mouseup',   20, 10 );
+            simulateMouseEvent( 'mousemove', 25,  5 );
+
+            expect( this.onMouseDrag ).not.toHaveBeenCalled();
+        });
+
+
+    });
+
 
     describe( 'Upon mouse move', () => {
 
