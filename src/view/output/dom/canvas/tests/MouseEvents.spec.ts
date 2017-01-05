@@ -8,7 +8,7 @@ import { Path,
 import { EventMediator,
          MouseMoveEvent } from '../../events';
 
-describe( 'Hit testing: ', () => {
+describe( 'Mouse events: ', () => {
 
     setup.call( this );
 
@@ -42,6 +42,10 @@ describe( 'Hit testing: ', () => {
 
         });
 
+        it( 'should include mouse coordinates', () => {
+            expect( this.lastMouseEvent.coords ).toEqualPoint( 25, 5 );
+        });
+
         it( 'should include the delta from the previous mouse event', () => {
             expect( this.lastMouseEvent.delta ).toEqualPoint( 10, -10 );
         });
@@ -59,15 +63,20 @@ describe( 'Hit testing: ', () => {
     });
 
 
-    describe( 'Upon mouse move', () => {
+    describe( 'The hits (viewees) returned', () => {
 
         beforeEach( () => {
             this.onMouseMove = jasmine.createSpy( 'onMouseMove' );
             this.eventMediator = new EventMediator( this.control );
             this.eventMediator.mouseMove$.subscribe( this.onMouseMove );
+
+            this.getLastestHits = () => {
+                return this.onMouseMove.calls.mostRecent().args[0].hits;
+            }
+
         });
 
-        it( 'it should return all the viewees under the mouse in deepest-first order', () => {
+        it( 'should include the viewees under the mouse in deepest-first order', () => {
 
             let { iFace, iEye, iPupil } = this.createViewees(`
                 | iFace      | Rectangle | 10, 10, 100, 100 |
@@ -78,11 +87,11 @@ describe( 'Hit testing: ', () => {
             this.layer.addViewees( iFace );
             simulateMouseEvent( 'mousemove', 22, 22 );
 
-            expect( this.onMouseMove ).toHaveBeenCalledWith([ iPupil, iEye, iFace ]);
+            expect( this.getLastestHits() ).toEqual([ iPupil, iEye, iFace ]);
 
         });
 
-        it( 'it should not return viewees that are not under the mouse', () => {
+        it( 'should exclude viewees that are not under the mouse', () => {
 
             let { iFace, iEye, iPupil } = this.createViewees(`
                 | iFace      | Rectangle | 10, 10, 100, 100 |
@@ -93,11 +102,11 @@ describe( 'Hit testing: ', () => {
             this.layer.addViewees( iFace );
             simulateMouseEvent( 'mousemove', 20, 20 );
 
-            expect( this.onMouseMove ).toHaveBeenCalledWith([ iEye, iFace ]);
+            expect( this.getLastestHits() ).toEqual([ iEye, iFace ]);
 
         });
 
-        it( 'it should not return non-interactive viewees', () => {
+        it( 'should exclude non-interactive viewees', () => {
             let { iTransformer } = this.createViewees(`
                 | iTransformer | Transformer | |
             `);
@@ -105,10 +114,10 @@ describe( 'Hit testing: ', () => {
             this.layer.addViewees( iTransformer );
             simulateMouseEvent( 'mousemove', 20, 20 );
 
-            expect( this.onMouseMove ).toHaveBeenCalledWith([]);
+            expect( this.getLastestHits() ).toEqual([]);
         });
 
-        it( 'it should account for transformations', () => {
+        it( 'should account for transformations', () => {
             let { iTransformer, iFace } = this.createViewees(`
                 | iTransformer | Transformer |                    |
                 |   iFace      | Rectangle   | 200, 200, 100, 100 |
@@ -121,11 +130,10 @@ describe( 'Hit testing: ', () => {
             this.layer.addViewees( iTransformer );
             simulateMouseEvent( 'mousemove', 45, 45 );
 
-            expect( this.onMouseMove ).toHaveBeenCalledWith([ iFace ]);
-
+            expect( this.getLastestHits() ).toEqual([ iFace ]);
         });
 
-        it( 'it should exclude hidden viewees and their children', () => {
+        it( 'should exclude hidden viewees and their children', () => {
             let { iFace } = this.createViewees(`
                 | iFace  | Rectangle | 10, 10, 100, 100 |
                 |   iEye | Rectangle | 10, 10,  10,  10 |
@@ -136,10 +144,10 @@ describe( 'Hit testing: ', () => {
             this.layer.addViewees( iFace );
             simulateMouseEvent( 'mousemove', 20, 20 );
 
-            expect( this.onMouseMove ).toHaveBeenCalledWith([]);
+            expect( this.getLastestHits() ).toEqual([]);
         });
 
-        it( 'it should exclude portions of viewees that are outside the clip area', () => {
+        it( 'should exclude portions of viewees that are outside the clip area', () => {
             let { iContainer } = this.createViewees(`
                 | iContainer  | Rectangle | 100, 100, 100, 100 |
                 |   iClipped  | Rectangle | 100, 100, 100, 100 |
@@ -148,7 +156,7 @@ describe( 'Hit testing: ', () => {
             this.layer.addViewees( iContainer );
             simulateMouseEvent( 'mousemove', 201, 201 );
 
-            expect( this.onMouseMove ).toHaveBeenCalledWith([]);
+            expect( this.getLastestHits() ).toEqual([]);
         });
 
         describe( 'when testing a', () => {
@@ -167,27 +175,27 @@ describe( 'Hit testing: ', () => {
                     this.path.lineTo( new Point ( 20, 20 ) );
                 });
 
-                it( 'it should include the path if the distance is smaller than the padding value', () => {
+                it( 'should include the path if the distance is smaller than the padding value', () => {
                     this.layer.addViewees( this.path );
                     simulateMouseEvent( 'mousemove', 16, 14 );
 
-                    expect( this.onMouseMove ).toHaveBeenCalledWith([ this.path ]);
+                    expect( this.getLastestHits() ).toEqual([ this.path ]);
                 });
 
-                it( 'it should exclude the path if the distance is bigger than the padding value', () => {
+                it( 'should exclude the path if the distance is bigger than the padding value', () => {
                     this.layer.addViewees( this.path );
                     simulateMouseEvent( 'mousemove', 11, 19 );
 
-                    expect( this.onMouseMove ).toHaveBeenCalledWith([]);
+                    expect( this.getLastestHits() ).toEqual([]);
                 });
 
-                it( 'it should account for transformations', () => {
+                it( 'should account for transformations', () => {
                     this.transformer.addChild( this.path );
 
                     this.layer.addViewees( this.transformer );
                     simulateMouseEvent( 'mousemove', 50 , 50 );
 
-                    expect( this.onMouseMove ).toHaveBeenCalledWith([ this.path ]);
+                    expect( this.getLastestHits() ).toEqual([ this.path ]);
                 });
 
 
@@ -201,27 +209,27 @@ describe( 'Hit testing: ', () => {
                 });
 
 
-                it( 'it should include the path if the distance is smaller than the padding value', () => {
+                it( 'should include the path if the distance is smaller than the padding value', () => {
                     this.layer.addViewees( this.path );
                     simulateMouseEvent( 'mousemove', 16, 20 );
 
-                    expect( this.onMouseMove ).toHaveBeenCalledWith([ this.path ]);
+                    expect( this.getLastestHits() ).toEqual([ this.path ]);
                 });
 
-                it( 'it should exclude the path if the distance is bigger than the padding value', () => {
+                it( 'should exclude the path if the distance is bigger than the padding value', () => {
                     this.layer.addViewees( this.path );
                     simulateMouseEvent( 'mousemove', 10, 20 );
 
-                    expect( this.onMouseMove ).toHaveBeenCalledWith([]);
+                    expect( this.getLastestHits() ).toEqual([]);
                 });
 
-                it( 'it should account for transformations', () => {
+                it( 'should account for transformations', () => {
                     this.transformer.addChild( this.path );
 
                     this.layer.addViewees( this.transformer );
                     simulateMouseEvent( 'mousemove', 50 , 60 );
 
-                    expect( this.onMouseMove ).toHaveBeenCalledWith([ this.path ]);
+                    expect( this.getLastestHits() ).toEqual([ this.path ]);
                 });
 
             });
@@ -234,27 +242,27 @@ describe( 'Hit testing: ', () => {
                 });
 
 
-                it( 'it should include the path if the distance is smaller than the padding value', () => {
+                it( 'should include the path if the distance is smaller than the padding value', () => {
                     this.layer.addViewees( this.path );
                     simulateMouseEvent( 'mousemove', 16, 25 );
 
-                    expect( this.onMouseMove ).toHaveBeenCalledWith([ this.path ]);
+                    expect( this.getLastestHits() ).toEqual([ this.path ]);
                 });
 
-                it( 'it should exclude the path if the distance is bigger than the padding value', () => {
+                it( 'should exclude the path if the distance is bigger than the padding value', () => {
                     this.layer.addViewees( this.path );
                     simulateMouseEvent( 'mousemove', 12, 25 );
 
-                    expect( this.onMouseMove ).toHaveBeenCalledWith([]);
+                    expect( this.getLastestHits() ).toEqual([]);
                 });
 
-                it( 'it should account for transformations', () => {
+                it( 'should account for transformations', () => {
                     this.transformer.addChild( this.path );
 
                     this.layer.addViewees( this.transformer );
                     simulateMouseEvent( 'mousemove', 55 , 70 );
 
-                    expect( this.onMouseMove ).toHaveBeenCalledWith([ this.path ]);
+                    expect( this.getLastestHits() ).toEqual([ this.path ]);
                 });
 
             });

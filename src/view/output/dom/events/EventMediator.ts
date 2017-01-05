@@ -57,7 +57,7 @@ class EventMediator {
 
         container.addEventListener( 'mousemove', ( aDomEvent ) => {
             mapEvent( aDomEvent );
-            this.mouseMove$.notify( iEvent.hits );
+            this.mouseMove$.notify( iEvent );
 
             if ( isMouseDown ) {
                 this.mouseDrag$.notify( iEvent );
