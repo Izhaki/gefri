@@ -2,7 +2,7 @@ import { setup } from './Helpers.spec';
 import { Point } from '../../../../geometry';
 import { Path  } from '../../../../viewees'
 
-describe( 'Antialiasing: Erase operations should extract the viewee bounding rect by 0.5 to compensate for the antialiasing canvas applies', () => {
+describe( 'Antialiasing: Erase operations should expand the viewee bounding rect by 1 to compensate for the antialiasing canvas applies', () => {
 
     setup.call( this, true );
 
@@ -17,7 +17,7 @@ describe( 'Antialiasing: Erase operations should extract the viewee bounding rec
         iRectangle.shown = false;
 
         expect( this.context ).toHaveRendered(`
-            | Erase | 99.5, 99.5, 11, 11 |
+            | Erase | 99, 99, 12, 12 |
         `);
     });
 
@@ -35,13 +35,13 @@ describe( 'Antialiasing: Erase operations should extract the viewee bounding rec
         this.path.setStart( new Point( 0, 20 ) );
 
         expect( this.context ).toHaveRendered(`
-            | Erase     | 19.5, 19.5, 21, 28.5 |        |        |
-            | Erase     | -0.5, 19.5, 41, 28.5 |        |        |
-            | PathStart | 0, 20                |        |        |
-            | LineTo    | 30, 20               |        |        |
-            | QuadTo    | 50, 30               | 30, 40 |        |
-            | CubicTo   | 20, 50               | 30, 50 | 20, 40 |
-            | PathEnd   |                      |        |        |
+            | Erase     | 19, 19, 22, 29.5 |        |        |
+            | Erase     | -1, 19, 42, 29.5 |        |        |
+            | PathStart |  0, 20           |        |        |
+            | LineTo    | 30, 20           |        |        |
+            | QuadTo    | 50, 30           | 30, 40 |        |
+            | CubicTo   | 20, 50           | 30, 50 | 20, 40 |
+            | PathEnd   |                  |        |        |
         `);
 
 

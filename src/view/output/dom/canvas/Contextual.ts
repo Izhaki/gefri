@@ -6,19 +6,16 @@ import { Point,
          Scale        } from '../../../geometry';
 
 import { Transformations } from '../../../output';
-import { inject          } from '../../../../core/di';
 
 import { getBoundingRect } from '../../../viewees/multimethods';
 
 export
 class Contextual extends Clipped {
-    private   antialiasingExtraMargins: number;
     protected context:                  CanvasRenderingContext2D;
 
     constructor( aContext: CanvasRenderingContext2D ) {
         super();
         this.context = aContext;
-        this.antialiasingExtraMargins = inject( 'antialiasingExtraMargins' );
     }
 
     // Called via cumulateTransformations. To achieve zoom, we simply scale the
@@ -78,10 +75,7 @@ class Contextual extends Clipped {
     }
 
     protected erase( aAbsoluteRect: Rect ): void {
-        let iExpandedRect = aAbsoluteRect.clone();
-        iExpandedRect.expand( this.antialiasingExtraMargins );
-
-        this.context.clearRect( iExpandedRect.x, iExpandedRect.y, iExpandedRect.w, iExpandedRect.h );
+        this.context.clearRect( aAbsoluteRect.x, aAbsoluteRect.y, aAbsoluteRect.w, aAbsoluteRect.h );
     };
 
     // Note: We only clip the scaled rect as the applied zoom will be applied
