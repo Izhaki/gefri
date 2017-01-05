@@ -1,13 +1,12 @@
 import { setup } from './Helpers.spec';
 import { simulateMouseEvent } from '../../../../../../tests/unit/helpers';
 
-import { EventMediator } from '../../';
-
 import { Point } from '../../../../geometry';
 import { Path,
          Transformer  } from '../../../../viewees';
 
-import { MouseMoveEvent } from '../../MouseMoveEvent';
+import { EventMediator,
+         MouseMoveEvent } from '../../events';
 
 describe( 'Hit testing: ', () => {
 

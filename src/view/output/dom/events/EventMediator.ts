@@ -1,9 +1,9 @@
-import { Control } from './Control';
-import { Stream  } from '../../../core';
+import { Control } from '../Control';
+import { Stream  } from '../../../../core';
 import { Viewee,
-         Viewees } from '../../viewees/Viewee';
+         Viewees } from '../../../viewees/Viewee';
 
-import { Point   } from '../../geometry';
+import { Point   } from '../../../geometry';
 
 import { MouseMoveEvent } from './MouseMoveEvent';
 

@@ -1,7 +1,7 @@
 import { Viewee,
-         Viewees } from '../../viewees/Viewee';
+         Viewees } from '../../../viewees/Viewee';
 
-import { Point   } from '../../geometry';
+import { Point   } from '../../../geometry';
 
 export
 class MouseMoveEvent {

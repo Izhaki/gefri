@@ -1,8 +1,8 @@
 import * as geometry from './geometry/geometry.ns';
 export { geometry };
 
-export { Control,
-         EventMediator }         from './output/dom';
+export { Control } from './output/dom';
+export { EventMediator } from './output/dom/events';
 export { Layer as CanvasLayer } from './output/dom/canvas';
 
 export { Path,
