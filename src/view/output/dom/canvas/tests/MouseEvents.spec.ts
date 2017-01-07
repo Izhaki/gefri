@@ -12,6 +12,52 @@ describe( 'Mouse events: ', () => {
 
     setup.call( this );
 
+    describe( 'A mouse move event', () => {
+
+        beforeEach( () => {
+            this.onMouseMove = jasmine.createSpy( 'onMouseMove' );
+            this.eventMediator = new EventMediator( this.control );
+            this.eventMediator.mouseMove$.subscribe( this.onMouseMove );
+
+            this.getLastEvent = (): MouseMoveEvent => {
+                return this.onMouseMove.calls.mostRecent().args[0];
+            }
+        });
+
+        beforeEach( () => {
+            let { iTransformer, iRectangle } = this.createViewees(`
+                | iTransformer | Transformer |              |
+                |   iRectangle | Rectangle   | 0, 0, 80, 80 |
+            `);
+
+            iTransformer.setZoom( 0.5, 0.5 );
+
+            this.layer.addViewees( iTransformer );
+            simulateMouseEvent( 'mousemove', 40, 40 );
+            simulateMouseEvent( 'mousemove', 50, 60 );
+
+            this.rectangle = iRectangle;
+            this.lastMouseEvent = this.getLastEvent();
+        });
+
+        it( 'should include mouse client coordinates', () => {
+            expect( this.lastMouseEvent.coords ).toEqualPoint( 50, 60 );
+        });
+
+        it( 'should include the client delta from the previous mouse event', () => {
+            expect( this.lastMouseEvent.delta ).toEqualPoint( 10, 20 );
+        });
+
+        it( 'should include mouse absolute coordinates', () => {
+            expect( this.lastMouseEvent.absolute.coords ).toEqualPoint( 100, 120 );
+        });
+
+        it( 'should include the client delta from the previous mouse event', () => {
+            expect( this.lastMouseEvent.absolute.delta ).toEqualPoint( 20, 40 );
+        });
+
+    });
+
     describe( 'A mouse drag event', () => {
 
         beforeEach( () => {
@@ -42,14 +88,6 @@ describe( 'Mouse events: ', () => {
 
         });
 
-        it( 'should include mouse coordinates', () => {
-            expect( this.lastMouseEvent.coords ).toEqualPoint( 25, 5 );
-        });
-
-        it( 'should include the delta from the previous mouse event', () => {
-            expect( this.lastMouseEvent.delta ).toEqualPoint( 10, -10 );
-        });
-
         it( 'should not be emitted if the mouse is not down', () => {
             this.onMouseDrag.calls.reset();
             simulateMouseEvent( 'mousedown', 15, 15 );
@@ -58,7 +96,6 @@ describe( 'Mouse events: ', () => {
 
             expect( this.onMouseDrag ).not.toHaveBeenCalled();
         });
-
 
     });
 
@@ -73,7 +110,6 @@ describe( 'Mouse events: ', () => {
             this.getLastestHits = () => {
                 return this.onMouseMove.calls.mostRecent().args[0].hits;
             }
-
         });
 
         it( 'should include the viewees under the mouse in deepest-first order', () => {

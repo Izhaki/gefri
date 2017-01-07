@@ -67,4 +67,20 @@ class Matrix {
         this.scaleY     *= y;
     }
 
+    inverse(): Matrix {
+        let a  = this.scaleX,
+            d  = this.scaleY,
+            tx = this.translateX,
+            ty = this.translateY;
+
+        let ad = a * d;
+
+        return new Matrix(
+            d / ad,
+            a / ad,
+            ( -d * tx ) / ad,
+           -( a * ty ) / ad
+        );
+    }
+
 }

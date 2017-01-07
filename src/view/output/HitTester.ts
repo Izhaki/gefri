@@ -1,12 +1,41 @@
 import { cumulateTransformationsOf,
          hitTest                    } from '../viewees/multimethods';
 
-import { Rect,
-         Matrix  } from '../geometry';
-import { Clipped } from './Clipped';
+import { Point,
+         Rect,
+         Matrix      } from '../geometry';
+import { Clipped     } from './Clipped';
 import { Viewee,
-         Viewees } from '../viewees';
-import { Visible } from '../viewees/visibles/Visible';
+         Viewees,
+         Transformer } from '../viewees';
+
+export
+class HitTestResult {
+    private hits:   Viewees = [];
+    private matrix: Matrix  = new Matrix();
+
+    public addHit( aViewee: Viewee ): void {
+        // The viewee is added to the front of the hits array,
+        // so it's deepest first.
+        this.hits.unshift( aViewee );
+    }
+
+    public getHits(): Viewees {
+        return this.hits;
+    }
+
+    public getTopHit(): Viewee {
+        return this.hits[ 0 ];
+    }
+
+    public getAbsoluteMatrix(): Matrix {
+        return this.matrix;
+    }
+
+    public setMatrix( aMatrix: Matrix ) {
+        this.matrix = aMatrix.clone();
+    }
+}
 
 export
 class HitTester extends Clipped {
@@ -22,19 +51,27 @@ class HitTester extends Clipped {
         );
     }
 
-    test( aViewee: Viewee, x: number, y:number, hits: Viewees ) {
+    test( aViewee: Viewee, x: number, y:number, aResult: HitTestResult ) {
         if ( aViewee.rendered ) {
+
+            if ( aViewee instanceof Transformer ) {
+                this.updateAbsoluteMatrix( aViewee, aResult );
+            }
+
+
             if ( aViewee.isInteractive() ) {
                 let isHit = this.hitTest( aViewee, x, y, this.getAbsoluteMatrix() );
                 if ( isHit ) {
-                    hits.unshift( aViewee );
+                    aResult.addHit( aViewee );
                 }
             }
-            this.testChildren( aViewee, x, y, hits );
+
+            this.testChildren( aViewee, x, y, aResult );
+
         }
     }
 
-    private testChildren( aViewee: Viewee, x: number, y:number, hits: Viewees ): void {
+    private testChildren( aViewee: Viewee, x: number, y:number, aResult: HitTestResult ): void {
         if ( aViewee.isChildless() ) return;
 
         this.pushState();
@@ -46,8 +83,17 @@ class HitTester extends Clipped {
         this.cumulateTransformationsOf( aViewee );
 
         aViewee.forEachChild( ( aChild ) => {
-            this.test( aChild, x, y, hits );
+            this.test( aChild, x, y, aResult );
         });
+
+        this.popState();
+    }
+
+    private updateAbsoluteMatrix( aTransformer: Transformer, aResult: HitTestResult ) {
+        this.pushState();
+
+        this.cumulateTransformationsOf( aTransformer );
+        aResult.setMatrix( this.getAbsoluteMatrix() );
 
         this.popState();
     }

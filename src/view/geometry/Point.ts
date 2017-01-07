@@ -25,4 +25,9 @@ class Point {
             this.y * aMatrix.scaleY + aMatrix.translateY
         );
     }
+
+    applyInverseMatrix( aMatrix: Matrix ) : Point {
+        return this.applyMatrix( aMatrix.inverse() );
+    }
+
 }

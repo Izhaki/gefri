@@ -1,8 +1,10 @@
 import { Control   } from './Control';
 import { Stream    } from '../../../core';
-import { HitTester } from '../'
 
-import { Rect    } from '../../geometry';
+import { HitTester,
+         HitTestResult } from '../'
+
+import { Rect } from '../../geometry';
 
 import { Viewee,
          Viewees,
@@ -53,10 +55,9 @@ abstract class ElementLayer {
         return this.element;
     }
 
-    hitTest( x: number, y: number ): Viewees {
+    hitTest( x: number, y: number, aResult: HitTestResult ): void {
         let hits: Viewees = [];
-        this.hitTester.test( this.root, x, y, hits );
-        return hits;
+        this.hitTester.test( this.root, x, y, aResult );
     }
 
     protected abstract createElement(): HTMLElement;

@@ -70,7 +70,7 @@ function onMouseMove( aEvent ) {
 }
 
 function onMouseDrag( aEvent ) {
-    aEvent.dragged.translate( aEvent.delta );
+    aEvent.dragged.translate( aEvent.absolute.delta );
 }
 
 var iEventMediator = new EventMediator( iControl );

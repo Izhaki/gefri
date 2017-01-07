@@ -1,7 +1,8 @@
-import { Viewees      } from '../../viewees/Viewee';
-import { ElementLayer } from './ElementLayer'
-import { Layer        } from '../../output/dom/canvas';
-import { Rect         } from '../../geometry';
+import { Viewees       } from '../../viewees/Viewee';
+import { ElementLayer  } from './ElementLayer'
+import { Layer         } from '../../output/dom/canvas';
+import { Rect          } from '../../geometry';
+import { HitTestResult } from '../';
 
 export
 class Control {
@@ -29,13 +30,11 @@ class Control {
         return this.bounds;
     }
 
-    hitTest( x: number, y: number ): Viewees {
-        let hits: Viewees = [];
+    hitTest( x: number, y: number, aHitResult: HitTestResult ): void {
+        let iHitTestResult = new HitTestResult();
         this.forEachLayer( (aLayer) => {
-            let layerHits: Viewees = aLayer.hitTest( x, y );
-            hits.push( ...layerHits );
+            let layerHits: Viewees = aLayer.hitTest( x, y, aHitResult );
         });
-        return hits;
     }
 
     private addLayerElement( aElement: HTMLElement ): void {
