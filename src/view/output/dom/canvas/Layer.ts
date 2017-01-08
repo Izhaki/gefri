@@ -30,15 +30,11 @@ class Layer extends ElementLayer {
         this.queueRefresh();
     }
 
-    private refreshRenderer( aDamagedRects: Rects ) {
-        this.renderer.refresh( this.root, aDamagedRects );
-    }
-
     // As a callback, refresh is an instance method so we always get the same reference for it per instance
     // (required for correct operation of onNextFrame).
     private refresh = () => {
-        let damagedRects = this.updater.getDamagedRects();
-        this.refreshRenderer( damagedRects );
+        let iDamagedRect = this.updater.flushDamagedRect();
+        this.renderer.refresh( this.root, iDamagedRect );
     }
 
     queueRefresh(): void {

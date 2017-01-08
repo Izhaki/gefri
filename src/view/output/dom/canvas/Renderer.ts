@@ -1,6 +1,6 @@
 import { Contextual    } from './';
 import { Point,
-         Rects         } from '../../../geometry';
+         Rect          } from '../../../geometry';
 import { getClassName,
          emptyArray    } from '../../../../core/Utils';
 import { Viewee        } from '../../../viewees';
@@ -24,10 +24,12 @@ class Renderer extends Contextual {
         this.stroke                    = stroke.curry( this );
     }
 
-    refresh( aViewee: Viewee, damagedRects: Rects ): void {
-        this.eraseDamagedRects( damagedRects );
+    refresh( aViewee: Viewee, aDamagedRect: Rect ): void {
+        this.erase( aDamagedRect );
+        this.pushState();
+        this.setclipArea( aDamagedRect );
         this.render( aViewee );
-        this.emptyDamagedRects( damagedRects );
+        this.popState();
     }
 
     render( aViewee: Viewee ): void {
@@ -36,16 +38,6 @@ class Renderer extends Contextual {
             this.renderChildren( aViewee );
             this.stroke( aViewee );
         }
-    }
-
-    private eraseDamagedRects( aRects: Rects ): void {
-        aRects.forEach( aRect => {
-            this.erase( aRect );
-        });
-    }
-
-    private emptyDamagedRects( aRects: Rects ): void {
-        emptyArray( aRects );
     }
 
     private needsRendering( aViewee: Viewee ): boolean {

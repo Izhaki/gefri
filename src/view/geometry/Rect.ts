@@ -118,10 +118,15 @@ class Rect {
     }
 
     union( aRect: Rect ): void {
-        this.x = Math.min( this.getLeft(),   aRect.getLeft()   );
-        this.y = Math.min( this.getTop(),    aRect.getTop()    );
-        this.w = Math.max( this.getRight(),  aRect.getRight()  ) - this.x;
-        this.h = Math.max( this.getBottom(), aRect.getBottom() ) - this.y;
+        let x = Math.min( this.getLeft(),   aRect.getLeft()   ),
+            y = Math.min( this.getTop(),    aRect.getTop()    ),
+            w = Math.max( this.getRight(),  aRect.getRight()  ) - x,
+            h = Math.max( this.getBottom(), aRect.getBottom() ) - y;
+
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
     }
 
     isOverlappingWith( aRect: Rect ): boolean {

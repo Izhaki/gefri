@@ -9,9 +9,10 @@ import { inject } from '../../../../core/di';
 
 export
 class Updater extends Clipped {
-    private damagedRects:              Rects = [];
+    private damagedRect: Rect  = undefined;
+
     private cumulateTransformationsOf: ( aViewee: Viewee ) => void;
-    private   antialiasingExtraMargins: number;
+    private antialiasingExtraMargins:  number;
 
     constructor( aUpdateStream: Stream ) {
         super();
@@ -30,8 +31,10 @@ class Updater extends Clipped {
         this.popState();
     }
 
-    getDamagedRects(): Rects {
-        return this.damagedRects;
+    flushDamagedRect(): Rect {
+        let iDamagedRect: Rect = this.damagedRect;
+        this.damagedRect = undefined;
+        return iDamagedRect;
     }
 
     private updateMatrixFor( aViewee: Viewee ): void {
@@ -44,7 +47,11 @@ class Updater extends Clipped {
         let iDamagedRect = this.getRendereredBoundingRectOf( aViewee );
         iDamagedRect = this.expandToIncludeAntialiasing( iDamagedRect );
 
-        this.damagedRects.push( iDamagedRect );
+        if ( this.damagedRect ) {
+            this.damagedRect.union( iDamagedRect );
+        } else {
+            this.damagedRect = iDamagedRect.clone();
+        }
     }
 
     // Antialiasing applied by the canvas results in pixels outside the rect boundery.

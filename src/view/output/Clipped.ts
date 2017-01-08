@@ -6,8 +6,12 @@ export
 abstract class Clipped extends Transformable {
     protected clipArea: Rect;
 
+    protected setclipArea( aRect: Rect ) {
+        this.clipArea = aRect;
+    }
+
     protected intersectClipAreaWith( aViewee: Viewee ): void {
-        let iAbsoluteRect: Rect
+        let iAbsoluteRect: Rect;
 
         // We get the bounding rect from our super, which should return a rect
         // in absolute coordinates.
@@ -16,7 +20,7 @@ abstract class Clipped extends Transformable {
         if ( this.clipArea ) {
             this.clipArea.intersect( iAbsoluteRect );
         } else {
-            this.clipArea = iAbsoluteRect;
+            this.setclipArea( iAbsoluteRect );
         }
     }
 

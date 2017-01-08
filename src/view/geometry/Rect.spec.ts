@@ -189,6 +189,18 @@ describe( 'Rect', () => {
                 expect( iRect1 ).toEqualRect( 20, 20, 90, 100 );
             });
 
+            // A particular union algorithm may assign the x or y before
+            // working out the width and height, which will result in wrong
+            // union.
+            it( 'when the first rect origin is bigger than the second rect origin', () => {
+                let iRect1 = new Rect( 15, 15, 10, 10 );
+                let iRect2 = new Rect( 10, 10, 10, 10 );
+
+                iRect1.union( iRect2 );
+
+                expect( iRect1 ).toEqualRect( 10, 10, 15, 15 );
+            });
+
 
         });
 

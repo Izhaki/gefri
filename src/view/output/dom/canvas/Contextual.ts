@@ -78,6 +78,14 @@ class Contextual extends Clipped {
         this.context.clearRect( aAbsoluteRect.x, aAbsoluteRect.y, aAbsoluteRect.w, aAbsoluteRect.h );
     };
 
+    protected setclipArea( aAbsoluteRect: Rect ) {
+        this.context.beginPath();
+        this.context.rect( aAbsoluteRect.x, aAbsoluteRect.y, aAbsoluteRect.w, aAbsoluteRect.h );
+        this.context.clip();
+
+        super.setclipArea( aAbsoluteRect );
+    }
+
     // Note: We only clip the scaled rect as the applied zoom will be applied
     // directly to the canvas.
     protected intersectClipAreaWith( aViewee: Viewee ): void {
