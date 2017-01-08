@@ -40,7 +40,7 @@ class HitTestResult {
 export
 class HitTester extends Clipped {
     private cumulateTransformationsOf: ( aViewee: Viewee ) => void;
-    private hitTest:                   ( aViewee: Viewee, x: number, y: number, aAbsoluteMatrix: Matrix ) => boolean;
+    private hitTest:                   ( aViewee: Viewee, aMousePosition: Point, aAbsoluteMatrix: Matrix ) => boolean;
 
     constructor() {
         super();
@@ -51,7 +51,7 @@ class HitTester extends Clipped {
         );
     }
 
-    test( aViewee: Viewee, x: number, y:number, aResult: HitTestResult ) {
+    test( aViewee: Viewee, aMousePosition: Point, aResult: HitTestResult ) {
         if ( aViewee.rendered ) {
 
             if ( aViewee instanceof Transformer ) {
@@ -60,18 +60,18 @@ class HitTester extends Clipped {
 
 
             if ( aViewee.isInteractive() ) {
-                let isHit = this.hitTest( aViewee, x, y, this.getAbsoluteMatrix() );
+                let isHit = this.hitTest( aViewee, aMousePosition, this.getAbsoluteMatrix() );
                 if ( isHit ) {
                     aResult.addHit( aViewee );
                 }
             }
 
-            this.testChildren( aViewee, x, y, aResult );
+            this.testChildren( aViewee, aMousePosition, aResult );
 
         }
     }
 
-    private testChildren( aViewee: Viewee, x: number, y:number, aResult: HitTestResult ): void {
+    private testChildren( aViewee: Viewee, aMousePosition: Point, aResult: HitTestResult ): void {
         if ( aViewee.isChildless() ) return;
 
         this.pushState();
@@ -83,7 +83,7 @@ class HitTester extends Clipped {
         this.cumulateTransformationsOf( aViewee );
 
         aViewee.forEachChild( ( aChild ) => {
-            this.test( aChild, x, y, aResult );
+            this.test( aChild, aMousePosition, aResult );
         });
 
         this.popState();

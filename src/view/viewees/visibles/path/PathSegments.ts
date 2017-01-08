@@ -21,7 +21,7 @@ abstract class PathSegment {
     }
 
     abstract getBoundingRect( aStart: Point ): Rect;
-    abstract getPointDistance( aStart: Point, x: number, y: number ): number;
+    abstract getPointDistance( aStart: Point, aPoint: Point ): number;
     abstract clone(): PathSegment;
 
     applyMatrix( aMatrix: Matrix ) {
@@ -54,7 +54,7 @@ class LineSegment extends PathSegment {
         return new Rect( aStart, this.getEnd() );
     }
 
-    getPointDistance( aStart: Point, x: number, y: number ): number {
+    getPointDistance( aStart: Point, aPoint: Point ): number {
         let abs = Math.abs,
             sqrt = Math.sqrt,
             sqr  = ( x ) => Math.pow( x, 2 );
@@ -65,7 +65,7 @@ class LineSegment extends PathSegment {
             y2 = this.getEnd().y;
 
         let iDistance =
-            abs( ( y2 - y1 ) * x - ( x2 - x1 ) * y + x2 * y1 - y2 * x1 )
+            abs( ( y2 - y1 ) * aPoint.x - ( x2 - x1 ) * aPoint.y + x2 * y1 - y2 * x1 )
             /
             sqrt( sqr( y2 - y1 ) + sqr( x2 - x1 ) );
 
@@ -118,9 +118,9 @@ class QuadSegment extends PathSegment {
         return this.getBezierBoundingRect( iBezier ) ;
     };
 
-    getPointDistance( aStart: Point, x: number, y: number ): number {
+    getPointDistance( aStart: Point, aPoint: Point ): number {
         let iBezier     = this.getBezier( aStart ),
-            iProjection = iBezier.project({ x, y }),
+            iProjection = iBezier.project( aPoint ),
             iDistance   = iProjection.d;
 
         return iDistance;
@@ -186,9 +186,9 @@ class CubicSegment extends PathSegment {
 
     }
 
-    getPointDistance( aStart: Point, x: number, y: number ): number {
+    getPointDistance( aStart: Point, aPoint: Point ): number {
         let iBezier     = this.getBezier( aStart ),
-            iProjection = iBezier.project({ x, y }),
+            iProjection = iBezier.project( aPoint ),
             iDistance   = iProjection.d;
 
         return iDistance;

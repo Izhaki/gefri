@@ -4,7 +4,8 @@ import { Stream    } from '../../../core';
 import { HitTester,
          HitTestResult } from '../'
 
-import { Rect } from '../../geometry';
+import { Point,
+         Rect   } from '../../geometry';
 
 import { Viewee,
          Viewees,
@@ -55,9 +56,9 @@ abstract class ElementLayer {
         return this.element;
     }
 
-    hitTest( x: number, y: number, aResult: HitTestResult ): void {
+    hitTest( aMousePosition: Point, aResult: HitTestResult ): void {
         let hits: Viewees = [];
-        this.hitTester.test( this.root, x, y, aResult );
+        this.hitTester.test( this.root, aMousePosition, aResult );
     }
 
     protected abstract createElement(): HTMLElement;

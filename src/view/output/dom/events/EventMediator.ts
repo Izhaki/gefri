@@ -41,7 +41,7 @@ class EventMediator {
             iEvent.client.coords = new Point( aDomEvent.clientX, aDomEvent.clientY ).substract( containerOffset );
             iEvent.client.delta = iEvent.client.coords.substract( this.previousMouseEvent.client.coords );
 
-            this.control.hitTest( iEvent.client.coords.x, iEvent.client.coords.y, iHitTestResult );
+            this.control.hitTest( iEvent.client.coords, iHitTestResult );
 
             let iMatrix = iHitTestResult.getAbsoluteMatrix();
             iEvent.absolute.coords = iEvent.client.coords.applyInverseMatrix( iMatrix );

@@ -167,10 +167,10 @@ class Rect {
 
     }
 
-    contains( x: number, y: number ): boolean {
+    contains( aPoint: Point ): boolean {
         return !this.isNullRect()  &&
-               this.getLeft() <= x && this.getRight()  >= x &&
-               this.getTop()  <= y && this.getBottom() >= y;
+               this.getLeft() <= aPoint.x && this.getRight()  >= aPoint.x &&
+               this.getTop()  <= aPoint.y && this.getBottom() >= aPoint.y;
     }
 
     isNullRect(): boolean {

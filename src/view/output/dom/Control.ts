@@ -30,10 +30,9 @@ class Control {
         return this.bounds;
     }
 
-    hitTest( x: number, y: number, aHitResult: HitTestResult ): void {
-        let iHitTestResult = new HitTestResult();
+    hitTest( aMousePosition: Point, aHitResult: HitTestResult ): void {
         this.forEachLayer( (aLayer) => {
-            let layerHits: Viewees = aLayer.hitTest( x, y, aHitResult );
+            let layerHits: Viewees = aLayer.hitTest( aMousePosition, aHitResult );
         });
     }
 

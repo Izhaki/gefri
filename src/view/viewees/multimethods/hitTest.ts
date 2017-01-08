@@ -4,7 +4,8 @@ import { getBoundingRect  } from './getBoundingRect';
 
 import { HitTester        } from '../../output';
 
-import { Rect,
+import { Point,
+         Rect,
          Matrix  } from './../../geometry';
 
 import { Rectangle,
@@ -14,14 +15,14 @@ export
 let hitTest = currify(
     ( getRendereredBoundingRectOf ) => methodDispatcher({
 
-        Rectangle: ( aRectangle: Rectangle, x: number, y:number, aAbsoluteMatrix: Matrix ): boolean => {
+        Rectangle: ( aRectangle: Rectangle, aMousePosition: Point, aAbsoluteMatrix: Matrix ): boolean => {
             let aVieweeRect: Rect;
 
             aVieweeRect = getRendereredBoundingRectOf( aRectangle );
-            return aVieweeRect.contains( x, y );
+            return aVieweeRect.contains( aMousePosition );
         },
 
-        Path: ( aPath: Path, x: number, y:number, aAbsoluteMatrix: Matrix ): boolean => {
+        Path: ( aPath: Path, aMousePosition: Point, aAbsoluteMatrix: Matrix ): boolean => {
             const HIT_PADDING = 3;
             let   aVieweeRect: Rect;
             let   isWithinRect: boolean;
@@ -29,11 +30,11 @@ let hitTest = currify(
             aVieweeRect = getRendereredBoundingRectOf( aPath );
 
             aVieweeRect.expand( HIT_PADDING )
-            isWithinRect = aVieweeRect.contains( x, y );
+            isWithinRect = aVieweeRect.contains( aMousePosition );
 
             if ( isWithinRect ) {
                 let aAbsolutePath = Path.applyMatrix( aPath, aAbsoluteMatrix );
-                let iDistance = aAbsolutePath.getPointDistance( x, y );
+                let iDistance = aAbsolutePath.getPointDistance( aMousePosition );
                 return iDistance < HIT_PADDING;
             } else {
                 return false;
