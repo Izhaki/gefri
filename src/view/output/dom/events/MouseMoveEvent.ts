@@ -3,19 +3,21 @@ import { Viewee,
 
 import { Point   } from '../../../geometry';
 
-interface mousePoints {
+interface MousePosition {
     coords: Point;
     delta:  Point;
 }
 
 export
 class MouseMoveEvent {
-    coords:  Point   = new Point( 0, 0 );
-    delta:   Point   = new Point( 0, 0 );
-    absolute : mousePoints = {
+    client: MousePosition = {
         coords: new Point( 0, 0 ),
         delta:  new Point( 0, 0 )
-    }
+    };
+    absolute : MousePosition = {
+        coords: new Point( 0, 0 ),
+        delta:  new Point( 0, 0 )
+    };
     topHit:  Viewee  = undefined;
     hits:    Viewees = [];
     dragged: Viewee  = undefined;

@@ -40,17 +40,17 @@ class EventMediator {
 
             this.control.hitTest( iX, iY, iHitTestResult );
 
-            let dX = iX - iEvent.coords.x,
-                dY = iY - iEvent.coords.y;
+            let dX = iX - iEvent.client.coords.x,
+                dY = iY - iEvent.client.coords.y;
 
             let iMatrix = iHitTestResult.getAbsoluteMatrix();
 
             let previousAbsoluteCoords = new Point( iEvent.absolute.coords.x, iEvent.absolute.coords.y );
             let newAbsoluteCoords = new Point( iX, iY ).applyInverseMatrix( iMatrix );
 
-            iEvent.coords.set( iX, iY );
-            iEvent.delta.set( dX, dY );
-            iEvent.absolute.coords = iEvent.coords.applyInverseMatrix( iMatrix );
+            iEvent.client.coords.set( iX, iY );
+            iEvent.client.delta.set( dX, dY );
+            iEvent.absolute.coords = iEvent.client.coords.applyInverseMatrix( iMatrix );
             iEvent.absolute.delta.set( newAbsoluteCoords.x - previousAbsoluteCoords.x, newAbsoluteCoords.y - previousAbsoluteCoords.y );
             iEvent.topHit = iHitTestResult.getTopHit();
             iEvent.hits   = iHitTestResult.getHits();

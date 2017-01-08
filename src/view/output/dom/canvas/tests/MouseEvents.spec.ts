@@ -41,11 +41,11 @@ describe( 'Mouse events: ', () => {
         });
 
         it( 'should include mouse client coordinates', () => {
-            expect( this.lastMouseEvent.coords ).toEqualPoint( 50, 60 );
+            expect( this.lastMouseEvent.client.coords ).toEqualPoint( 50, 60 );
         });
 
         it( 'should include the client delta from the previous mouse event', () => {
-            expect( this.lastMouseEvent.delta ).toEqualPoint( 10, 20 );
+            expect( this.lastMouseEvent.client.delta ).toEqualPoint( 10, 20 );
         });
 
         it( 'should include mouse absolute coordinates', () => {
