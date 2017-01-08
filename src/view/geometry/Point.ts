@@ -19,6 +19,13 @@ class Point {
         this.y = y;
     }
 
+    substract( aPoint: Point ): Point {
+        return new Point(
+            this.x - aPoint.x,
+            this.y - aPoint.y
+        );
+    }
+
     applyMatrix( aMatrix: Matrix ) : Point {
         return new Point(
             this.x * aMatrix.scaleX + aMatrix.translateX,

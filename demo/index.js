@@ -66,6 +66,11 @@ iTransformer.addChildren( iCubic );
 iCanvasLayer.addViewees( iTransformer );
 
 function onMouseMove( aEvent ) {
+    $( '#abs-x' ).text(
+        Math.round( aEvent.absolute.coords.x) +
+        ' : ' +
+        Math.round( aEvent.absolute.coords.y)
+    );
     //console.log( aEvent.hits.length );
 }
 

@@ -31,3 +31,10 @@ h1 {
 
     text-align: center;
 }
+
+#toolbar .control .value {
+    font-size: 14px;
+    margin: 0;
+    font-weight: 500;
+    line-height: 36px;
+}

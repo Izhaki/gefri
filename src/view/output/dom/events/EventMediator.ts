@@ -10,9 +10,12 @@ import { HitTestResult } from '../../';
 
 export
 class EventMediator {
-    private control:         Control;
-    private mouseMoveEvent:  MouseMoveEvent;
-    private HitTestResult:   HitTestResult;
+    private control:       Control;
+    private HitTestResult: HitTestResult;
+
+    private previousMouseEvent: MouseMoveEvent = new MouseMoveEvent();
+    private currentlyDragged:   Viewee = undefined;
+
     public  mouseMove$:      Stream;
     public  mouseDrag$:      Stream;
 
@@ -26,47 +29,42 @@ class EventMediator {
 
     private watchMouseMove(): void {
         let container = this.control.getContrainer();
-        let offsetLeft = container.offsetLeft;
-        let offsetTop  = container.offsetTop;
+        let containerOffset: Point = new Point( container.offsetLeft, container.offsetTop );
 
-        let iEvent = new MouseMoveEvent();
         let iHitTestResult = new HitTestResult();
 
         let isMouseDown: boolean = false;
 
-        let mapEvent = ( aDomEvent ) => {
-            let iX = aDomEvent.clientX - offsetLeft,
-                iY = aDomEvent.clientY - offsetTop;
+        let mapEvent = ( aDomEvent ): MouseMoveEvent => {
+            let iEvent = new MouseMoveEvent();
 
-            this.control.hitTest( iX, iY, iHitTestResult );
+            iEvent.client.coords = new Point( aDomEvent.clientX, aDomEvent.clientY ).substract( containerOffset );
+            iEvent.client.delta = iEvent.client.coords.substract( this.previousMouseEvent.client.coords );
 
-            let dX = iX - iEvent.client.coords.x,
-                dY = iY - iEvent.client.coords.y;
+            this.control.hitTest( iEvent.client.coords.x, iEvent.client.coords.y, iHitTestResult );
 
             let iMatrix = iHitTestResult.getAbsoluteMatrix();
-
-            let previousAbsoluteCoords = new Point( iEvent.absolute.coords.x, iEvent.absolute.coords.y );
-            let newAbsoluteCoords = new Point( iX, iY ).applyInverseMatrix( iMatrix );
-
-            iEvent.client.coords.set( iX, iY );
-            iEvent.client.delta.set( dX, dY );
             iEvent.absolute.coords = iEvent.client.coords.applyInverseMatrix( iMatrix );
-            iEvent.absolute.delta.set( newAbsoluteCoords.x - previousAbsoluteCoords.x, newAbsoluteCoords.y - previousAbsoluteCoords.y );
-            iEvent.topHit = iHitTestResult.getTopHit();
-            iEvent.hits   = iHitTestResult.getHits();
+            iEvent.absolute.delta  = iEvent.absolute.coords.substract( this.previousMouseEvent.absolute.coords );
+
+            iEvent.topHit  = iHitTestResult.getTopHit();
+            iEvent.hits    = iHitTestResult.getHits();
+            iEvent.dragged = this.currentlyDragged;
+
+            this.previousMouseEvent = iEvent;
+            return iEvent;
         }
 
         container.addEventListener( 'mousedown', ( aDomEvent ) => {
             isMouseDown = true;
 
-            mapEvent( aDomEvent );
+            let iEvent = mapEvent( aDomEvent );
 
-            iEvent.dragged = iEvent.hits[0];
-
+            this.currentlyDragged = iEvent.hits[0];
         });
 
         container.addEventListener( 'mousemove', ( aDomEvent ) => {
-            mapEvent( aDomEvent );
+            let iEvent =  mapEvent( aDomEvent );
             this.mouseMove$.notify( iEvent );
 
             if ( isMouseDown ) {
@@ -75,7 +73,7 @@ class EventMediator {
         });
 
         container.addEventListener( 'mouseup', ( aDomEvent ) => {
-            iEvent.dragged = undefined;
+            this.currentlyDragged = undefined;
             isMouseDown = false;
         });
 

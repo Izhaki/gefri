@@ -52,7 +52,7 @@ describe( 'Mouse events: ', () => {
             expect( this.lastMouseEvent.absolute.coords ).toEqualPoint( 100, 120 );
         });
 
-        it( 'should include the client delta from the previous mouse event', () => {
+        it( 'should include the absolute delta from the previous mouse event', () => {
             expect( this.lastMouseEvent.absolute.delta ).toEqualPoint( 20, 40 );
         });
 
