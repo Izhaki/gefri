@@ -29,7 +29,6 @@ describe( 'Layers: ', () => {
         // Had updates would happen after each change, we would see the
         // rectangle rendered after the first erase.
         expect( this.context ).toHaveRendered(`
-            | Erase     | 10, 10, 10,  10  |
             | Erase     | 0,  0,  500, 400 |
             | Rectangle | 20, 20, 20,  20  |
         `);

@@ -2,7 +2,7 @@ import { setup } from './Helpers.spec';
 import { Point } from '../../../../geometry';
 import { Path  } from '../../../../viewees/'
 
-describe( 'The canvas should', () => {
+describe( 'Rendering: The canvas should', () => {
 
     setup.call( this );
 
@@ -130,7 +130,7 @@ describe( 'The canvas should', () => {
         `);
     });
 
-    it( 'not clip children if the viewee is not clipping its children', () => {
+    xit( 'not clip children if the viewee is not clipping its children', () => {
         let { iGrandparent, iParent } = this.createViewees(`
             | iGrandparent | Rectangle | 10, 10, 80, 80 |
             |   iParent    | Rectangle | 10, 10, 80, 60 |

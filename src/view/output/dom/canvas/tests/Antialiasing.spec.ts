@@ -35,7 +35,6 @@ describe( 'Antialiasing: Erase operations should expand the viewee bounding rect
         this.path.setStart( new Point( 0, 20 ) );
 
         expect( this.context ).toHaveRendered(`
-            | Erase     | 19, 19, 22, 29.5 |        |        |
             | Erase     | -1, 19, 42, 29.5 |        |        |
             | PathStart |  0, 20           |        |        |
             | LineTo    | 30, 20           |        |        |
