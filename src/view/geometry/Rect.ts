@@ -172,6 +172,17 @@ class Rect {
 
     }
 
+    // Converts the coordinates and size of the rect to whole numbers.
+    // This is done to prevent antialiasing artifacts.
+    quantise(): Rect {
+        let iLeft   = Math.floor( this.getLeft()   ),
+            iTop    = Math.floor( this.getTop()    ),
+            iRight  = Math.ceil ( this.getRight()  ),
+            iBottom = Math.ceil ( this.getBottom() );
+
+        return new Rect( iLeft, iTop, iRight - iLeft, iBottom - iTop );
+    }
+
     contains( aPoint: Point ): boolean {
         return !this.isNullRect()  &&
                this.getLeft() <= aPoint.x && this.getRight()  >= aPoint.x &&

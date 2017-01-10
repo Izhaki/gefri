@@ -65,10 +65,10 @@ describe( 'Rendering: The canvas should', () => {
             this.layer.addViewees( this.path );
 
             expect( this.context ).toHaveRendered(`
-                | Erase     | 10, 10, 7.5, 30 |
-                | PathStart | 10, 10          |        |        |
-                | CubicTo   | 20, 20          | 20, 30 | 10, 40 |
-                | PathEnd   |                 |        |        |
+                | Erase     | 10, 10, 8, 30 |
+                | PathStart | 10, 10        |        |        |
+                | CubicTo   | 20, 20        | 20, 30 | 10, 40 |
+                | PathEnd   |               |        |        |
             `);
         });
 

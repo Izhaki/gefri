@@ -25,9 +25,14 @@ class Renderer extends Contextual {
     }
 
     refresh( aViewee: Viewee, aDamagedRect: Rect ): void {
-        this.erase( aDamagedRect );
+        // When the clip area involves non-integers antialiasing is applied
+        // resulting in artifacts (see http://codepen.io/Izhaki/pen/YNyOQx).
+        // So we quantise the damaged rect to ensure whole-pixel clipping.
+        let iDamagedRect = aDamagedRect.quantise();
+
+        this.erase( iDamagedRect );
         this.pushState();
-        this.setclipArea( aDamagedRect );
+        this.setclipArea( iDamagedRect );
         this.render( aViewee );
         this.popState();
     }

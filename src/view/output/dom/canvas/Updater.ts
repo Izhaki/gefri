@@ -62,9 +62,9 @@ class Updater extends Clipped {
         // is never more than a pixel wide). So we have to account for the zoom
         // factor.
         // First, we find the biggest of the zoom factors.
-        // Then, we ensure it does not go below 1 or the expansion will not
-        // catch the antialiasing.
-        let expensionFactor = Math.max( this.zoomMatrix.scaleX, this.zoomMatrix.scaleY, 1 );
+        // Then, we ensure it does not go below the antialiasingExtraMargins
+        // or the expansion will not catch the antialiasing.
+        let expensionFactor = Math.max( this.zoomMatrix.scaleX, this.zoomMatrix.scaleY, this.antialiasingExtraMargins );
 
         // We multiply the injected antialiasingExtraMargins by the
         // expensionFactor;

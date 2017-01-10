@@ -35,12 +35,12 @@ describe( 'Antialiasing: Erase operations should expand the viewee bounding rect
         this.path.setStart( new Point( 0, 20 ) );
 
         expect( this.context ).toHaveRendered(`
-            | Erase     | -1, 19, 42, 29.5 |        |        |
-            | PathStart |  0, 20           |        |        |
-            | LineTo    | 30, 20           |        |        |
-            | QuadTo    | 50, 30           | 30, 40 |        |
-            | CubicTo   | 20, 50           | 30, 50 | 20, 40 |
-            | PathEnd   |                  |        |        |
+            | Erase     | -1, 19, 42, 30 |        |        |
+            | PathStart |  0, 20         |        |        |
+            | LineTo    | 30, 20         |        |        |
+            | QuadTo    | 50, 30         | 30, 40 |        |
+            | CubicTo   | 20, 50         | 30, 50 | 20, 40 |
+            | PathEnd   |                |        |        |
         `);
 
 

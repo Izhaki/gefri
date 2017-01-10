@@ -178,10 +178,10 @@ describe( 'Refreshing:', () => {
                     this.path.setStart( new Point( 10, 20 ) );
 
                     expect( this.context ).toHaveRendered(`
-                        | Erase     | 10, 20, 13.33, 20 |        |
-                        | PathStart | 10, 20            |        |
-                        | QuadTo    | 30, 30            | 10, 40 |
-                        | PathEnd   |                   |        |
+                        | Erase     | 10, 20, 14, 20 |        |
+                        | PathStart | 10, 20         |        |
+                        | QuadTo    | 30, 30         | 10, 40 |
+                        | PathEnd   |                |        |
                     `);
                 });
 
@@ -190,10 +190,10 @@ describe( 'Refreshing:', () => {
                     this.path.setControl( 0, new Point( 10, 20 ) );
 
                     expect( this.context ).toHaveRendered(`
-                        | Erase     | 10, 20, 13.33, 20 |        |
-                        | PathStart | 20, 20            |        |
-                        | QuadTo    | 10, 20            | 10, 40 |
-                        | PathEnd   |                   |        |
+                        | Erase     | 10, 20, 14, 20 |        |
+                        | PathStart | 20, 20         |        |
+                        | QuadTo    | 10, 20         | 10, 40 |
+                        | PathEnd   |                |        |
                     `);
                 });
 
@@ -236,10 +236,10 @@ describe( 'Refreshing:', () => {
                     this.path.setControl1( 0, new Point( 0, 0 ) );
 
                     expect( this.context ).toHaveRendered(`
-                        | Erase     | 14.4,  5, 25.6, 15 |       |        |
-                        | PathStart | 20,   20           |       |        |
-                        | CubicTo   | 0,     0           | 40, 0 | 40, 20 |
-                        | PathEnd   |                    |       |        |
+                        | Erase     | 14,  5, 26, 15 |       |        |
+                        | PathStart | 20, 20         |       |        |
+                        | CubicTo   | 0,   0         | 40, 0 | 40, 20 |
+                        | PathEnd   |                |       |        |
                     `);
                 });
 
@@ -248,10 +248,10 @@ describe( 'Refreshing:', () => {
                     this.path.setControl2( 0, new Point( 40, 40 ) );
 
                     expect( this.context ).toHaveRendered(`
-                        | Erase     | 20,  5, 20, 20.77 |        |        |
-                        | PathStart | 20, 20            |        |        |
-                        | CubicTo   | 20,  0            | 40, 40 | 40, 20 |
-                        | PathEnd   |                   |        |        |
+                        | Erase     | 20,  5, 20, 21 |        |        |
+                        | PathStart | 20, 20         |        |        |
+                        | CubicTo   | 20,  0         | 40, 40 | 40, 20 |
+                        | PathEnd   |                |        |        |
                     `);
                 });
 
@@ -280,12 +280,12 @@ describe( 'Refreshing:', () => {
                 this.path.setStart( new Point( 0, 20 ) );
 
                 expect( this.context ).toHaveRendered(`
-                    | Erase     | 0,  20, 40, 27.5 |        |        |
-                    | PathStart | 0,  20           |        |        |
-                    | LineTo    | 30, 20           |        |        |
-                    | QuadTo    | 50, 30           | 30, 40 |        |
-                    | CubicTo   | 20, 50           | 30, 50 | 20, 40 |
-                    | PathEnd   |                  |        |        |
+                    | Erase     | 0,  20, 40, 28 |        |        |
+                    | PathStart | 0,  20         |        |        |
+                    | LineTo    | 30, 20         |        |        |
+                    | QuadTo    | 50, 30         | 30, 40 |        |
+                    | CubicTo   | 20, 50         | 30, 50 | 20, 40 |
+                    | PathEnd   |                |        |        |
                 `);
 
             });
