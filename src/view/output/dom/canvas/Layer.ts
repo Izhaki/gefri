@@ -27,7 +27,6 @@ class Layer extends ElementLayer {
 
     addViewees( ...aViewees: Viewees ): void {
         super.addViewees( ...aViewees );
-        this.queueRefresh();
     }
 
     // As a callback, refresh is an instance method so we always get the same reference for it per instance
