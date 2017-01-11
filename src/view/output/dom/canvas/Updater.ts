@@ -26,9 +26,24 @@ class Updater extends Clipped {
         this.pushState();
 
         this.updateMatrixFor( aViewee );
-        this.addVieweeBoundingRectToDamagedRect( aViewee );
+        this.addToDamagedRect( aViewee );
 
         this.popState();
+    }
+
+    addToDamagedRect( aViewee ): void {
+        this.addVieweeBoundingRectToDamagedRect( aViewee );
+        if ( !aViewee.isClipping ) {
+            this.pushState();
+
+            this.cumulateTransformationsOf( aViewee );
+
+            aViewee.forEachChild( ( aChild ) => {
+                this.addToDamagedRect( aChild );
+            });
+
+            this.popState();
+        }
     }
 
     flushDamagedRect(): Rect {

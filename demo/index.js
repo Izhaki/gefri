@@ -35,6 +35,9 @@ iGrandparent.fillColour = '#FF0000';
 iParent.fillColour = '#00FF00';
 iChild.fillColour = '#0000FF';
 
+iGrandparent.isClipping = false;
+iParent.isClipping = false;
+
 iGrandparent.addChild( iParent );
 iParent.addChild( iChild );
 iTransformer.addChildren( iGrandparent );
