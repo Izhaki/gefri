@@ -1,6 +1,7 @@
 import { Viewee        } from '../viewees';
 import { Transformable } from './';
-import { Rect          } from '../geometry';
+import { Rect,
+         Rects         } from '../geometry';
 
 export
 abstract class Clipped extends Transformable {
@@ -27,7 +28,9 @@ abstract class Clipped extends Transformable {
     isWithinClipArea( aViewee: Viewee ): boolean {
         let aBoundingRect: Rect
 
-        aBoundingRect = this.getRendereredBoundingRectOf( aViewee );
+        aBoundingRect = this.getNonClippingCompositionBoundsOf( aViewee );
+        aBoundingRect.intersect( this.clipArea );
+
         return !aBoundingRect.isNullRect()
     }
 
@@ -41,6 +44,25 @@ abstract class Clipped extends Transformable {
         }
 
         return aBoundingRect;
+    }
+
+    protected getNonClippingCompositionBoundsOf( aViewee: Viewee ): Rect {
+
+        let aBoundingRects: Rects = [];
+
+        aBoundingRects.push(
+            super.getRendereredBoundingRectOf( aViewee )
+        );
+
+        if ( !aViewee.isClipping ) {
+            aViewee.forEachChild( aChild => {
+                aBoundingRects.push(
+                    this.getNonClippingCompositionBoundsOf( aChild )
+                );
+            });
+        }
+
+        return Rect.union( aBoundingRects );
     }
 
     protected getState() : any {

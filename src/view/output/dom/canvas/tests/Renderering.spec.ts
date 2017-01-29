@@ -134,7 +134,7 @@ describe( 'Rendering: The canvas should', () => {
         let { iGrandparent, iParent } = this.createViewees(`
             | iGrandparent | Rectangle | 10, 10, 80, 80 |
             |   iParent    | Rectangle | 10, 10, 80, 60 |
-            |     iChild   | Rectangle | 10, 10, 80, 80 |
+            |     iChild   | Rectangle | 110, 110, 80, 80 |
         `);
 
         iGrandparent.isClipping = false;
@@ -143,10 +143,10 @@ describe( 'Rendering: The canvas should', () => {
         this.layer.addViewees( iGrandparent );
 
         expect( this.context ).toHaveRendered(`
-            | Erase     | 10, 10, 100, 100 |
-            | Rectangle | 10, 10,  80,  80 |
-            | Rectangle | 20, 20,  80,  60 |
-            | Rectangle | 30, 30,  80,  80 |
+            | Erase     | 10,   10, 200, 200 |
+            | Rectangle | 10,   10,  80,  80 |
+            | Rectangle | 20,   20,  80,  60 |
+            | Rectangle | 130, 130,  80,  80 |
         `);
     });
 
