@@ -43,7 +43,29 @@ describe( 'Antialiasing: Erase operations should expand the viewee bounding rect
             | PathEnd   |                |        |        |
         `);
 
-
     });
 
+});
+
+describe( 'Antialiasing: When checking if a viewee is within the cliparea, its bounds should be expanded to compensate for the antialiasing canvas applies', () => {
+    setup.call( this, true );
+
+    it( 'when erasing the bounds of a Rectangle', () => {
+        let { iLeft, iRight } = this.createViewees(`
+            | iLeft  | Rectangle | 10, 10, 10, 10  |
+            | iRight | Rectangle | 21, 10, 10, 10  |
+        `);
+
+        this.layer.addViewees( iLeft, iRight );
+        this.clearRenderedLog();
+
+        iRight.shown = false;
+
+        // Note: A width of 0 may look like nonsense, but it does actually
+        // render the antialiased stroke. See http://codepen.io/Izhaki/pen/VPyvad
+        expect( this.context ).toHaveRendered(`
+            | Erase     | 20,  9, 12, 12 |
+            | Rectangle | 20, 10,  0, 10 |
+        `);
+    });
 });
