@@ -15,7 +15,5 @@ class waitForFrameMock {
 
 export
 function mockWaitForFrame( di ) {
-    di.overrideProviders([{
-        provide: 'waitForFrame', useClass: waitForFrameMock
-    }]);
+    di.overrideInjected( 'waitForFrame', new waitForFrameMock() );
 }

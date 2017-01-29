@@ -1,25 +1,23 @@
-import { ReflectiveInjector,
-         Provider            } from '@angular/core';
 import * as Rx                 from 'rxjs';
 
 const cAnimationFrame = Rx.Scheduler.animationFrame;
 
-// Defualt providers for production
-var injector = ReflectiveInjector.resolveAndCreate([{
-    provide: 'waitForFrame', useValue: cAnimationFrame
-}, {
-    provide: 'antialiasingExtraMargins', useValue: 1
-}]);
+let injected = {
+    'waitForFrame': cAnimationFrame,
+    'antialiasingExtraMargins': 1
+}
 
-// A way to override the default providers.
-// Will be used for tests.
+let current = injected;
+
+let shallowClone = ( aObject: Object ) => Object.assign({}, aObject );
+
 export
-function overrideProviders( providers: Provider[] ) {
-    var overrides = injector.resolveAndCreateChild( providers );
-    injector = overrides;
+function overrideInjected( aInjected: string, aValue: any ) {
+    current = shallowClone( current );
+    current[ aInjected ] = aValue;
 }
 
 export
-function inject( token: any ): any {
-    return injector.get( token );
+function inject( aInjected: any ): any {
+    return current[ aInjected ];
 }

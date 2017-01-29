@@ -39,7 +39,6 @@
   },
   "homepage": "https://github.com/Izhaki/gefri#readme",
   "devDependencies": {
-    "@angular/core": "2.0.1",
     "@types/es6-shim": "0.31.32",
     "@types/jasmine": "2.5.35",
     "@types/jsdom": "2.0.29",

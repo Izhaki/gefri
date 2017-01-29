@@ -2,14 +2,12 @@ import { createControl     } from '../../Control.spec'
 import { Layer             } from '../'
 import { triggerNextFrame  } from '../../onNextFrame'
 import * as helpers from '../../../../../../tests/unit/helpers';
-import { overrideProviders } from '../../../../../core/di';
+import { overrideInjected } from '../../../../../core/di';
 
 function disableAntialiasingEraseCompensation(): void {
 
     beforeEach( () => {
-        overrideProviders([{
-            provide: 'antialiasingExtraMargins', useValue: 0
-        }]);
+        overrideInjected( 'antialiasingExtraMargins', 0 );
     });
 }
 
