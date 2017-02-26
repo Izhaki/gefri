@@ -18,6 +18,46 @@ describe( 'Rect', () => {
                 expect( iUnion ).toEqualRect( 10, 20, 70, 80 );
             });
 
+            it( 'should ignore any undefined or null values provided', () => {
+                let iUnion = Rect.union([
+                    undefined,
+                    null,
+                    new Rect( 20, 20, 10, 10 ),
+                ]);
+
+                expect( iUnion ).toEqualRect( 20, 20, 10, 10 );
+            });
+
+        });
+
+        describe( 'intersect()', () => {
+
+            it( 'should return a new rect that is the intersection of all the provided rects', () => {
+                const intersection = Rect.intersect([
+                    new Rect( 10, 20, 30, 40 ),
+                    new Rect( 30, 40, 50, 60 )
+                ]);
+
+                expect( intersection ).toEqualRect( 30, 40, 10, 20 );
+            });
+
+            it( 'should ignore any undefined or null values provided', () => {
+                let intersection = Rect.intersect([
+                    undefined,
+                    null,
+                    new Rect( 20, 20, 10, 10 ),
+                ]);
+
+                expect( intersection ).toEqualRect( 20, 20, 10, 10 );
+            });
+
+            it( 'should return undefined if the list provided is empty', () => {
+                let intersection = Rect.intersect([]);
+
+                expect( intersection ).toEqual( undefined );
+            });
+
+
         });
 
     });

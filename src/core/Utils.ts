@@ -29,3 +29,15 @@ function currify( curringFunction ) {
         static curry = curringFunction;
     }
 }
+
+export
+const isNil = ( what: any ): Boolean => what === undefined || what === null
+
+export
+const isntNil = ( what: any ): Boolean => !isNil( what )
+
+export
+const min = ( a: number, b: number ) : number => Math.min( a, b )
+
+export
+const max = ( a: number, b: number ) : number => Math.max( a, b )

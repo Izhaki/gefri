@@ -2,11 +2,13 @@
 // This is a functional library. If you look at Lazy.js you'll see
 // that its functional code can be 'lifted' into classes to save some noise.
 
+const hasChildren = node => node.children && node.children.length > 0;
+
 export
 abstract class LazyTree {
 
     static of( aNodes: any ) {
-        let iNodes = aNodes.length ? aNodes : [aNodes];
+        let iNodes = Array.isArray( aNodes ) ? aNodes : [aNodes];
         return new OriginTree( iNodes );
     }
 
@@ -26,15 +28,15 @@ abstract class LazyTree {
     }
 
     dropChildrenIf( aPredicate: Function ) {
-        return new ChildrenFilter( this, aNode => !aPredicate( aNode ) );
+       return new ChildrenFilter( this, aNode => !aPredicate( aNode ) );
     }
 
     map( aMapper: Function ) {
         return new MappedTree( this, aMapper );
     }
 
-    scan( aAggregator: Function, aAccumulator: any ) {
-        return new ScanedTree( this, aAggregator, aAccumulator );
+    mapReduce( aggregators: any, accumulator: any ) {
+        return new MapReduceTree( this, aggregators, accumulator );
     }
 
     reduce( aAggregator: Function, aAccumulator: any ) {
@@ -47,7 +49,9 @@ abstract class LazyTree {
 
     toArray() {
         let iNodes = []
-        this.traverse( aNode => iNodes.push( aNode ) );
+        this.traverse( aNode => {
+            return iNodes.push( aNode )
+        } );
         return iNodes;
     }
 
@@ -68,7 +72,7 @@ class OriginTree extends LazyTree {
     }
 
     traverseChildren( aNode, aCallback: Function ) {
-        if ( aNode.children ) {
+        if ( hasChildren( aNode ) ) {
             let children = LazyTree.of( aNode.children );
             children.traverse( aCallback );
         }
@@ -87,28 +91,32 @@ abstract class ChainedTree extends LazyTree {
 
 }
 
-class ScanedTree extends ChainedTree {
+class MapReduceTree extends ChainedTree {
+    private aggregator;
+    private accumulator: any;
 
-    constructor( chainee: LazyTree,
-                 protected aAggregator: Function,
-                 protected aAccumulator: any ) {
+    constructor( chainee: LazyTree, aggregator: any, accumulator: any ) {
         super( chainee );
+
+        this.aggregator = aggregator;
+        this.accumulator = accumulator;
     }
 
     traverse( aCallback: Function ) {
 
-        let traverseAccumulate = ( aNode, aAccumulator ) => {
-            let iAccumulator = this.aAggregator( aAccumulator, aNode )
-            let goOn = aCallback( iAccumulator ) !== false;
-            if ( goOn ) {
-                this.traverseChildren( aNode, aChild => traverseAccumulate( aChild, iAccumulator ) );
+        const traverseAccumulate = ( accumulator, node ) => {
+            const [ newAccumulatorFn, mappedValue ] = this.aggregator( accumulator, node )
+            const goOn = aCallback( mappedValue ) !== false
+            if ( goOn && hasChildren( node ) ) {
+                const newAccumulator = newAccumulatorFn()
+                this.traverseChildren( node, child => traverseAccumulate( newAccumulator, child ) );
             }
-            return false;
+            return false
         }
 
         return this.chainee.traverse(
-            aNode => traverseAccumulate( aNode, this.aAccumulator )
-        );
+            aNode => traverseAccumulate( this.accumulator, aNode )
+        )
     }
 
 }
@@ -136,15 +144,21 @@ abstract class Filter extends ChainedTree {
 }
 
 class NodeFilter extends Filter {
+    private callback: Function
 
-    traverse( aCallback: Function ) {
-        this.chainee.traverse( aNode => {
-            if ( this.keep( aNode ) ) {
-                return aCallback( aNode );
-            }
-            return false;
-        })
+    constructor( chainee: LazyTree, protected keep: Function ) {
+        super( chainee, keep );
+        this.callback = ( node, callback ) => this.keep( node ) ? callback( node ) : false;
     }
+
+    traverse( callback: Function ) {
+        this.chainee.traverse( node => this.callback( node, callback ) )
+    }
+
+    traverseChildren( node, callback: Function ) {
+        this.chainee.traverseChildren( node, child => this.callback( child, callback ) )
+    }
+
 
 }
 
@@ -152,9 +166,15 @@ class ChildrenFilter extends Filter {
 
     traverse( aCallback: Function ) {
         this.chainee.traverse( aNode => {
-            aCallback( aNode );
-            return this.keep( aNode );
+            const goOn = aCallback( aNode );
+            return goOn && this.keep( aNode );
         })
+    }
+
+    traverseChildren( aNode, aCallback: Function ) {
+        if ( this.keep( aNode ) ) {
+            this.chainee.traverseChildren( aNode, aCallback )
+        }
     }
 
 }

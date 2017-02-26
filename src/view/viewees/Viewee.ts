@@ -10,6 +10,9 @@ type Viewees = Viewee[];
 
 export
 abstract class Viewee extends Composite< Viewee > {
+
+    static isClipping = ( viewee ) => viewee.isClipping;
+
     static    updates$: Stream = new Stream(); // A global static (null) updates stream
     protected updates$: Stream = Viewee.updates$;
 

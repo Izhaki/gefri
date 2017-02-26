@@ -45,7 +45,7 @@ abstract class Clipped extends Transformable {
         this.expandToIncludeAntialiasing( aBoundingRect );
         aBoundingRect.intersect( this.clipArea );
 
-        return !aBoundingRect.isNullRect()
+        return !aBoundingRect.isNull()
     }
 
     protected getRendereredBoundingRectOf( aViewee: Viewee ) : Rect {
@@ -53,11 +53,7 @@ abstract class Clipped extends Transformable {
 
         aBoundingRect = super.getRendereredBoundingRectOf( aViewee );
 
-        if ( this.clipArea ) {
-            aBoundingRect.intersect( this.clipArea );
-        }
-
-        return aBoundingRect;
+        return aBoundingRect.intersect( this.clipArea );
     }
 
     protected getNonClippingCompositionBoundsOf( aViewee: Viewee ): Rect {

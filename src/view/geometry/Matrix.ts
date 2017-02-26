@@ -17,20 +17,33 @@ class Matrix {
      * (ie, first matrix first, second second, and so forth)
      */
     static combine( ...aMatrices: Matrices ) : Matrix {
-        let multiplyMatrices = ( a:Matrix, b:Matrix ) => {
-            return new Matrix(
-                b.scaleX * a.scaleX,
-                b.scaleY * a.scaleY,
-                b.translateX * a.scaleX + a.translateX,
-                b.translateY * a.scaleY + a.translateY
-            );
-        }
+        const multiplyMatrices = ( a:Matrix, b:Matrix ) => new Matrix(
+            b.scaleX * a.scaleX,
+            b.scaleY * a.scaleY,
+            b.translateX * a.scaleX + a.translateX,
+            b.translateY * a.scaleY + a.translateY
+        );
 
         // We reverse the matrices array as in Matrices when applying
         // first A then B is achived B(Ax) which is equivilent to (BA)x.
         // see https://en.wikipedia.org/wiki/Transformation_matrix#Composing_and_inverting_transformations
         return aMatrices.reverse().reduce( multiplyMatrices );
     }
+
+    static translate = ( aTranslation, aMatrix: Matrix ): Matrix => new Matrix(
+        aMatrix.scaleX,
+        aMatrix.scaleY,
+        aMatrix.translateX + aTranslation.x * aMatrix.scaleX,
+        aMatrix.translateX + aTranslation.y * aMatrix.scaleY,
+    );
+
+    static scale = ( aScale, aMatrix: Matrix ): Matrix => new Matrix(
+        aMatrix.scaleX * aScale.x,
+        aMatrix.scaleY * aScale.y,
+        aMatrix.translateX * aScale.x,
+        aMatrix.translateY * aScale.y
+    );
+
 
     scaleX    : number; // a
     scaleY    : number; // d

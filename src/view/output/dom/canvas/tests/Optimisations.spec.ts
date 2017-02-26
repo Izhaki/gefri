@@ -14,8 +14,8 @@ describe( 'Optimisations:', () => {
         this.layer.addViewees( iRectangle, iParent );
 
         expect( this.context ).toHaveRendered(`
-            | Erase     |   10,   10, 1000, 1000 |
-            | Rectangle |   10,   10,   10,   10 |
+            | Erase     |   10,   10, 10, 10 |
+            | Rectangle |   10,   10, 10, 10 |
         `);
     });
 

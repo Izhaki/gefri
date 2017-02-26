@@ -137,24 +137,65 @@ describe( 'LazyTree: ', () => {
         expect( iNodeCount ).toBe( 4 );
     });
 
-    it( 'scan() should return the accumalated value of each node, with each child getting the accumulator of its parent.', () => {
-        let aggregator = ( aAccumulator, aNode ) => aAccumulator + ' | ' + aNode.name;
+    describe( 'mapReduce()', () => {
 
-        let isLeftPupil = namePath => namePath == 'Root | Face | Left eye | Left pupil';
+        beforeEach( () => {
+            this.aggregator = ( aAccumulator, aNode ) => {
+                const value = aAccumulator + ' | ' + aNode.name;
+                return [ () => value, value ]
+            }
+        })
 
-        let iNodes = this.tree
-            .scan( aggregator, 'Root' )
-            .dropIf( isLeftPupil )
-            .toArray();
+        it( 'should return the accumalated value of each node, with each child getting the accumulator of its parent.', () => {
+            let isLeftPupil = namePath => namePath == 'Root | Face | Left eye | Left pupil';
 
-        expect( iNodes ).toEqual([
-            'Root | Face',
-            'Root | Face | Left eye',
-            'Root | Face | Right eye',
-            'Root | Face | Right eye | Right pupil'
-        ]);
+            let iNodes = this.tree
+                .mapReduce( this.aggregator, 'Root' )
+                .dropIf( isLeftPupil )
+                .toArray();
 
+            expect( iNodes ).toEqual([
+                'Root | Face',
+                'Root | Face | Left eye',
+                'Root | Face | Right eye',
+                'Root | Face | Right eye | Right pupil'
+            ]);
 
-    });
+        });
+
+        it( 'mapReduce() should not cancel the effect of a preceding node filter.', () => {
+            let isLeftEye = node => node.name === 'Left eye'
+
+            let iNodes = this.tree
+                .dropIf( isLeftEye )
+                .mapReduce( this.aggregator, 'Root' )
+                .toArray()
+
+            expect( iNodes ).toEqual([
+                'Root | Face',
+                'Root | Face | Right eye',
+                'Root | Face | Right eye | Right pupil'
+            ])
+
+        })
+
+        it( 'mapReduce() should not cancel the effect of a preceding children filter.', () => {
+            let isLeftEye = node => node.name === 'Left eye'
+
+            let iNodes = this.tree
+                .dropChildrenIf( isLeftEye )
+                .mapReduce( this.aggregator, 'Root' )
+                .toArray()
+
+            expect( iNodes ).toEqual([
+                'Root | Face',
+                'Root | Face | Left eye',
+                'Root | Face | Right eye',
+                'Root | Face | Right eye | Right pupil'
+            ])
+
+        })
+
+    })
 
 })

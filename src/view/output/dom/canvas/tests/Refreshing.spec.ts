@@ -300,13 +300,13 @@ describe( 'Refreshing:', () => {
         // and eventually lost - creating very jagged graphics.
         // So we need to ensure only the damaged region is updated.
         it( 'should not update regions that are not damaged', () => {
-            let { iRect1, iRect2 } = this.createViewees(`
-                | iRect1 | Rectangle   |   0,   0, 100, 100  |
-                | iRect2 | Rectangle   |  50,  50, 100, 100  |
-                | iRect3 | Rectangle   | 300, 300, 100, 100  |
+            let { iRect1, iRect2, iRect3 } = this.createViewees(`
+                | iRect1 | Rectangle   |   0,   0, 100, 100 |
+                | iRect2 | Rectangle   |  50,  50, 100, 100 |
+                | iRect3 | Rectangle   | 300, 300, 100, 100 |
             `);
 
-            this.layer.addViewees( iRect1, iRect2 );
+            this.layer.addViewees( iRect1, iRect2, iRect3 );
             this.clearRenderedLog();
 
             iRect1.shown = false;
@@ -318,6 +318,27 @@ describe( 'Refreshing:', () => {
 
         });
 
+    });
+
+    it( `should update child viewees if the parent isn't clipping`, () => {
+        let { iParent } = this.createViewees(`
+            | iParent   | Rectangle   | 10, 10, 10, 10 |
+            |   iChild1 | Rectangle   | 40,  0, 10, 10 |
+            |   iChild2 | Rectangle   |  0, 40, 10, 10 |
+        `);
+
+        iParent.isClipping = false;
+
+        this.layer.addViewees( iParent );
+        this.clearRenderedLog();
+
+        iParent.shown = false;
+
+        expect( this.context ).toHaveRendered(`
+            | Erase | 10, 10, 50, 50 |
+        `);
 
     });
+
+
 });

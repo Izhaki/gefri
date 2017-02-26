@@ -1,6 +1,14 @@
-import { Point,
-         Matrix,
-         Translation } from './';
+import {
+    Point,
+    Matrix,
+    Translation
+} from './';
+
+import {
+    isntNil,
+    min,
+    max
+} from '../../core/Utils'
 
 export
 type Rects = Rect[];
@@ -41,24 +49,58 @@ class Rect {
 
     }
 
-    static union( aRects: Rects ) : Rect {
-        let iLefts   = aRects.map( aRect => aRect.getLeft()   ),
-            iRights  = aRects.map( aRect => aRect.getRight()  ),
-            iTops    = aRects.map( aRect => aRect.getTop()    ),
-            iBottoms = aRects.map( aRect => aRect.getBottom() );
+    static getLeft   = ( rect ) : number => rect.getLeft()
+    static getRight  = ( rect ) : number => rect.getRight()
+    static getTop    = ( rect ) : number => rect.getTop()
+    static getBottom = ( rect ) : number => rect.getBottom()
 
-        let iLeft   = Math.min( ...iLefts   ),
-            iRight  = Math.max( ...iRights  ),
-            iTop    = Math.min( ...iTops    ),
-            iBottom = Math.max( ...iBottoms );
+    static union( aRects: Rects ) : Rect {
+        const iRects = aRects.filter( isntNil );
+
+        if ( iRects.length === 0 ) {
+            return undefined;
+        }
+
+        const left   = iRects.map( Rect.getLeft   ).reduce( min ),
+              right  = iRects.map( Rect.getRight  ).reduce( max ),
+              top    = iRects.map( Rect.getTop    ).reduce( min ),
+              bottom = iRects.map( Rect.getBottom ).reduce( max );
 
         return new Rect (
-            iLeft,
-            iTop,
-            iRight  - iLeft,
-            iBottom - iTop
+            left,
+            top,
+            right  - left,
+            bottom - top
         );
     }
+
+    static intersect = ( aRects: Rects ): Rect => {
+        const iRects = aRects.filter( isntNil );
+
+        if ( iRects.length === 0 ) {
+            return undefined;
+        }
+
+        const left   = iRects.map( Rect.getLeft   ).reduce( max ),
+              right  = iRects.map( Rect.getRight  ).reduce( min ),
+              top    = iRects.map( Rect.getTop    ).reduce( max ),
+              bottom = iRects.map( Rect.getBottom ).reduce( min ),
+              width  = right - left,
+              height = bottom - top;
+
+        // Note: A width of 0 does have a purpose - rendering antialiased strokes
+        // See Antialiasing.spec and http://codepen.io/Izhaki/pen/VPyvad
+        return new Rect (
+            left,
+            top,
+            width  >= 0 ? width  : undefined,
+            height >= 0 ? height : undefined
+        );
+    }
+
+    static expand = ( points: number, rect: Rect ): Rect => rect.clone().expand( points )
+
+    static isNull = ( rect: Rect ): boolean => rect.isNull();
 
     clone(): Rect {
         return new Rect( this.x, this.y, this.w, this.h );
@@ -102,19 +144,13 @@ class Rect {
         return iRect;
     }
 
-    intersect( aRect: Rect ): void {
-        var iLeft   = Math.max( this.getLeft(),   aRect.getLeft()   ),
-            iTop    = Math.max( this.getTop(),    aRect.getTop()    ),
-            iRight  = Math.min( this.getRight(),  aRect.getRight()  ),
-            iBottom = Math.min( this.getBottom(), aRect.getBottom() );
-
-        this.x = iLeft;
-        this.y = iTop;
-
-        // If two rects do not intersect, the resultant size will be negative.
-        // In such case, we set the size to 0 - which currently represents a null rect.
-        this.w = Math.max( 0, iRight - iLeft );
-        this.h = Math.max( 0, iBottom - iTop );
+    intersect( aRect: Rect ): Rect {
+        const intersection = Rect.intersect([ this, aRect ]);
+        this.x = intersection.x;
+        this.y = intersection.y;
+        this.w = intersection.w;
+        this.h = intersection.h;
+        return this;
     }
 
     union( aRect: Rect ): void {
@@ -143,7 +179,7 @@ class Rect {
         this.y += aDelta.y;
     }
 
-    expand( aPoints: number ): void {
+    expand( aPoints: number ): Rect {
         var hSign = this.w >= 0 ? -1 : 1;
         var vSign = this.h >= 0 ? -1 : 1;
 
@@ -151,6 +187,8 @@ class Rect {
         this.y +=  vSign * aPoints;
         this.w += -hSign * aPoints * 2;
         this.h += -vSign * aPoints * 2;
+
+        return this;
     }
 
     contract( aPoints: number ): void {
@@ -184,13 +222,13 @@ class Rect {
     }
 
     contains( aPoint: Point ): boolean {
-        return !this.isNullRect()  &&
+        return !this.isNull()  &&
                this.getLeft() <= aPoint.x && this.getRight()  >= aPoint.x &&
                this.getTop()  <= aPoint.y && this.getBottom() >= aPoint.y;
     }
 
-    isNullRect(): boolean {
-        return this.w == 0 || this.h == 0;
+    isNull(): boolean {
+        return this.w === undefined || this.h === undefined;
     }
 
 }
