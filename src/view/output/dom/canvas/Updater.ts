@@ -15,11 +15,12 @@ import {
     getChildrenMatrix
 } from '../../../viewees/multimethods';
 
+export
 class RenderContext {
     matrix:   DualMatrix
     clipArea: Rect
 
-    static from = () => ({ matrix: new DualMatrix(), clipArea: undefined })
+    static from = ( clipArea? ) => ({ matrix: new DualMatrix(), clipArea })
 
     static getSub = ( viewee: Viewee, bounds: Rect, ctx: RenderContext ): RenderContext => ({
         matrix:   getChildrenMatrix( viewee, ctx.matrix ),
@@ -37,6 +38,7 @@ class RenderContext {
         .reduce( RenderContext.getSubFor, RenderContext.from() )
 }
 
+export
 const getRendereredBoundingRectOf = ( viewee, matrix, clipArea ) =>
     getBoundingRect( viewee )
     .applyMatrix( DualMatrix.getCombination( matrix ) )
@@ -64,7 +66,7 @@ const expandToIncludeAntialiasing = ( bounds, zoomMatrix ) => {
 
 const outsideClipArea = Rect.isNull
 
-const vieweeToRender = ( ctx: any, viewee: Viewee ): [ Function, any ] => {
+const vieweeToRender = ( ctx: RenderContext, viewee: Viewee ): [ Function, any ] => {
     const vieweeBounds = getRendereredBoundingRectOf( viewee, ctx.matrix, ctx.clipArea )
     const bounds = outsideClipArea( vieweeBounds ) ? vieweeBounds : expandToIncludeAntialiasing( vieweeBounds, ctx.matrix.zoom )
 
@@ -77,6 +79,15 @@ const vieweeToRender = ( ctx: any, viewee: Viewee ): [ Function, any ] => {
 }
 
 export
+const getNonClippingCompositionBoundsOf = ( viewee: Viewee, context: RenderContext ) => Rect.union(
+    LazyTree.of( viewee )
+        .dropChildrenIf( Viewee.isClipping )
+        .mapReduce( vieweeToRender, context )
+        .dropIf( outsideClipArea )
+        .toArray()
+)
+
+export
 class Updater {
     private damagedRect: Rect  = undefined;
 
@@ -85,16 +96,9 @@ class Updater {
     }
 
     onUpdate( viewee: Viewee ): void {
-
         const context = RenderContext.getFor( viewee );
-
-        const damagedRects = LazyTree.of( viewee )
-            .dropChildrenIf( Viewee.isClipping )
-            .mapReduce( vieweeToRender, context )
-            .dropIf( outsideClipArea )
-            .toArray();
-
-        this.damagedRect = Rect.union( [ ...damagedRects, this.damagedRect ]);
+        const damagedRect = getNonClippingCompositionBoundsOf( viewee, context )
+        this.damagedRect = Rect.union( [ damagedRect, this.damagedRect ]);
     }
 
     flushDamagedRect(): Rect {
