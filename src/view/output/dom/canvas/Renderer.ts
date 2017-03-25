@@ -89,13 +89,13 @@ class Renderer extends Contextual {
         const blah = ( acc ) => acc.bounds.w !== undefined
 
         const X = LazyTree.of( aViewee )
-            .dropIf( hidden )
+            .dropSubTreeIf( hidden )
             .mapReduce( vieweeToRender, context )
             // dropNodeIf( outsideClipArea )
-            .dropIf( outsideClipArea ).and( blah )
+            .dropSubTreeIf( outsideClipArea ).and( blah )
             .toArray();
 
-        console.log( X )
+        //console.log( X )
     }
 
     render( aViewee: Viewee ): void {

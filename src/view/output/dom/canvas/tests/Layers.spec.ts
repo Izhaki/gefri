@@ -13,7 +13,7 @@ describe( 'Layers: ', () => {
 
     setup.call( this );
 
-    fit ( 'should only update once when multiple changes occur', () => {
+    it ( 'should only update once when multiple changes occur', () => {
         let { iTransformer, iRectangle } = this.createViewees(`
             | iTransformer | Transformer |                |
             |   iRectangle | Rectangle   | 10, 10, 10, 10 |

@@ -28,12 +28,12 @@ abstract class LazyTree {
     abstract traverse( aCallback: Function );
     abstract traverseChildren( aNode, aCallback: Function );
 
-    keepIf( aPredicate: Predicate ) {
-        return new NodeFilter( this, FilterType.keep, aPredicate );
+    keepSubTreeIf( aPredicate: Predicate ) {
+        return new SubTreeFilter( this, FilterType.keep, aPredicate );
     }
 
-    dropIf( aPredicate: Predicate ) {
-        return new NodeFilter( this, FilterType.drop, aPredicate );
+    dropSubTreeIf( aPredicate: Predicate ) {
+        return new SubTreeFilter( this, FilterType.drop, aPredicate );
     }
 
     keepChildrenIf( aPredicate: Predicate ) {
@@ -172,7 +172,7 @@ abstract class Filter extends ChainedTree {
 
 }
 
-class NodeFilter extends Filter {
+class SubTreeFilter extends Filter {
     private callback: Function
 
     constructor( chainee: LazyTree, type: FilterType, predicate: Predicate ) {

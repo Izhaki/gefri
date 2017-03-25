@@ -48,11 +48,11 @@ describe( 'LazyTree: ', () => {
         ]);
     })
 
-    it( 'keepIf() should include the nodes that meet the predicate.', () => {
+    it( 'keepSubTreeIf() should include the nodes that meet the predicate.', () => {
         let nodeHasChildren = aNode => aNode.children && aNode.children.length > 0;
 
         let iNodes = this.tree
-            .keepIf( nodeHasChildren )
+            .keepSubTreeIf( nodeHasChildren )
             .map( aNode => aNode.name )
             .toArray();
 
@@ -79,11 +79,11 @@ describe( 'LazyTree: ', () => {
         ]);
     });
 
-    it( 'dropIf() should drop the nodes that meet the predicate.', () => {
+    it( 'dropSubTreeIf() should drop the nodes that meet the predicate.', () => {
         let isLeftEye = aNode => aNode.name == 'Left eye';
 
         let iNodes = this.tree
-            .dropIf( isLeftEye )
+            .dropSubTreeIf( isLeftEye )
             .map( aNode => aNode.name )
             .toArray();
 
@@ -151,7 +151,7 @@ describe( 'LazyTree: ', () => {
 
             let iNodes = this.tree
                 .mapReduce( this.aggregator, 'Root' )
-                .dropIf( isLeftPupil )
+                .dropSubTreeIf( isLeftPupil )
                 .toArray();
 
             expect( iNodes ).toEqual([
@@ -167,7 +167,7 @@ describe( 'LazyTree: ', () => {
             let isLeftEye = node => node.name === 'Left eye'
 
             let iNodes = this.tree
-                .dropIf( isLeftEye )
+                .dropSubTreeIf( isLeftEye )
                 .mapReduce( this.aggregator, 'Root' )
                 .toArray()
 

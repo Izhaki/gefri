@@ -83,7 +83,7 @@ const getNonClippingCompositionBoundsOf = ( viewee: Viewee, context: RenderConte
     LazyTree.of( viewee )
         .dropChildrenIf( Viewee.isClipping )
         .mapReduce( vieweeToRender, context )
-        .dropIf( outsideClipArea )
+        .dropSubTreeIf( outsideClipArea )
         .toArray()
 )
 
