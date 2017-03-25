@@ -19,4 +19,23 @@ describe( 'Optimisations:', () => {
         `);
     });
 
+    xit( 'Should render children of a viewee that is outside the clip region, but does not clip', () => {
+        let { iGrandparent, iParent } = this.createViewees(`
+            | iGrandparent | Rectangle |   0,   0, 50, 50 |
+            |   iParent    | Rectangle |  60,  60, 10, 10 |
+            |     iChild   | Rectangle | -30, -30, 10, 10 |
+        `);
+
+        iParent.isClipping = false
+
+        this.layer.addViewees( iGrandparent );
+
+        expect( this.context ).toHaveRendered(`
+            | Erase     |  0,  0, 50, 50 |
+            | Rectangle |  0,  0, 50, 50 |
+            | Rectangle | 30, 30, 10, 10 |
+        `);
+    });
+
+
 });

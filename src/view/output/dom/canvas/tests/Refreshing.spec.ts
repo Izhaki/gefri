@@ -299,7 +299,7 @@ describe( 'Refreshing:', () => {
         // If non-damaged regions are refreshed, antialiasing gets bolder
         // and eventually lost - creating very jagged graphics.
         // So we need to ensure only the damaged region is updated.
-        fit( 'should not update regions that are not damaged', () => {
+        it( 'should not update regions that are not damaged', () => {
             let { iRect1, iRect2, iRect3 } = this.createViewees(`
                 | iRect1 | Rectangle   |   0,   0, 100, 100 |
                 | iRect2 | Rectangle   |  50,  50, 100, 100 |

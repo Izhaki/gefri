@@ -13,6 +13,11 @@ import {
     stroke
 } from './multimethods';
 
+import {
+    pipe,
+    prop
+} from '../../../../core/FP';
+
 import { LazyTree   } from '../../../../core/LazyTree'
 import { DualMatrix } from '../../../geometry/DualMatrix'
 import {
@@ -53,49 +58,33 @@ class Renderer extends Contextual {
     renderFP( aViewee: Viewee, clipArea: Rect ): void {
         const hidden = ( viewee: Viewee ): boolean => !viewee.rendered
 
-        const needsRendering = ( aViewee: Viewee ): boolean => {
-            if ( aViewee instanceof Visible ) {
-                return this.isWithinClipArea( aViewee );
-            } else {
-                return true;
-            }
-        }
-
-        // Note the algorithm is wrong: Instead of getting the non clipping composition we can just:
-        // Not render the current one if it is oneside the clip area, but keep iterating to children
-        // if it isn't clipping.
-        const isWithinClipArea = ( viewee: Viewee, ctx: RenderContext ) => getNonClippingCompositionBoundsOf( viewee, ctx ) !== undefined
-
-        const outsideClipArea = ( acc ): boolean => Rect.isNull( acc.bounds )
-
-        const context = RenderContext.from( clipArea )
+        const outsideClipArea = pipe( prop('bounds'), Rect.isNull )
+        const isClipping = pipe( prop('viewee'), Viewee.isClipping )
 
         const vieweeToRender = ( ctx: RenderContext, viewee: Viewee ): [ Function, any ] => {
 
             const bounds = getRendereredBoundingRectOf( viewee, ctx.matrix, ctx.clipArea )
-            const isVisible = viewee instanceof Visible
-            const needsRendering = isVisible ? isWithinClipArea( viewee, ctx ) : true
-
             const subCtxFn = () => RenderContext.getSub( viewee, bounds, ctx )
 
             const map = {
+                viewee,
                 bounds
             }
 
             return [ subCtxFn, map ]
         }
 
-
-        const blah = ( acc ) => acc.bounds.w !== undefined
+        const context = RenderContext.from( clipArea )
 
         const X = LazyTree.of( aViewee )
             .dropSubTreeIf( hidden )
             .mapReduce( vieweeToRender, context )
             .dropNodeIf( outsideClipArea )
-//            .dropChildrenIf( outsideClipArea ).and( vieweeIsClipping )
+            .dropChildrenIf( outsideClipArea ).and( isClipping )
             .toArray();
 
-        console.log( X )
+        //console.log( X.map( acc => acc.bounds ) )
+        //console.log( X )
     }
 
     render( aViewee: Viewee ): void {
