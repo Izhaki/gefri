@@ -64,21 +64,6 @@ describe( 'LazyTree: ', () => {
 
     });
 
-    it( 'keepChildrenIf() should include the children of nodes that meet the predicate.', () => {
-        let isFace = aNode => aNode.name == 'Face';
-
-        let iNodes = this.tree
-            .keepChildrenIf( isFace )
-            .map( aNode => aNode.name )
-            .toArray();
-
-        expect( iNodes ).toEqual([
-            'Face',
-            'Left eye',
-            'Right eye'
-        ]);
-    });
-
     it( 'dropSubTreeIf() should drop the nodes that meet the predicate.', () => {
         let isLeftEye = aNode => aNode.name == 'Left eye';
 
@@ -91,6 +76,38 @@ describe( 'LazyTree: ', () => {
             'Face',
             'Right eye',
             'Right pupil'
+        ]);
+    });
+
+    it( 'dropNodeIf() should drop the node that meet the predicate, but not its children', () => {
+        const isLeftEye = aNode => aNode.name == 'Left eye';
+
+        const iNodes = this.tree
+            .dropNodeIf( isLeftEye )
+            .map( aNode => aNode.name )
+            .toArray();
+
+        expect( iNodes ).toEqual([
+            'Face',
+            'Left pupil',
+            'Right eye',
+            'Right pupil'
+        ]);
+    });
+
+
+    it( 'keepChildrenIf() should include the children of nodes that meet the predicate.', () => {
+        let isFace = aNode => aNode.name == 'Face';
+
+        let iNodes = this.tree
+            .keepChildrenIf( isFace )
+            .map( aNode => aNode.name )
+            .toArray();
+
+        expect( iNodes ).toEqual([
+            'Face',
+            'Left eye',
+            'Right eye'
         ]);
     });
 

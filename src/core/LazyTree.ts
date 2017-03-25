@@ -28,18 +28,26 @@ abstract class LazyTree {
     abstract traverse( aCallback: Function );
     abstract traverseChildren( aNode, aCallback: Function );
 
+    // Will carry on traversing the node and its children
     keepSubTreeIf( aPredicate: Predicate ) {
         return new SubTreeFilter( this, FilterType.keep, aPredicate );
     }
 
+    // Will stop traversing the node and its children
     dropSubTreeIf( aPredicate: Predicate ) {
         return new SubTreeFilter( this, FilterType.drop, aPredicate );
     }
 
+    // Will carry on traversing the node's children
     keepChildrenIf( aPredicate: Predicate ) {
         return new ChildrenFilter( this, FilterType.keep, aPredicate );
     }
 
+    dropNodeIf( aPredicate: Predicate ) {
+        return new NodeFilter( this, FilterType.drop, aPredicate );
+    }
+
+    // Will stop traversing the node's children
     dropChildrenIf( aPredicate: Predicate ) {
        return new ChildrenFilter( this, FilterType.drop, aPredicate );
     }
@@ -187,7 +195,20 @@ class SubTreeFilter extends Filter {
     traverseChildren( node, callback: Function ) {
         this.chainee.traverseChildren( node, child => this.callback( child, callback ) )
     }
+}
 
+class NodeFilter extends Filter {
+
+    traverse( aCallback: Function ) {
+        this.chainee.traverse( node => {
+            if ( this.keep( node ) ) {
+                const goOn = aCallback( node )
+                return goOn && this.keep( node )
+            } else {
+                return true
+            }
+        })
+    }
 
 }
 
