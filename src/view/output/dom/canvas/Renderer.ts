@@ -51,7 +51,7 @@ class Renderer extends Contextual {
     }
 
     renderFP( aViewee: Viewee, clipArea: Rect ): void {
-        const isRendered = ( viewee: Viewee ): boolean => viewee.rendered
+        const hidden = ( viewee: Viewee ): boolean => !viewee.rendered
 
         const needsRendering = ( aViewee: Viewee ): boolean => {
             if ( aViewee instanceof Visible ) {
@@ -66,6 +66,8 @@ class Renderer extends Contextual {
         // if it isn't clipping.
         const isWithinClipArea = ( viewee: Viewee, ctx: RenderContext ) => getNonClippingCompositionBoundsOf( viewee, ctx ) !== undefined
 
+        const outsideClipArea = ( acc ): boolean => Rect.isNull( acc.bounds )
+
         const context = RenderContext.from( clipArea )
 
         const vieweeToRender = ( ctx: RenderContext, viewee: Viewee ): [ Function, any ] => {
@@ -74,19 +76,26 @@ class Renderer extends Contextual {
             const isVisible = viewee instanceof Visible
             const needsRendering = isVisible ? isWithinClipArea( viewee, ctx ) : true
 
-//            const bounds = outsideClipArea( vieweeBounds ) ? vieweeBounds : expandToIncludeAntialiasing( vieweeBounds, ctx.matrix.zoom )
-
             const subCtxFn = () => RenderContext.getSub( viewee, bounds, ctx )
 
-            return [ subCtxFn, bounds ]
+            const map = {
+                bounds
+            }
+
+            return [ subCtxFn, map ]
         }
 
+
+        const blah = ( acc ) => acc.bounds.w !== undefined
+
         const X = LazyTree.of( aViewee )
-            .keepIf( isRendered )
+            .dropIf( hidden )
             .mapReduce( vieweeToRender, context )
+            // dropNodeIf( outsideClipArea )
+            .dropIf( outsideClipArea ).and( blah )
             .toArray();
 
-        // console.log( X )
+        console.log( X )
     }
 
     render( aViewee: Viewee ): void {

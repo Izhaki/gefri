@@ -1,6 +1,10 @@
 export {
     pipe,
     curry,
-    prop
+    prop,
+    allPass,
+    complement,
+    identity,
+    Pred as Predicate
 } from 'ramda';
 

@@ -2,7 +2,20 @@
 // This is a functional library. If you look at Lazy.js you'll see
 // that its functional code can be 'lifted' into classes to save some noise.
 
+import {
+    identity,
+    pipe,
+    complement,
+    allPass,
+    Predicate
+} from './FP'
+
 const hasChildren = node => node.children && node.children.length > 0;
+
+enum FilterType {
+    keep,
+    drop
+}
 
 export
 abstract class LazyTree {
@@ -15,20 +28,20 @@ abstract class LazyTree {
     abstract traverse( aCallback: Function );
     abstract traverseChildren( aNode, aCallback: Function );
 
-    keepIf( aPredicate: Function ) {
-        return new NodeFilter( this, aPredicate );
+    keepIf( aPredicate: Predicate ) {
+        return new NodeFilter( this, FilterType.keep, aPredicate );
     }
 
-    dropIf( aPredicate: Function ) {
-        return new NodeFilter( this, aNode => !aPredicate( aNode ) );
+    dropIf( aPredicate: Predicate ) {
+        return new NodeFilter( this, FilterType.drop, aPredicate );
     }
 
-    keepChildrenIf( aPredicate: Function ) {
-        return new ChildrenFilter( this, aPredicate );
+    keepChildrenIf( aPredicate: Predicate ) {
+        return new ChildrenFilter( this, FilterType.keep, aPredicate );
     }
 
-    dropChildrenIf( aPredicate: Function ) {
-       return new ChildrenFilter( this, aNode => !aPredicate( aNode ) );
+    dropChildrenIf( aPredicate: Predicate ) {
+       return new ChildrenFilter( this, FilterType.drop, aPredicate );
     }
 
     map( aMapper: Function ) {
@@ -136,9 +149,25 @@ class MappedTree extends ChainedTree {
 }
 
 abstract class Filter extends ChainedTree {
+    private predicates: Predicate[]
+    private keepFunction: Function
 
-    constructor( chainee: LazyTree, protected keep: Function ) {
-        super( chainee );
+    constructor( chainee: LazyTree, type: FilterType, predicate: Predicate ) {
+        super( chainee )
+
+        const isKeep = type === FilterType.keep
+
+        this.predicates = [ predicate ]
+        this.keepFunction = pipe( allPass, isKeep ? identity : complement )
+    }
+
+    public and( keep: Predicate ) {
+        this.predicates.push( keep )
+        return this
+    }
+
+    protected keep( node ) {
+        return this.keepFunction( this.predicates )( node )
     }
 
 }
@@ -146,8 +175,8 @@ abstract class Filter extends ChainedTree {
 class NodeFilter extends Filter {
     private callback: Function
 
-    constructor( chainee: LazyTree, protected keep: Function ) {
-        super( chainee, keep );
+    constructor( chainee: LazyTree, type: FilterType, predicate: Predicate ) {
+        super( chainee, type, predicate );
         this.callback = ( node, callback ) => this.keep( node ) ? callback( node ) : false;
     }
 
