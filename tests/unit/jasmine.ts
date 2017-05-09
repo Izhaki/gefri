@@ -2,6 +2,8 @@ import { mockDom } from '../mocks/mockDom';
 import { mockWaitForFrame } from '../mocks/mockWaitForFrame';
 import * as di from '../../src/core/di';
 
+const SpecReporter = require('jasmine-spec-reporter').SpecReporter;
+
 var Jasmine  = require( 'jasmine' );
 var failFast = require( 'jasmine-fail-fast' );
 var iJasmine  = new Jasmine();
@@ -22,8 +24,14 @@ iJasmine.loadConfig({
     "helpers":                      [ "../tests/unit/jasmineCustomMatchers"  + extention ]
 });
 
-iJasmine.configureDefaultReporter({});
+//iJasmine.configureDefaultReporter({});
 iJasmine.addReporter( failFast.init() );
+
+iJasmine.addReporter(new SpecReporter({  // add jasmine-spec-reporter
+  spec: {
+    displayPending: true
+  }
+}));
 
 iJasmine.onComplete( function( passed ) {
     let exitCode = 1;

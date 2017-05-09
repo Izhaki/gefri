@@ -20,13 +20,15 @@ enum FilterType {
 export
 abstract class LazyTree {
 
+    protected currentNode: any
+
     static of( aNodes: any ) {
         let iNodes = Array.isArray( aNodes ) ? aNodes : [aNodes];
         return new OriginTree( iNodes );
     }
 
-    abstract traverse( aCallback: Function );
-    abstract traverseChildren( aNode, aCallback: Function );
+    abstract traverse( callback: Function );
+    abstract traverseChildren( callback: Function );
 
     // Will carry on traversing the node and its children
     keepSubTreeIf( aPredicate: Predicate ) {
@@ -68,12 +70,28 @@ abstract class LazyTree {
         return aAccumulator;
     }
 
+    reduceXl( aggregators: Function[], accumulator: any ) {
+        const [ nodeAggregator, preChildrenAggregator, postChildreddAggregator ] = aggregators
+
+        const zzz = ( node ) => {
+            accumulator = nodeAggregator( accumulator, node )
+
+            this.traverseChildren( zzz );
+            return false
+        }
+
+        this.traverse( zzz );
+
+        return accumulator
+    }
+
     toArray() {
-        let iNodes = []
-        this.traverse( aNode => {
-            return iNodes.push( aNode )
+        let nodes = []
+        this.traverse( node => {
+            nodes.push( node )
+            return true
         } );
-        return iNodes;
+        return nodes;
     }
 
 }
@@ -83,19 +101,23 @@ class OriginTree extends LazyTree {
         super();
     }
 
-    traverse( aCallback: Function ) {
-        this.nodes.forEach( aNode => {
-            let goOn = aCallback( aNode ) !== false;
+    traverseNodes( nodes, callback: Function ) {
+        nodes.forEach( node => {
+            this.currentNode = node
+            let goOn = callback( node ) !== false
             if ( goOn ) {
-                this.traverseChildren( aNode, aCallback );
+                this.traverseChildren( callback )
             }
         });
     }
 
-    traverseChildren( aNode, aCallback: Function ) {
-        if ( hasChildren( aNode ) ) {
-            let children = LazyTree.of( aNode.children );
-            children.traverse( aCallback );
+    traverse( callback: Function ) {
+        this.traverseNodes( this.nodes, callback )
+    }
+
+    traverseChildren( callback: Function ) {
+        if ( hasChildren( this.currentNode ) ) {
+            this.traverseNodes( this.currentNode.children, callback )
         }
     }
 }
@@ -106,38 +128,51 @@ abstract class ChainedTree extends LazyTree {
         super();
     }
 
-    traverseChildren( aNode, aCallback: Function ) {
-        this.chainee.traverseChildren( aNode, aCallback );
+    traverseChildren( callback: Function ) {
+        this.chainee.traverseChildren( callback );
     }
 
 }
 
 class MapReduceTree extends ChainedTree {
-    private aggregator;
-    private accumulator: any;
+    private aggregator
+    private accumulator: any
+    private originalTraverseChildren: Function
+    private subAccumulatorFn: Function
 
     constructor( chainee: LazyTree, aggregator: any, accumulator: any ) {
         super( chainee );
 
-        this.aggregator = aggregator;
-        this.accumulator = accumulator;
+        this.aggregator = aggregator
+        this.accumulator = accumulator
+        this.originalTraverseChildren = this.traverseChildren
     }
 
-    traverse( aCallback: Function ) {
+    traverseAccumulate( accumulator, node, callback ) {
+        let [ subAccumulatorFn, mappedValue ] = this.aggregator( accumulator, node )
 
-        const traverseAccumulate = ( accumulator, node ) => {
-            const [ newAccumulatorFn, mappedValue ] = this.aggregator( accumulator, node )
-            const goOn = aCallback( mappedValue ) !== false
-            if ( goOn && hasChildren( node ) ) {
-                const newAccumulator = newAccumulatorFn()
-                this.traverseChildren( node, child => traverseAccumulate( newAccumulator, child ) );
-            }
-            return false
+        this.subAccumulatorFn = subAccumulatorFn
+
+        const goOn = callback( mappedValue ) !== false
+
+        if ( goOn && hasChildren( node ) ) {
+            this.traverseChildren( callback );
         }
 
-        return this.chainee.traverse(
-            aNode => traverseAccumulate( this.accumulator, aNode )
-        )
+        return false
+    }
+
+
+    traverse( callback: Function ) {
+        return this.chainee.traverse( node => {
+//?            this.currentNode = node
+            return this.traverseAccumulate( this.accumulator, node, callback )
+        })
+    }
+
+    traverseChildren( callback: Function ) {
+        const newAccumulator = this.subAccumulatorFn()
+        this.chainee.traverseChildren( child => this.traverseAccumulate( newAccumulator, child, callback ) )
     }
 
 }
@@ -148,9 +183,9 @@ class MappedTree extends ChainedTree {
         super( chainee );
     }
 
-    traverse( aCallback: Function ) {
+    traverse( callback: Function ) {
         return this.chainee.traverse(
-            aNode => aCallback( this.mapper( aNode ) )
+            node => callback( this.mapper( node ) )
         );
     }
 
@@ -192,17 +227,17 @@ class SubTreeFilter extends Filter {
         this.chainee.traverse( node => this.callback( node, callback ) )
     }
 
-    traverseChildren( node, callback: Function ) {
-        this.chainee.traverseChildren( node, child => this.callback( child, callback ) )
+    traverseChildren( callback: Function ) {
+        this.chainee.traverseChildren( child => this.callback( child, callback ) )
     }
 }
 
 class NodeFilter extends Filter {
 
-    traverse( aCallback: Function ) {
+    traverse( callback: Function ) {
         this.chainee.traverse( node => {
             if ( this.keep( node ) ) {
-                const goOn = aCallback( node )
+                const goOn = callback( node )
                 return goOn && this.keep( node )
             } else {
                 return true
@@ -214,16 +249,21 @@ class NodeFilter extends Filter {
 
 class ChildrenFilter extends Filter {
 
-    traverse( aCallback: Function ) {
-        this.chainee.traverse( aNode => {
-            const goOn = aCallback( aNode );
-            return goOn && this.keep( aNode );
+    traverse( callback: Function ) {
+        this.chainee.traverse( node => {
+            this.currentNode = node
+            const goOn = callback( node );
+            return goOn && this.keep( node );
         })
     }
 
-    traverseChildren( aNode, aCallback: Function ) {
-        if ( this.keep( aNode ) ) {
-            this.chainee.traverseChildren( aNode, aCallback )
+    traverseChildren( callback: Function ) {
+        if ( this.keep( this.currentNode ) ) {
+            //this.chainee.traverseChildren( callback )
+            this.chainee.traverseChildren( node => {
+                this.currentNode = node
+                return callback( node )
+            })
         }
     }
 

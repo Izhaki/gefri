@@ -68,6 +68,7 @@ class Renderer extends Contextual {
 
             const map = {
                 viewee,
+                ctx,
                 bounds
             }
 
@@ -76,15 +77,21 @@ class Renderer extends Contextual {
 
         const context = RenderContext.from( clipArea )
 
+        const agg = ( acc, node ) => {
+            acc.push( node.bounds )
+            return acc
+        }
+
         const X = LazyTree.of( aViewee )
             .dropSubTreeIf( hidden )
             .mapReduce( vieweeToRender, context )
             .dropNodeIf( outsideClipArea )
             .dropChildrenIf( outsideClipArea ).and( isClipping )
-            .toArray();
+//            .toArray()
+            .reduceXl( [ agg ], [] )
 
         //console.log( X.map( acc => acc.bounds ) )
-        //console.log( X )
+        console.log( X )
     }
 
     render( aViewee: Viewee ): void {
