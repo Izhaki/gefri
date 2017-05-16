@@ -79,6 +79,19 @@ describe( 'LazyTree: ', () => {
         ]);
     });
 
+    it( 'dropSubTreeIf() should drop the nodes that meet the predicate.', () => {
+        let isFace = aNode => aNode.name == 'Face';
+
+        let iNodes = this.tree
+            .dropSubTreeIf( isFace )
+            .map( aNode => aNode.name )
+            .toArray();
+
+        expect( iNodes ).toEqual([
+            'Face',
+        ]);
+    });
+
     it( 'dropNodeIf() should drop the node that meet the predicate, but not its children', () => {
         const isLeftEye = aNode => aNode.name == 'Left eye';
 
