@@ -6,7 +6,7 @@ function addChildren( aParent, aChildren: any[] ) {
     aChildren.forEach( aChild => aChild.parent = aParent )
 }
 
-fdescribe( 'LazyTree: ', () => {
+describe( 'LazyTree: ', () => {
 
     beforeEach( () => {
 

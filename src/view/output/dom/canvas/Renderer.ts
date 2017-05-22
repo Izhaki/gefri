@@ -18,7 +18,7 @@ import {
     prop
 } from '../../../../core/FP';
 
-import { LazyTree   } from '../../../../core/LazyTree'
+import { LazyTree   } from '../../../../core/LT1'
 import { DualMatrix } from '../../../geometry/DualMatrix'
 import {
     RenderContext,
@@ -82,13 +82,28 @@ class Renderer extends Contextual {
             return acc
         }
 
+        const vieweeToRenderAdapter = ( accumulator, node ) => {
+            const [ accFn, mapped ] = vieweeToRender( node, accumulator )
+            return [ mapped, accFn ]
+        }
+
+        const output = ( node ) => {
+            const vieweeType = node.viewee.constructor.name
+            console.log( vieweeType, node.bounds )
+            return [
+                () => { console.log( `Pre ${vieweeType} children` ) },
+                () => { console.log( `Post ${vieweeType} children` ) },
+            ]
+        }
+
         const X = LazyTree.of( aViewee )
             .dropSubTreeIf( hidden )
-            .mapReduce( vieweeToRender, context )
+            .mapAccum( vieweeToRenderAdapter, context )
             .dropNodeIf( outsideClipArea )
             .dropChildrenIf( outsideClipArea ).and( isClipping )
+            .traverse( output )
 //            .toArray()
-            .reduceXl( [ agg ], [] )
+//            .reduceXl( [ agg ], [] )
 
         //console.log( X.map( acc => acc.bounds ) )
         console.log( X )

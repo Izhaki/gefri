@@ -74,7 +74,7 @@ describe( 'Rendering: The canvas should', () => {
 
     });
 
-    it( 'render children in relative coordinates', () => {
+    fit( 'render children in relative coordinates', () => {
         let { iGrandparent } = this.createViewees(`
             | iGrandparent | Rectangle | 10, 10, 100, 100 |
             |   iParent    | Rectangle | 10, 10,  80,  80 |
