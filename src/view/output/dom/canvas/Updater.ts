@@ -39,6 +39,11 @@ class RenderContext {
 }
 
 export
+const getScaledBoundingRectOf = ( viewee, matrix ) =>
+    getBoundingRect( viewee )
+    .applyMatrix( matrix.scale )
+
+export
 const getRendereredBoundingRectOf = ( viewee, matrix, clipArea ) =>
     getBoundingRect( viewee )
     .applyMatrix( DualMatrix.getCombination( matrix ) )

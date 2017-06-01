@@ -3,7 +3,11 @@ import { Point,
          Rect          } from '../../../geometry';
 import { getClassName,
          emptyArray    } from '../../../../core/Utils';
-import { Viewee        } from '../../../viewees';
+import {
+    Viewee,
+    PathSegment,
+} from '../../../viewees';
+
 import { Visible       } from '../../../viewees/visibles/Visible';
 
 import { cumulateTransformationsOf } from '../../../viewees/multimethods';
@@ -23,7 +27,8 @@ import { DualMatrix } from '../../../geometry/DualMatrix'
 import {
     RenderContext,
     getNonClippingCompositionBoundsOf,
-    getRendereredBoundingRectOf
+    getRendereredBoundingRectOf,
+    getScaledBoundingRectOf,
 } from './Updater'
 
 export
@@ -50,7 +55,7 @@ class Renderer extends Contextual {
         this.setclipArea( iDamagedRect );
 
         this.renderFP( aViewee, iDamagedRect );
-        this.render( aViewee );
+        //this.render( aViewee );
 
         this.popState();
     }
@@ -61,18 +66,20 @@ class Renderer extends Contextual {
         const outsideClipArea = pipe( prop('bounds'), Rect.isNull )
         const isClipping = pipe( prop('viewee'), Viewee.isClipping )
 
-        const vieweeToRender = ( ctx: RenderContext, viewee: Viewee ): [ Function, any ] => {
+        const vieweeToRender = ( viewee: Viewee, ctx: RenderContext ): [ any, Function ] => {
 
             const bounds = getRendereredBoundingRectOf( viewee, ctx.matrix, ctx.clipArea )
+            const scaledBounds = getScaledBoundingRectOf( viewee, ctx.matrix )
             const subCtxFn = () => RenderContext.getSub( viewee, bounds, ctx )
 
             const map = {
                 viewee,
                 ctx,
-                bounds
+                bounds,
+                scaledBounds
             }
 
-            return [ subCtxFn, map ]
+            return [ map, subCtxFn ]
         }
 
         const context = RenderContext.from( clipArea )
@@ -82,23 +89,83 @@ class Renderer extends Contextual {
             return acc
         }
 
-        const vieweeToRenderAdapter = ( accumulator, node ) => {
-            const [ accFn, mapped ] = vieweeToRender( node, accumulator )
-            return [ mapped, accFn ]
+
+        const fill = ( node ) => {
+            switch ( getClassName( node.viewee ) ) {
+                case 'Root':
+                case 'Transformer':
+                case 'Path':
+                    break
+                case 'Rectangle':
+                    this.context.fillStyle = node.viewee.fillColour
+                    const rect = node.scaledBounds
+                    this.context.fillRect( rect.x, rect.y, rect.w, rect.h );
+                    break
+                default:
+                    throw "Could not find matching class in fill"
+            }
+        }
+
+        const stroke = ( node ) => {
+            switch ( getClassName( node.viewee ) ) {
+                case 'Root':
+                case 'Transformer':
+                    break
+                case 'Rectangle':
+                    const rect = node.scaledBounds
+                    this.context.strokeRect( rect.x, rect.y, rect.w, rect.h )
+                    break
+                case 'Path':
+                    const path = node.viewee
+                    const start = path.getStart().applyMatrix( node.ctx.matrix.scale )
+                    this.context.beginPath();
+                    this.context.moveTo( start.x, start.y )
+
+                    path.forEachSegment( ( segment: PathSegment ) => {
+                        const end = path.getEnd().applyMatrix( node.ctx.matrix.scale )
+                        switch ( getClassName( segment ) ) {
+                            case 'LineSegment':
+                                this.context.lineTo( end.x, end.y )
+                                break
+                            case 'QuadSegment':
+                                const c = path.getControl().applyMatrix( node.ctx.matrix.scale )
+                                this.context.quadraticCurveTo( c.x, c.y, end.x, end.y )
+                                break
+                            case 'CubicSegment':
+                                const c1 = path.getControl1().applyMatrix( node.ctx.matrix.scale )
+                                const c2 = path.getControl2().applyMatrix( node.ctx.matrix.scale )
+                                this.context.bezierCurveTo( c1.x, c1.y, c2.x, c2.y, end.x, end.y )
+                                break
+                            default:
+                                throw "Could not find matching class when stroking line segments"
+                        }
+                    })
+
+                    this.context.stroke()
+
+                default:
+                    throw "Could not find matching class in stroke"
+            }
         }
 
         const output = ( node ) => {
-            const vieweeType = node.viewee.constructor.name
-            console.log( vieweeType, node.bounds )
+            fill( node )
             return [
-                () => { console.log( `Pre ${vieweeType} children` ) },
-                () => { console.log( `Post ${vieweeType} children` ) },
+                () => {
+                    if ( getClassName( node.viewee ) === 'Transformer' ) {
+                        const zoom = node.viewee.getZoom()
+                        this.context.scale( zoom.x, zoom.y )
+                    }
+                },
+                () => {
+                    stroke( node )
+                },
             ]
         }
 
         const X = LazyTree.of( aViewee )
             .dropSubTreeIf( hidden )
-            .mapAccum( vieweeToRenderAdapter, context )
+            .mapAccum( vieweeToRender, context )
             .dropNodeIf( outsideClipArea )
             .dropChildrenIf( outsideClipArea ).and( isClipping )
             .traverse( output )
@@ -106,7 +173,7 @@ class Renderer extends Contextual {
 //            .reduceXl( [ agg ], [] )
 
         //console.log( X.map( acc => acc.bounds ) )
-        console.log( X )
+        //console.log( X )
     }
 
     render( aViewee: Viewee ): void {
