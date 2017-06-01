@@ -5,7 +5,7 @@ describe( 'The canvas should', () => {
     setup.call( this );
 
 
-    fit( 'correctly apply transformations to viewees', () => {
+    it( 'correctly apply transformations to viewees', () => {
 
         let { iTransformer } = this.createViewees(`
             | iTransformer   | Transformer |                    |

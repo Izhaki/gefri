@@ -167,7 +167,11 @@ class MapAccum extends Processor {
         this.chainee.traverse( ( node ) => {
             const oldAcc = accumulator
             const [ mapped, newAccFn ] = this.aggregator( node, accumulator )
-            const callbacks = callback( mapped )
+            const callbacks = {
+                preChildren: noop,
+                postChildren: noop,
+                ...callback( mapped )
+            }
             return {
                 ...callbacks,
                 preChildren: () => {

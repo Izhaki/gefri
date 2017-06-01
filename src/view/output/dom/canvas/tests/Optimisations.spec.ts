@@ -19,7 +19,7 @@ describe( 'Optimisations:', () => {
         `);
     });
 
-    xit( 'Should render children of a viewee that is outside the clip region, but does not clip', () => {
+    it( 'Should render children of a viewee that is outside the clip region, but does not clip', () => {
         let { iGrandparent, iParent } = this.createViewees(`
             | iGrandparent | Rectangle |   0,   0, 50, 50 |
             |   iParent    | Rectangle |  60,  60, 10, 10 |

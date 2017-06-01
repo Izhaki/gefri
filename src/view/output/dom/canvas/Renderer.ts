@@ -6,6 +6,8 @@ import { getClassName,
 import {
     Viewee,
     PathSegment,
+    QuadSegment,
+    CubicSegment,
 } from '../../../viewees';
 
 import { Visible       } from '../../../viewees/visibles/Visible';
@@ -22,7 +24,7 @@ import {
     prop
 } from '../../../../core/FP';
 
-import { LazyTree   } from '../../../../core/LT1'
+import { LazyTree   } from '../../../../core/LT2'
 import { DualMatrix } from '../../../geometry/DualMatrix'
 import {
     RenderContext,
@@ -84,12 +86,6 @@ class Renderer extends Contextual {
 
         const context = RenderContext.from( clipArea )
 
-        const agg = ( acc, node ) => {
-            acc.push( node.bounds )
-            return acc
-        }
-
-
         const fill = ( node ) => {
             switch ( getClassName( node.viewee ) ) {
                 case 'Root':
@@ -122,18 +118,18 @@ class Renderer extends Contextual {
                     this.context.moveTo( start.x, start.y )
 
                     path.forEachSegment( ( segment: PathSegment ) => {
-                        const end = path.getEnd().applyMatrix( node.ctx.matrix.scale )
+                        const end = segment.getEnd().applyMatrix( node.ctx.matrix.scale )
                         switch ( getClassName( segment ) ) {
                             case 'LineSegment':
                                 this.context.lineTo( end.x, end.y )
                                 break
                             case 'QuadSegment':
-                                const c = path.getControl().applyMatrix( node.ctx.matrix.scale )
+                                const c = (segment as QuadSegment).getControl().applyMatrix( node.ctx.matrix.scale )
                                 this.context.quadraticCurveTo( c.x, c.y, end.x, end.y )
                                 break
                             case 'CubicSegment':
-                                const c1 = path.getControl1().applyMatrix( node.ctx.matrix.scale )
-                                const c2 = path.getControl2().applyMatrix( node.ctx.matrix.scale )
+                                const c1 = (segment as CubicSegment).getControl1().applyMatrix( node.ctx.matrix.scale )
+                                const c2 = (segment as CubicSegment).getControl2().applyMatrix( node.ctx.matrix.scale )
                                 this.context.bezierCurveTo( c1.x, c1.y, c2.x, c2.y, end.x, end.y )
                                 break
                             default:
@@ -142,38 +138,40 @@ class Renderer extends Contextual {
                     })
 
                     this.context.stroke()
-
+                    break
                 default:
                     throw "Could not find matching class in stroke"
             }
         }
 
-        const output = ( node ) => {
-            fill( node )
-            return [
-                () => {
-                    if ( getClassName( node.viewee ) === 'Transformer' ) {
-                        const zoom = node.viewee.getZoom()
-                        this.context.scale( zoom.x, zoom.y )
-                    }
-                },
-                () => {
-                    stroke( node )
-                },
-            ]
+        const intersectClipAreaWith = ( bounds: Rect ): void => {
+            this.context.beginPath()
+            this.context.rect( bounds.x, bounds.y, bounds.w, bounds.h )
+            this.context.clip()
         }
 
-        const X = LazyTree.of( aViewee )
+        const output = ( node ) => ({
+            preNode: () => fill( node ),
+            preChildren: () => {
+                this.context.save()
+                if ( getClassName( node.viewee ) === 'Transformer' ) {
+                    const zoom = node.viewee.getZoom()
+                    this.context.scale( zoom.x, zoom.y )
+                }
+                if ( node.viewee.isClipping ) {
+                    intersectClipAreaWith( node.scaledBounds );
+                }
+            },
+            postChildren: () => this.context.restore(),
+            postNode: () => stroke( node ),
+        })
+
+        LazyTree.of( aViewee )
             .dropSubTreeIf( hidden )
             .mapAccum( vieweeToRender, context )
             .dropNodeIf( outsideClipArea )
             .dropChildrenIf( outsideClipArea ).and( isClipping )
             .traverse( output )
-//            .toArray()
-//            .reduceXl( [ agg ], [] )
-
-        //console.log( X.map( acc => acc.bounds ) )
-        //console.log( X )
     }
 
     render( aViewee: Viewee ): void {
