@@ -3,7 +3,7 @@ import { Viewee     } from '../../../viewees';
 import { DualMatrix } from '../../../geometry/DualMatrix';
 import { inject     } from '../../../../core/di';
 import { prop       } from '../../../../core/FP';
-import { LazyTree   } from '../../../../core/LT2';
+import { LazyTree   } from '../../../../core/LazyTree';
 
 import {
     Rect,

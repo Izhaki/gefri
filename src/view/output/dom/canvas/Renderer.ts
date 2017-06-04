@@ -24,7 +24,7 @@ import {
     prop
 } from '../../../../core/FP';
 
-import { LazyTree   } from '../../../../core/LT2'
+import { LazyTree   } from '../../../../core/LazyTree'
 import { DualMatrix } from '../../../geometry/DualMatrix'
 import {
     RenderContext,

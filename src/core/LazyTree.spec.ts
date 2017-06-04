@@ -1,4 +1,4 @@
-import { LazyTree } from './LT2'
+import { LazyTree } from './LazyTree'
 
 function addChildren( aParent, aChildren: any[] ) {
     aParent.children = aParent.children ? aParent.children : []
