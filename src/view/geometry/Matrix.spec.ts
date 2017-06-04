@@ -1,5 +1,8 @@
-import { Matrix,
-         Rect             } from './';
+import {
+    Matrix,
+    Rect,
+    Point,
+} from './';
 
 describe( 'Matrix', () => {
 
@@ -20,6 +23,19 @@ describe( 'Matrix', () => {
                 this.rect2t = this.rect2.applyMatrix( this.combinedMatrix );
 
                 expect( this.rect1t ).toEqual( this.rect2t )
+            });
+
+        });
+
+        describe( 'translate()', () => {
+
+            it( 'should return a new matric correctly calculating the new translation', () => {
+                this.matrix1 = new Matrix( 10, 5, 10, 20 )
+
+                this.matrix2 = Matrix.translate( new Point( 7, 3 ), this.matrix1 )
+
+                expect( this.matrix2.translateX ).toBe( 80 )
+                expect( this.matrix2.translateY ).toBe( 35 )
             });
 
         });

@@ -34,7 +34,7 @@ class Matrix {
         aMatrix.scaleX,
         aMatrix.scaleY,
         aMatrix.translateX + aTranslation.x * aMatrix.scaleX,
-        aMatrix.translateX + aTranslation.y * aMatrix.scaleY,
+        aMatrix.translateY + aTranslation.y * aMatrix.scaleY,
     );
 
     static scale = ( aScale, aMatrix: Matrix ): Matrix => new Matrix(

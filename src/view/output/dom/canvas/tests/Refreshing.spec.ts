@@ -114,11 +114,21 @@ describe( 'Refreshing:', () => {
             });
 
             it( 'is moved' , () => {
-                this.rectangle.translate( new Point( 10, 20 ) );
+                this.child      = new Rectangle( 2, 2, 6, 6 )
+                this.grandChild = new Rectangle( 2, 2, 2, 2 )
+
+                this.child.addChild( this.grandChild )
+                this.rectangle.addChild( this.child )
+
+                this.clearRenderedLog();
+
+                this.rectangle.translate( new Point( 10, 5 ) );
 
                 expect( this.context ).toHaveRendered(`
-                    | Erase     | 100, 100, 20, 30 |
-                    | Rectangle | 110, 120, 10, 10 |
+                    | Erase     | 100, 100, 20, 15 |
+                    | Rectangle | 110, 105, 10, 10 |
+                    | Rectangle | 112, 107,  6,  6 |
+                    | Rectangle | 114, 109,  2,  2 |
                 `);
             });
 
