@@ -3,7 +3,7 @@ import { Viewee     } from '../../../viewees';
 import { DualMatrix } from '../../../geometry/DualMatrix';
 import { inject     } from '../../../../core/di';
 import { prop       } from '../../../../core/FP';
-import { LazyTree   } from '../../../../core/LazyTree';
+import { LazyTree   } from '../../../../core/LT2';
 
 import {
     Rect,
@@ -28,7 +28,7 @@ class RenderContext {
     })
 
     static getSubFor = ( ctx, viewee ) => {
-        const [ subCtxFn ] = vieweeToRender( ctx, viewee )
+        const subCtxFn = vieweeToRender( viewee, ctx )[ 1 ]
         return subCtxFn();
     }
 
@@ -71,7 +71,7 @@ const expandToIncludeAntialiasing = ( bounds, zoomMatrix ) => {
 
 const outsideClipArea = Rect.isNull
 
-const vieweeToRender = ( ctx: RenderContext, viewee: Viewee ): [ Function, any ] => {
+const vieweeToRender = ( viewee: Viewee, ctx: RenderContext ): [ any, Function ] => {
     const vieweeBounds = getRendereredBoundingRectOf( viewee, ctx.matrix, ctx.clipArea )
     const bounds = outsideClipArea( vieweeBounds ) ? vieweeBounds : expandToIncludeAntialiasing( vieweeBounds, ctx.matrix.zoom )
 
@@ -80,14 +80,14 @@ const vieweeToRender = ( ctx: RenderContext, viewee: Viewee ): [ Function, any ]
     //       and we don't want the antialiasing be part of that.
     const subCtxFn = () => RenderContext.getSub( viewee, vieweeBounds, ctx )
 
-    return [ subCtxFn, bounds ]
+    return [ bounds, subCtxFn ]
 }
 
 export
 const getNonClippingCompositionBoundsOf = ( viewee: Viewee, context: RenderContext ) => Rect.union(
     LazyTree.of( viewee )
         .dropChildrenIf( Viewee.isClipping )
-        .mapReduce( vieweeToRender, context )
+        .mapAccum( vieweeToRender, context )
         .dropSubTreeIf( outsideClipArea )
         .toArray()
 )
