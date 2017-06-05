@@ -1,23 +1,12 @@
-import { Contextual    } from './';
 import { Point,
          Rect          } from '../../../geometry';
-import { getClassName,
-         emptyArray    } from '../../../../core/Utils';
+import { getClassName  } from '../../../../core/Utils';
 import {
     Viewee,
     PathSegment,
     QuadSegment,
     CubicSegment,
 } from '../../../viewees';
-
-import { Visible       } from '../../../viewees/visibles/Visible';
-
-import { cumulateTransformationsOf } from '../../../viewees/multimethods';
-
-import {
-    fill,
-    stroke
-} from './multimethods';
 
 import {
     pipe,
@@ -34,16 +23,11 @@ import {
 } from './Updater'
 
 export
-class Renderer extends Contextual {
-    private cumulateTransformationsOf: ( aViewee: Viewee ) => void;
-    private fill:                      ( aViewee: Viewee ) => void;
-    stroke:                            ( what:    any    ) => void;
+class Renderer {
+    protected context: CanvasRenderingContext2D;
 
-    constructor( aContext: CanvasRenderingContext2D ) {
-        super( aContext );
-        this.cumulateTransformationsOf = cumulateTransformationsOf.curry( this );
-        this.fill                      = fill.curry( this );
-        this.stroke                    = stroke.curry( this );
+    constructor( context: CanvasRenderingContext2D ) {
+        this.context = context
     }
 
     refresh( aViewee: Viewee, aDamagedRect: Rect ): void {
@@ -52,14 +36,12 @@ class Renderer extends Contextual {
         // So we quantise the damaged rect to ensure whole-pixel clipping.
         let iDamagedRect = aDamagedRect.quantise();
 
-        this.erase( iDamagedRect );
-        this.pushState();
-        this.setclipArea( iDamagedRect );
+        this.context.clearRect( iDamagedRect.x, iDamagedRect.y, iDamagedRect.w, iDamagedRect.h );
 
+        this.context.save()
+        this.intersectClipAreaWith( iDamagedRect );
         this.renderFP( aViewee, iDamagedRect );
-        //this.render( aViewee );
-
-        this.popState();
+        this.context.restore()
     }
 
     renderFP( aViewee: Viewee, clipArea: Rect ): void {
@@ -144,12 +126,6 @@ class Renderer extends Contextual {
             }
         }
 
-        const intersectClipAreaWith = ( bounds: Rect ): void => {
-            this.context.beginPath()
-            this.context.rect( bounds.x, bounds.y, bounds.w, bounds.h )
-            this.context.clip()
-        }
-
         const output = ( node ) => ({
             preNode: () => fill( node ),
             preChildren: () => {
@@ -159,7 +135,7 @@ class Renderer extends Contextual {
                     this.context.scale( zoom.x, zoom.y )
                 }
                 if ( node.viewee.isClipping ) {
-                    intersectClipAreaWith( node.scaledBounds );
+                    this.intersectClipAreaWith( node.scaledBounds )
                 }
             },
             postChildren: () => this.context.restore(),
@@ -174,52 +150,11 @@ class Renderer extends Contextual {
             .traverse( output )
     }
 
-    render( aViewee: Viewee ): void {
-        if ( this.needsRendering( aViewee ) ) {
-            this.fill( aViewee );
-            this.renderChildren( aViewee );
-            this.stroke( aViewee );
-        }
-
-        // Note the algorithm is wrong: Instead of getting the non clipping composition we can just:
-        // Not render the current one if it is oneside the clip area, but keep iterating to children
-        // if it isn't clipping. So:
-        // needsRendering only looks at current bounds, not all composition.
-        // add to the above:
-        // } else {
-        //     if ( !isClipping ) renderChildren
-        //}
-
+    private intersectClipAreaWith = ( bounds: Rect ): void => {
+        this.context.beginPath()
+        this.context.rect( bounds.x, bounds.y, bounds.w, bounds.h )
+        this.context.clip()
     }
 
-    private needsRendering( aViewee: Viewee ): boolean {
-        if ( aViewee.rendered ) {
-            if ( aViewee instanceof Visible ) {
-                return this.isWithinClipArea( aViewee );
-            } else {
-                return true;
-            }
-        } else {
-            return false;
-        }
-    }
-
-    private renderChildren( aViewee: Viewee ): void {
-        if ( aViewee.isChildless() ) return;
-
-        this.pushState();
-
-        if ( aViewee.isClipping ) {
-            this.intersectClipAreaWith( aViewee );
-        }
-
-        this.cumulateTransformationsOf( aViewee );
-
-        aViewee.forEachChild( ( aChild ) => {
-            this.render( aChild );
-        });
-
-        this.popState();
-    }
 
 }
