@@ -1,7 +1,5 @@
 import { Composite,
          Stream           } from './../../core';
-import { Transformable,
-         Transformations  } from './../output';
 import { Rect,
          Matrix           } from '../geometry';
 

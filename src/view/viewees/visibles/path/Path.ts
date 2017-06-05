@@ -1,14 +1,18 @@
-import { Visible         } from './../Visible';
-import { PathSegment,
-         PathSegments,
-         LineSegment,
-         QuadSegment,
-         CubicSegment    } from './PathSegments'
-import { Point,
-         Rect,
-         Rects,
-         Matrix          } from './../../../geometry';
-import { Transformations } from './../../../output';
+import { Visible } from './../Visible'
+import {
+    PathSegment,
+    PathSegments,
+    LineSegment,
+    QuadSegment,
+    CubicSegment,
+} from './PathSegments'
+
+import {
+    Point,
+    Rect,
+    Rects,
+    Matrix,
+} from './../../../geometry'
 
 export
 class Path extends Visible {
