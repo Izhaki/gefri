@@ -1,13 +1,26 @@
-import { cumulateTransformationsOf,
-         hitTest                    } from '../viewees/multimethods';
-
 import { Point,
          Rect,
-         Matrix      } from '../geometry';
-import { Clipped     } from './Clipped';
+         Matrix      } from '../geometry'
+
+import { DualMatrix } from '../geometry/DualMatrix'
+
 import { Viewee,
          Viewees,
-         Transformer } from '../viewees';
+         Path,
+         Transformer } from '../viewees'
+
+import { LazyTree } from '../../core/LazyTree'
+
+import { getClassName } from '../../core/Utils'
+
+import {
+    RenderContext,
+    getRendereredBoundingRectOf,
+} from './dom/canvas/Updater'
+
+import {
+    pipe,
+} from '../../core/FP';
 
 export
 class HitTestResult {
@@ -38,64 +51,92 @@ class HitTestResult {
 }
 
 export
-class HitTester extends Clipped {
-    private cumulateTransformationsOf: ( aViewee: Viewee ) => void;
-    private hitTest:                   ( aViewee: Viewee, aMousePosition: Point, aAbsoluteMatrix: Matrix ) => boolean;
-
-    constructor() {
-        super();
-        this.cumulateTransformationsOf = cumulateTransformationsOf.curry( this );
-        this.hitTest = hitTest.curry(
-            // We define a new function so to maintain this.
-            aViewee => this.getRendereredBoundingRectOf( aViewee )
-        );
-    }
+class HitTester {
 
     test( aViewee: Viewee, aMousePosition: Point, aResult: HitTestResult ) {
-        if ( aViewee.rendered ) {
+        const context = RenderContext.getFor( aViewee )
 
-            if ( aViewee instanceof Transformer ) {
-                this.updateAbsoluteMatrix( aViewee, aResult );
+        const vieweeToRender = ( viewee: Viewee, ctx: RenderContext ): [ any, Function ] => {
+            const vieweeBounds = getRendereredBoundingRectOf( viewee, ctx.matrix, ctx.clipArea )
+//            const bounds = outsideClipArea( vieweeBounds ) ? vieweeBounds : expandToIncludeAntialiasing( vieweeBounds, ctx.matrix.zoom )
+
+            const subCtxFn = () => RenderContext.getSub( viewee, vieweeBounds, ctx )
+            const mapped = {
+                viewee,
+                bounds: vieweeBounds,
+                ctx,
             }
 
+            return [ mapped, subCtxFn ]
+        }
 
-            if ( aViewee.isInteractive() ) {
-                let isHit = this.hitTest( aViewee, aMousePosition, this.getAbsoluteMatrix() );
-                if ( isHit ) {
-                    aResult.addHit( aViewee );
-                }
+        const hitTest = ( node ) => {
+
+            if ( getClassName( node.viewee ) === 'Transformer' ) {
+                const transformer = node.viewee as Transformer
+                const absoluteMtx = pipe(
+                    DualMatrix.scale( transformer.getScale() ),
+                    DualMatrix.translate( transformer.getTranslate() ),
+                    DualMatrix.zoom( transformer.getZoom() ),
+                    DualMatrix.getCombination
+                )( node.ctx.matrix )
+
+                aResult.setMatrix( absoluteMtx )
             }
 
-            this.testChildren( aViewee, aMousePosition, aResult );
+            return {
+                preNode: () => {
 
+                    const absoluteMtx = DualMatrix.getCombination( node.ctx.matrix )
+                    const { viewee, bounds } = node
+
+                    let isHit = undefined
+
+                    switch ( getClassName( viewee ) ) {
+                        case 'Path':
+                            const path = viewee as Path
+                            const HIT_PADDING = 3
+                            let   isWithinRect: boolean;
+
+                            const expandedRect = Rect.expand( HIT_PADDING, bounds )
+
+                            isWithinRect = expandedRect.contains( aMousePosition )
+
+                            if ( isWithinRect ) {
+                                let aAbsolutePath = Path.applyMatrix( path, absoluteMtx )
+                                let iDistance = aAbsolutePath.getPointDistance( aMousePosition )
+                                isHit = iDistance < HIT_PADDING;
+                            } else {
+                                isHit = false;
+                            }
+                            break
+                        case 'Rectangle':
+                            isHit = bounds.contains( aMousePosition )
+                            break
+                        default:
+                            throw "Could not find matching class in when hit testing"
+                    }
+
+                    if ( isHit ) {
+                        aResult.addHit( viewee )
+                    }
+                },
+                // preChildren: () => {
+                //     if ( getClassName( node.viewee ) === 'Transformer' ) {
+                //         const absoluteMtx = DualMatrix.getCombination( node.ctx.matrix )
+                //         aResult.setMatrix( absoluteMtx )
+                //     }
+                // },
+
+            }
         }
-    }
 
-    private testChildren( aViewee: Viewee, aMousePosition: Point, aResult: HitTestResult ): void {
-        if ( aViewee.isChildless() ) return;
+        LazyTree.of( aViewee )
+            .keepSubTreeIf( Viewee.isRendered )
+            .dropNodeIf( ( viewee ) => !viewee.isInteractive() )
+            .mapAccum( vieweeToRender, context )
+            .traverse( hitTest )
 
-        this.pushState();
-
-        if ( aViewee.isClipping ) {
-            this.intersectClipAreaWith( aViewee );
-        }
-
-        this.cumulateTransformationsOf( aViewee );
-
-        aViewee.forEachChild( ( aChild ) => {
-            this.test( aChild, aMousePosition, aResult );
-        });
-
-        this.popState();
-    }
-
-    private updateAbsoluteMatrix( aTransformer: Transformer, aResult: HitTestResult ) {
-        this.pushState();
-
-        this.cumulateTransformationsOf( aTransformer );
-        aResult.setMatrix( this.getAbsoluteMatrix() );
-
-        this.popState();
     }
 
 }

@@ -12,6 +12,8 @@ export
 abstract class Viewee extends Composite< Viewee > {
 
     static isClipping = ( viewee ) => viewee.isClipping;
+    static isRendered = ( viewee ) => viewee.rendered
+    static isInteractive = ( viewee ) => viewee.isInteractive()
 
     static    updates$: Stream = new Stream(); // A global static (null) updates stream
     protected updates$: Stream = Viewee.updates$;
