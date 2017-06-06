@@ -39,12 +39,12 @@ class RenderContext {
 }
 
 export
-const getScaledBoundingRectOf = ( viewee, matrix ) =>
+const getScaledBoundingRectOf = ( viewee: Viewee, matrix: DualMatrix ) =>
     getBoundingRect( viewee )
     .applyMatrix( matrix.scale )
 
 export
-const getRendereredBoundingRectOf = ( viewee, matrix, clipArea ) =>
+const getRendereredBoundingRectOf = ( viewee: Viewee, matrix: DualMatrix, clipArea ) =>
     getBoundingRect( viewee )
     .applyMatrix( DualMatrix.getCombination( matrix ) )
     .intersect( clipArea )
@@ -83,7 +83,6 @@ const vieweeToRender = ( viewee: Viewee, ctx: RenderContext ): [ any, Function ]
     return [ bounds, subCtxFn ]
 }
 
-export
 const getNonClippingCompositionBoundsOf = ( viewee: Viewee, context: RenderContext ) => Rect.union(
     LazyTree.of( viewee )
         .dropChildrenIf( Viewee.isClipping )
@@ -101,9 +100,9 @@ class Updater {
     }
 
     onUpdate( viewee: Viewee ): void {
-        const context = RenderContext.getFor( viewee );
+        const context = RenderContext.getFor( viewee )
         const damagedRect = getNonClippingCompositionBoundsOf( viewee, context )
-        this.damagedRect = Rect.union( [ damagedRect, this.damagedRect ]);
+        this.damagedRect = Rect.union( [ damagedRect, this.damagedRect ])
     }
 
     flushDamagedRect(): Rect {

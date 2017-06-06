@@ -17,7 +17,6 @@ import { LazyTree   } from '../../../../core/LazyTree'
 import { DualMatrix } from '../../../geometry/DualMatrix'
 import {
     RenderContext,
-    getNonClippingCompositionBoundsOf,
     getRendereredBoundingRectOf,
     getScaledBoundingRectOf,
 } from './Updater'
@@ -56,14 +55,14 @@ class Renderer {
             const scaledBounds = getScaledBoundingRectOf( viewee, ctx.matrix )
             const subCtxFn = () => RenderContext.getSub( viewee, bounds, ctx )
 
-            const map = {
+            const mapped = {
                 viewee,
                 ctx,
                 bounds,
                 scaledBounds
             }
 
-            return [ map, subCtxFn ]
+            return [ mapped, subCtxFn ]
         }
 
         const context = RenderContext.from( clipArea )

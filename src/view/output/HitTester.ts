@@ -57,13 +57,11 @@ class HitTester {
         const context = RenderContext.getFor( aViewee )
 
         const vieweeToRender = ( viewee: Viewee, ctx: RenderContext ): [ any, Function ] => {
-            const vieweeBounds = getRendereredBoundingRectOf( viewee, ctx.matrix, ctx.clipArea )
-//            const bounds = outsideClipArea( vieweeBounds ) ? vieweeBounds : expandToIncludeAntialiasing( vieweeBounds, ctx.matrix.zoom )
-
-            const subCtxFn = () => RenderContext.getSub( viewee, vieweeBounds, ctx )
+            const bounds = getRendereredBoundingRectOf( viewee, ctx.matrix, ctx.clipArea )
+            const subCtxFn = () => RenderContext.getSub( viewee, bounds, ctx )
             const mapped = {
                 viewee,
-                bounds: vieweeBounds,
+                bounds,
                 ctx,
             }
 
