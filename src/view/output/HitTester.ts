@@ -15,8 +15,9 @@ import { getClassName } from '../../core/Utils'
 
 import {
     RenderContext,
+    vieweeToRender,
     getRendereredBoundingRectOf,
-} from './dom/canvas/Updater'
+} from './outputHelpers'
 
 import {
     pipe,
@@ -55,18 +56,6 @@ class HitTester {
 
     test( aViewee: Viewee, aMousePosition: Point, aResult: HitTestResult ) {
         const context = RenderContext.getFor( aViewee )
-
-        const vieweeToRender = ( viewee: Viewee, ctx: RenderContext ): [ any, Function ] => {
-            const bounds = getRendereredBoundingRectOf( viewee, ctx.matrix, ctx.clipArea )
-            const subCtxFn = () => RenderContext.getSub( viewee, bounds, ctx )
-            const mapped = {
-                viewee,
-                bounds,
-                ctx,
-            }
-
-            return [ mapped, subCtxFn ]
-        }
 
         const hitTest = ( node ) => {
 

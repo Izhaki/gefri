@@ -6,12 +6,10 @@ import { LazyTree   } from '../../../../core/LazyTree';
 
 import {
     Rect,
-    Rects
 } from '../../../geometry';
 
 import {
     getBoundingRect,
-    getChildrenMatrix
 } from '../../../viewees/multimethods';
 
 import {
@@ -21,43 +19,12 @@ import {
     set,
 } from '../../../../core/FP';
 
-
-export
-class RenderContext {
-    matrix:   DualMatrix
-    clipArea: Rect
-
-    static from = ( clipArea? ) => ({ matrix: new DualMatrix(), clipArea })
-
-    static getSub = ( viewee: Viewee, bounds: Rect, ctx: RenderContext ): RenderContext => ({
-        matrix:   getChildrenMatrix( viewee, ctx.matrix ),
-        clipArea: viewee.isClipping ? Rect.intersect( [ ctx.clipArea, bounds ] ) : ctx.clipArea
-    })
-
-    static getSubFor = ( ctx, viewee ) => {
-        const subCtxFn = vieweeToRender( viewee, ctx )[ 1 ]
-        return subCtxFn();
-    }
-
-    static getFor = ( viewee: Viewee ) =>
-        viewee
-        .getAncestors()
-        .reduce( RenderContext.getSubFor, RenderContext.from() )
-}
-
-export
-const getScaledBoundingRectOf = ( viewee: Viewee, matrix: DualMatrix ) =>
-    getBoundingRect( viewee )
-    .applyMatrix( matrix.scale )
-
-export
-const getRendereredBoundingRectOf = ( viewee: Viewee, matrix: DualMatrix, clipArea ) =>
-    getBoundingRect( viewee )
-    .applyMatrix( DualMatrix.getCombination( matrix ) )
-    .intersect( clipArea )
-
-
-const outsideClipArea = pipe( prop('bounds'), Rect.isNull )
+import {
+    RenderContext,
+    vieweeToRender,
+    getScaledBoundingRectOf,
+    outsideClipArea
+} from '../../outputHelpers'
 
 // Antialiasing applied by the canvas results in pixels outside the rect boundery.
 // So we expand the damaged rect to include these extra pixels.
@@ -85,21 +52,6 @@ const expandBoundsByAntialiasing = ( acc ) => {
         return set( lensProp( 'bounds' ), Rect.expand( margins, bounds ), acc )
     }
 
-}
-
-const vieweeToRender = ( viewee: Viewee, ctx: RenderContext ): [ any, Function ] => {
-    const bounds = getRendereredBoundingRectOf( viewee, ctx.matrix, ctx.clipArea )
-
-    // The reduce part (given to the children) - A function (so it is lazily evaluated) to get the context for this viewee children.
-    const subCtxFn = () => RenderContext.getSub( viewee, bounds, ctx )
-
-    const mapped = {
-        viewee,
-        bounds,
-        ctx,
-    }
-
-    return [ mapped, subCtxFn ]
 }
 
 const getNonClippingCompositionBoundsOf = ( viewee: Viewee, context: RenderContext ) => Rect.union(

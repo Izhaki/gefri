@@ -15,11 +15,14 @@ import {
 
 import { LazyTree   } from '../../../../core/LazyTree'
 import { DualMatrix } from '../../../geometry/DualMatrix'
+
 import {
     RenderContext,
+    vieweeToRender,
     getRendereredBoundingRectOf,
     getScaledBoundingRectOf,
-} from './Updater'
+    outsideClipArea,
+} from '../../outputHelpers'
 
 export
 class Renderer {
@@ -46,22 +49,7 @@ class Renderer {
     renderFP( aViewee: Viewee, clipArea: Rect ): void {
         const hidden = ( viewee: Viewee ): boolean => !viewee.rendered
 
-        const outsideClipArea = pipe( prop('bounds'), Rect.isNull )
         const isClipping = pipe( prop('viewee'), Viewee.isClipping )
-
-        const vieweeToRender = ( viewee: Viewee, ctx: RenderContext ): [ any, Function ] => {
-
-            const bounds = getRendereredBoundingRectOf( viewee, ctx.matrix, ctx.clipArea )
-            const subCtxFn = () => RenderContext.getSub( viewee, bounds, ctx )
-
-            const mapped = {
-                viewee,
-                ctx,
-                bounds,
-            }
-
-            return [ mapped, subCtxFn ]
-        }
 
         const context = RenderContext.from( clipArea )
 
@@ -155,6 +143,5 @@ class Renderer {
         this.context.rect( bounds.x, bounds.y, bounds.w, bounds.h )
         this.context.clip()
     }
-
 
 }
