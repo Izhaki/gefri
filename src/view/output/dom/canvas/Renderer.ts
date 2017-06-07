@@ -52,14 +52,12 @@ class Renderer {
         const vieweeToRender = ( viewee: Viewee, ctx: RenderContext ): [ any, Function ] => {
 
             const bounds = getRendereredBoundingRectOf( viewee, ctx.matrix, ctx.clipArea )
-            const scaledBounds = getScaledBoundingRectOf( viewee, ctx.matrix )
             const subCtxFn = () => RenderContext.getSub( viewee, bounds, ctx )
 
             const mapped = {
                 viewee,
                 ctx,
                 bounds,
-                scaledBounds
             }
 
             return [ mapped, subCtxFn ]
@@ -125,21 +123,24 @@ class Renderer {
             }
         }
 
-        const output = ( node ) => ({
-            preNode: () => fill( node ),
-            preChildren: () => {
-                this.context.save()
-                if ( getClassName( node.viewee ) === 'Transformer' ) {
-                    const zoom = node.viewee.getZoom()
-                    this.context.scale( zoom.x, zoom.y )
-                }
-                if ( node.viewee.isClipping ) {
-                    this.intersectClipAreaWith( node.scaledBounds )
-                }
-            },
-            postChildren: () => this.context.restore(),
-            postNode: () => stroke( node ),
-        })
+        const output = ( node ) => {
+            node.scaledBounds = getScaledBoundingRectOf( node.viewee, node.ctx.matrix )
+            return {
+                preNode: () => fill( node ),
+                preChildren: () => {
+                    this.context.save()
+                    if ( getClassName( node.viewee ) === 'Transformer' ) {
+                        const zoom = node.viewee.getZoom()
+                        this.context.scale( zoom.x, zoom.y )
+                    }
+                    if ( node.viewee.isClipping ) {
+                        this.intersectClipAreaWith( node.scaledBounds )
+                    }
+                },
+                postChildren: () => this.context.restore(),
+                postNode: () => stroke( node ),
+            }
+        }
 
         LazyTree.of( aViewee )
             .dropSubTreeIf( hidden )

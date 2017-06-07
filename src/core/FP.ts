@@ -5,6 +5,8 @@ export {
     allPass,
     complement,
     identity,
-    Pred as Predicate
+    Pred as Predicate,
+    lensProp,
+    set,
 } from 'ramda';
 
