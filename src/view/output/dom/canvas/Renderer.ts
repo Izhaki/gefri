@@ -19,7 +19,6 @@ import { DualMatrix } from '../../../geometry/DualMatrix'
 import {
     RenderContext,
     vieweeToRender,
-    getRendereredBoundingRectOf,
     getScaledBoundingRectOf,
     outsideClipArea,
 } from '../../outputHelpers'
@@ -49,9 +48,9 @@ class Renderer {
     renderFP( aViewee: Viewee, clipArea: Rect ): void {
         const hidden = ( viewee: Viewee ): boolean => !viewee.rendered
 
-        const isClipping = pipe( prop('viewee'), Viewee.isClipping )
+        const isClipping = pipe( prop( 'viewee' ), Viewee.isClipping )
 
-        const context = RenderContext.new( clipArea )
+        const context = new RenderContext( clipArea )
 
         const fill = ( node ) => {
             switch ( getClassName( node.viewee ) ) {

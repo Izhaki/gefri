@@ -22,26 +22,28 @@ class RenderContext {
     matrix:   DualMatrix
     clipArea: Rect
 
-    static new = ( clipArea? ) => ({ matrix: new DualMatrix(), clipArea })
-
-    static getSub = ( viewee: Viewee, bounds: Rect, ctx: RenderContext ): RenderContext => ({
-        matrix:   getChildrenMatrix( viewee, ctx.matrix ),
-        clipArea: viewee.isClipping ? Rect.intersect( [ ctx.clipArea, bounds ] ) : ctx.clipArea
-    })
-
-    static getSubFor = ( ctx, viewee ) => {
-        const subCtxFn = vieweeToRender( viewee, ctx )[ 1 ]
-        return subCtxFn();
+    constructor( clipArea = undefined, matrix = new DualMatrix() ) {
+        this.clipArea = clipArea
+        this.matrix = matrix
     }
 
-    static getFor = ( viewee: Viewee ) => reduce( RenderContext.getSubFor, RenderContext.new(), viewee.getAncestors() )
-}
+    static getFor = ( viewee: Viewee ) => reduce(
+        ( ctx, viewee ) => ctx.getSubOf( viewee ),
+        new RenderContext(),
+        viewee.getAncestors()
+    )
 
-export
-const getRendereredBoundingRectOf = ( viewee: Viewee, matrix: DualMatrix, clipArea ) =>
-    getBoundingRect( viewee )
-    .applyMatrix( DualMatrix.getCombination( matrix ) )
-    .intersect( clipArea )
+    getRenderedBoundingRectOf = ( viewee ) =>
+        getBoundingRect( viewee )
+        .applyMatrix( DualMatrix.getCombination( this.matrix ) )
+        .intersect( this.clipArea )
+
+    getSubOf = ( viewee ) => new RenderContext(
+        viewee.isClipping ? Rect.intersect( [ this.clipArea, this.getRenderedBoundingRectOf( viewee ) ] ) : this.clipArea,
+        getChildrenMatrix( viewee, this.matrix )
+    )
+
+}
 
 export
 const getScaledBoundingRectOf = ( viewee: Viewee, matrix: DualMatrix ) =>
@@ -53,16 +55,16 @@ const outsideClipArea = pipe( prop('bounds'), Rect.isNull )
 
 export
 const vieweeToRender = ( viewee: Viewee, ctx: RenderContext ): [ any, Function ] => {
-    const bounds = getRendereredBoundingRectOf( viewee, ctx.matrix, ctx.clipArea )
-
-    // The reduce part (given to the children) - A nullary function (so it is lazily evaluated) to get the context for this viewee children.
-    const subCtxFn = () => RenderContext.getSub( viewee, bounds, ctx )
+    const bounds = ctx.getRenderedBoundingRectOf( viewee )
 
     const mapped = {
         viewee,
         bounds,
         ctx,
     }
+
+    // The reduce part (given to the children) - A nullary function (so it is lazily evaluated) to get the context for this viewee children.
+    const subCtxFn = () => ctx.getSubOf( viewee ) // TODO: This will calc the rendered bounds, but so is `bounds` above
 
     return [ mapped, subCtxFn ]
 }

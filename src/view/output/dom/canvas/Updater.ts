@@ -22,7 +22,6 @@ import {
 import {
     RenderContext,
     vieweeToRender,
-    getScaledBoundingRectOf,
     outsideClipArea
 } from '../../outputHelpers'
 
@@ -54,10 +53,11 @@ const antialiasBounds = ( acc ) => {
 
 }
 
-const getNonClippingCompositionBoundsOf = ( viewee: Viewee, context: RenderContext ) => Rect.union(
+// TODO: Can be changed to use a reducer and merged with onUpdate
+const getNonClippingCompositionBoundsOf = ( viewee: Viewee ) => Rect.union(
     LazyTree.of( viewee )
         .dropChildrenIf( Viewee.isClipping )
-        .mapAccum( vieweeToRender, context )
+        .mapAccum( vieweeToRender, RenderContext.getFor( viewee ) )
         .dropSubTreeIf( outsideClipArea )
         .map( antialiasBounds )
         .map( prop('bounds') )
@@ -73,8 +73,7 @@ class Updater {
     }
 
     onUpdate( viewee: Viewee ): void {
-        const context = RenderContext.getFor( viewee )
-        const damagedRect = getNonClippingCompositionBoundsOf( viewee, context )
+        const damagedRect = getNonClippingCompositionBoundsOf( viewee )
         this.damagedRect = Rect.union( [ damagedRect, this.damagedRect ])
     }
 

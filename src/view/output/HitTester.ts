@@ -16,7 +16,6 @@ import { getClassName } from '../../core/Utils'
 import {
     RenderContext,
     vieweeToRender,
-    getRendereredBoundingRectOf,
 } from './outputHelpers'
 
 import {
@@ -120,7 +119,7 @@ class HitTester {
 
         LazyTree.of( aViewee )
             .keepSubTreeIf( Viewee.isRendered )
-            .dropNodeIf( ( viewee ) => !viewee.isInteractive() )
+            .dropNodeIf( ( viewee ) => !viewee.isInteractive() ) // TODO: keepNodeIf( Viewee.isInteractive )
             .mapAccum( vieweeToRender, context )
             .traverse( hitTest )
 
