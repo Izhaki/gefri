@@ -51,7 +51,7 @@ class Renderer {
 
         const isClipping = pipe( prop('viewee'), Viewee.isClipping )
 
-        const context = RenderContext.from( clipArea )
+        const context = RenderContext.new( clipArea )
 
         const fill = ( node ) => {
             switch ( getClassName( node.viewee ) ) {

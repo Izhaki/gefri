@@ -28,7 +28,7 @@ import {
 
 // Antialiasing applied by the canvas results in pixels outside the rect boundery.
 // So we expand the damaged rect to include these extra pixels.
-const expandBoundsByAntialiasing = ( acc ) => {
+const antialiasBounds = ( acc ) => {
     const { bounds } = acc
     const zoomMatrix = acc.ctx.matrix.zoom
 
@@ -59,7 +59,7 @@ const getNonClippingCompositionBoundsOf = ( viewee: Viewee, context: RenderConte
         .dropChildrenIf( Viewee.isClipping )
         .mapAccum( vieweeToRender, context )
         .dropSubTreeIf( outsideClipArea )
-        .map( expandBoundsByAntialiasing )
+        .map( antialiasBounds )
         .map( prop('bounds') )
         .toArray()
 )

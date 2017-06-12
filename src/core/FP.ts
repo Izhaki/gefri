@@ -1,5 +1,6 @@
 export {
     pipe,
+    reduce,
     curry,
     prop,
     allPass,

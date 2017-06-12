@@ -13,7 +13,8 @@ import {
 
 import {
     pipe,
-    prop
+    prop,
+    reduce,
 } from '../../core/FP'
 
 export
@@ -21,7 +22,7 @@ class RenderContext {
     matrix:   DualMatrix
     clipArea: Rect
 
-    static from = ( clipArea? ) => ({ matrix: new DualMatrix(), clipArea })
+    static new = ( clipArea? ) => ({ matrix: new DualMatrix(), clipArea })
 
     static getSub = ( viewee: Viewee, bounds: Rect, ctx: RenderContext ): RenderContext => ({
         matrix:   getChildrenMatrix( viewee, ctx.matrix ),
@@ -33,10 +34,7 @@ class RenderContext {
         return subCtxFn();
     }
 
-    static getFor = ( viewee: Viewee ) =>
-        viewee
-        .getAncestors()
-        .reduce( RenderContext.getSubFor, RenderContext.from() )
+    static getFor = ( viewee: Viewee ) => reduce( RenderContext.getSubFor, RenderContext.new(), viewee.getAncestors() )
 }
 
 export
@@ -57,7 +55,7 @@ export
 const vieweeToRender = ( viewee: Viewee, ctx: RenderContext ): [ any, Function ] => {
     const bounds = getRendereredBoundingRectOf( viewee, ctx.matrix, ctx.clipArea )
 
-    // The reduce part (given to the children) - A function (so it is lazily evaluated) to get the context for this viewee children.
+    // The reduce part (given to the children) - A nullary function (so it is lazily evaluated) to get the context for this viewee children.
     const subCtxFn = () => RenderContext.getSub( viewee, bounds, ctx )
 
     const mapped = {
