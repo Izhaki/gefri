@@ -31,25 +31,21 @@ const antialiasBounds = ( acc ) => {
     const { bounds } = acc
     const zoomMatrix = acc.ctx.matrix.zoom
 
-    if ( Rect.isNull( bounds ) ) {
-        return acc
-    } else {
-        const antialiasingExtraMargins = inject( 'antialiasingExtraMargins' )
-        // When the zoom level is below 1, say 0.5, a stroke width of 1 will
-        // be rendered onto 2 pixels, then antialiasing will be applied (which
-        // is never more than a pixel wide). So we have to account for the zoom
-        // factor.
-        // First, we find the biggest of the zoom factors.
-        // Then, we ensure it does not go below the antialiasingExtraMargins
-        // or the expansion will not catch the antialiasing.
-        const expensionFactor = Math.max( zoomMatrix.scaleX, zoomMatrix.scaleY, antialiasingExtraMargins );
+    const antialiasingExtraMargins = inject( 'antialiasingExtraMargins' )
+    // When the zoom level is below 1, say 0.5, a stroke width of 1 will
+    // be rendered onto 2 pixels, then antialiasing will be applied (which
+    // is never more than a pixel wide). So we have to account for the zoom
+    // factor.
+    // First, we find the biggest of the zoom factors.
+    // Then, we ensure it does not go below the antialiasingExtraMargins
+    // or the expansion will not catch the antialiasing.
+    const expensionFactor = Math.max( zoomMatrix.scaleX, zoomMatrix.scaleY, antialiasingExtraMargins );
 
-        // We multiply the injected antialiasingExtraMargins by the
-        // expensionFactor;
-        const margins = antialiasingExtraMargins * expensionFactor;
+    // We multiply the injected antialiasingExtraMargins by the
+    // expensionFactor;
+    const margins = antialiasingExtraMargins * expensionFactor;
 
-        return set( lensProp( 'bounds' ), Rect.expand( margins, bounds ), acc )
-    }
+    return set( lensProp( 'bounds' ), Rect.expand( margins, bounds ), acc )
 
 }
 
