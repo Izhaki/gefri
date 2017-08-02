@@ -20,18 +20,21 @@ import {
 } from '../../../../core/FP';
 
 import {
-    RenderContext,
+    getContextOf,
+} from '../../OutputContext'
+
+import {
     vieweeToRender,
-    outsideClipArea
+    outsideClipArea,
 } from '../../outputHelpers'
 
 // Antialiasing applied by the canvas results in pixels outside the rect boundery.
 // So we expand the damaged rect to include these extra pixels.
-const antialiasBounds = ( acc ) => {
-    const { bounds } = acc
-    const zoomMatrix = acc.ctx.matrix.zoom
-
+const getAntialiasedBounds = ( outputMap ) => {
     const antialiasingExtraMargins = inject( 'antialiasingExtraMargins' )
+
+    const zoomMatrix = outputMap.ctx.matrix.zoom
+
     // When the zoom level is below 1, say 0.5, a stroke width of 1 will
     // be rendered onto 2 pixels, then antialiasing will be applied (which
     // is never more than a pixel wide). So we have to account for the zoom
@@ -45,7 +48,7 @@ const antialiasBounds = ( acc ) => {
     // expensionFactor;
     const margins = antialiasingExtraMargins * expensionFactor;
 
-    return set( lensProp( 'bounds' ), Rect.expand( margins, bounds ), acc )
+    return Rect.expand( margins, outputMap.bounds )
 
 }
 
@@ -53,10 +56,9 @@ const antialiasBounds = ( acc ) => {
 const getNonClippingCompositionBoundsOf = ( viewee: Viewee ) => Rect.union(
     LazyTree.of( viewee )
         .dropChildrenIf( Viewee.isClipping )
-        .mapAccum( vieweeToRender, RenderContext.getFor( viewee ) )
+        .mapAccum( vieweeToRender, getContextOf( viewee ) )
         .dropSubTreeIf( outsideClipArea )
-        .map( antialiasBounds )
-        .map( prop('bounds') )
+        .map( getAntialiasedBounds )
         .toArray()
 )
 

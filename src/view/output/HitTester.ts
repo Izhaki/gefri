@@ -13,10 +13,9 @@ import { LazyTree } from '../../core/LazyTree'
 
 import { getClassName } from '../../core/Utils'
 
-import {
-    RenderContext,
-    vieweeToRender,
-} from './outputHelpers'
+import { getContextOf } from './OutputContext'
+
+import { vieweeToRender } from './outputHelpers'
 
 import {
     pipe,
@@ -54,7 +53,7 @@ export
 class HitTester {
 
     test( aViewee: Viewee, aMousePosition: Point, aResult: HitTestResult ) {
-        const context = RenderContext.getFor( aViewee )
+        const context = getContextOf( aViewee )
 
         const hitTest = ( node ) => {
 

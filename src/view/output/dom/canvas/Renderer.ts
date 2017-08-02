@@ -17,11 +17,22 @@ import { LazyTree   } from '../../../../core/LazyTree'
 import { DualMatrix } from '../../../geometry/DualMatrix'
 
 import {
-    RenderContext,
+    OutputContext,
+    newOutputContext,
+} from '../../OutputContext'
+
+import {
     vieweeToRender,
-    getScaledBoundingRectOf,
     outsideClipArea,
 } from '../../outputHelpers'
+
+import { getBoundingRect } from '../../../viewees/multimethods'
+
+
+const getScaledBoundingRectOf = ( viewee: Viewee, matrix: DualMatrix ) =>
+    getBoundingRect( viewee )
+    .applyMatrix( matrix.scale )
+
 
 export
 class Renderer {
@@ -50,7 +61,7 @@ class Renderer {
 
         const isClipping = pipe( prop( 'viewee' ), Viewee.isClipping )
 
-        const context = new RenderContext( clipArea )
+        const context = newOutputContext( clipArea )
 
         const fill = ( node ) => {
             switch ( getClassName( node.viewee ) ) {
